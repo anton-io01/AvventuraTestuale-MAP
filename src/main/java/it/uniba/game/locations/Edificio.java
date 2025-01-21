@@ -11,4 +11,19 @@ public class Edificio {
         this.accessibile = accessibile;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public boolean isAccessibile() {
+        return accessibile;
+    }
+
+    public void setAccessibile(boolean accessibile) {
+        this.accessibile = accessibile;
+    }
 }
