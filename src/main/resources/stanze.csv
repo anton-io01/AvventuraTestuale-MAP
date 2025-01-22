@@ -1,20 +1,22 @@
-stanza_id,edificio_id,nome,accessibile
+edificio_id,stanza_id,nome,accessibile
+02,01,uscita,true
 02,02,ingresso,true
-03,02,reception,true
-04,02,sala d'attesa,true
-05,02,cappella,true
-06,02,corridoio,true
-07,02,corridoio,true
-08,02,stanza 200,true
-09,02,stanza 201,true
-10,02,stanza 202,true
-11,02,stanza 203,true
-12,02,corridoio,true
-13,02,ufficio Dr. Chen,true
-14,02,laboratorio medico,true
-02,03,porta di sicurezza,false
-03,03,atrio,true
-04,03,laboratorio principale,true
-05,03,ufficio,true
-06,03,server room,true
-07,03,testing area,true
+02,03,reception,true
+02,04,sala d'attesa,true
+02,05,cappella,true
+02,06,corridoio,true
+02,07,corridoio,true
+02,08,stanza 200,true
+02,09,stanza 201,true
+02,10,stanza 202,true
+02,11,stanza 203,true
+02,12,corridoio,true
+02,13,ufficio Dr. Chen,true
+02,14,laboratorio medico,true
+03,01,uscita,true
+03,02,porta di sicurezza,false
+03,03,trio,true
+03,04,laboratorio principale,true
+03,05,ufficio,true
+03,06,server room,true
+03,07,testing area,true
