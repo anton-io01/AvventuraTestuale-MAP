@@ -1,18 +1,18 @@
 package it.uniba.game.locations;
 
 public class Edificio {
-    private String id;          // formato "01", "02", ecc.
+    private String EdificioId;          // formato "01", "02", ecc.
     private String nome;
     private boolean accessibile;
 
-    public Edificio(String id, String nome, boolean accessibile) {
-        this.id = id;
+    public Edificio(String EdificioId, String nome, boolean accessibile) {
+        this.EdificioId = EdificioId;
         this.nome = nome;
         this.accessibile = accessibile;
     }
 
     public String getId() {
-        return id;
+        return EdificioId;
     }
 
     public String getNome() {
@@ -25,10 +25,5 @@ public class Edificio {
 
     public void setAccessibile(boolean accessibile) {
         this.accessibile = accessibile;
-    }
-
-    @Override
-    public String toString() {
-        return "Edificio " + id + ": " + nome + (accessibile ? " (Accessibile)" : " (Non accessibile)");
     }
 }
