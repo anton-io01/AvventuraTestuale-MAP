@@ -11,7 +11,7 @@ public class Edificio {
         this.accessibile = accessibile;
     }
 
-    public String getId() {
+    public String getEdificioId() {
         return EdificioId;
     }
 
