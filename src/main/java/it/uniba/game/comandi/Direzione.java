@@ -8,7 +8,7 @@ public enum Direzione {
     ALTO(5),
     BASSO(6);
 
-    private int codice;
+    private final int codice;
 
     Direzione(int codice) {
         this.codice = codice;
