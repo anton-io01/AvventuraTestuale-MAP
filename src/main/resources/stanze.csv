@@ -1,0 +1,20 @@
+stanza_id,edificio_id,nome,accessibile
+02,02,ingresso,true
+03,02,reception,true
+04,02,sala d'attesa,true
+05,02,cappella,true
+06,02,corridoio,true
+07,02,corridoio,true
+08,02,stanza 200,true
+09,02,stanza 201,true
+10,02,stanza 202,true
+11,02,stanza 203,true
+12,02,corridoio,true
+13,02,ufficio Dr. Chen,true
+14,02,laboratorio medico,true
+02,03,porta di sicurezza,false
+03,03,atrio,true
+04,03,laboratorio principale,true
+05,03,ufficio,true
+06,03,server room,true
+07,03,testing area,true
