@@ -54,6 +54,92 @@
     - Se fallisce nel disattivare l'attacco, molte persone muoiono.
     - Se non riesce ad aprire la porta in tempo, Sato cancella tutte le prove e, nonostante venga arrestato, viene rilasciato.
 
+
+## Struttura del Database
+
+### Tabella `Edifici`
+Contiene informazioni sugli edifici del gioco.
+
+| Attributo      | Tipo          | Vincoli                       | Descrizione                                           |
+|----------------|---------------|-------------------------------|-------------------------------------------------------|
+| `edificio_id`  | `VARCHAR(2)`  | `PRIMARY KEY`                 | Identificativo univoco dell'edificio (es: "01").      |
+| `nome`         | `VARCHAR(100)`| `NOT NULL`, `UNIQUE`          | Nome dell'edificio (es: "Ospedale").                 |
+| `accessibile`  | `BOOLEAN`     | `DEFAULT true`                | Se l'edificio è accessibile (default: `true`).       |
+| `descrizione`  | `TEXT`        |                               | Descrizione breve dell'edificio.                     |
+
+---
+
+### Tabella `Stanze`
+Contiene informazioni sulle stanze presenti negli edifici.
+
+| Attributo      | Tipo          | Vincoli                       | Descrizione                                           |
+|----------------|---------------|-------------------------------|-------------------------------------------------------|
+| `stanza_id`    | `VARCHAR(2)`  | `PRIMARY KEY`                 | Identificativo univoco della stanza (es: "01").       |
+| `edificio_id`  | `VARCHAR(2)`  | `NOT NULL`, `FOREIGN KEY`     | Collegamento all'edificio a cui appartiene la stanza. |
+| `nome`         | `VARCHAR(100)`| `NOT NULL`                    | Nome della stanza (es: "Reception").                 |
+| `accessibile`  | `BOOLEAN`     | `DEFAULT true`                | Se la stanza è accessibile (default: `true`).        |
+
+**Relazioni:**  
+La tabella `Stanze` ha un vincolo di chiave esterna su `edificio_id` che fa riferimento a `Edifici(edificio_id)`.
+
+---
+
+### Tabella `DescrizioniStanze`
+Contiene le descrizioni dettagliate delle stanze.
+
+| Attributo            | Tipo          | Vincoli                       | Descrizione                                           |
+|----------------------|---------------|-------------------------------|-------------------------------------------------------|
+| `stanza_id`          | `VARCHAR(2)`  | `PRIMARY KEY`, `FOREIGN KEY`  | Identificativo univoco della stanza.                 |
+| `edificio_id`        | `VARCHAR(2)`  | `PRIMARY KEY`, `FOREIGN KEY`  | Identificativo dell'edificio.                        |
+| `descrizione_breve`  | `TEXT`        |                               | Breve descrizione visibile da stanze vicine.         |
+| `descrizione_completa`| `TEXT`        |                               | Descrizione completa della stanza.                   |
+
+**Relazioni:**  
+La tabella `DescrizioniStanze` ha vincoli di chiave esterna su `stanza_id` e `edificio_id`, che fanno riferimento rispettivamente a `Stanze(stanza_id)` e `Stanze(edificio_id)`.
+
+---
+
+### Tabella `Oggetti`
+Contiene informazioni sugli oggetti presenti nel gioco.
+
+| Attributo      | Tipo          | Vincoli                       | Descrizione                                           |
+|----------------|---------------|-------------------------------|-------------------------------------------------------|
+| `oggetto_id`   | `VARCHAR(3)`  | `PRIMARY KEY`                 | Identificativo univoco dell'oggetto (es: "001").      |
+| `nome`         | `VARCHAR(100)`| `NOT NULL`, `UNIQUE`          | Nome dell'oggetto.                                   |
+| `descrizione`  | `TEXT`        |                               | Descrizione dell'oggetto.                            |
+| `raccoglibile` | `BOOLEAN`     | `DEFAULT false`               | Indica se l'oggetto è raccoglibile.                  |
+
+---
+
+### Tabella `OggettiStanze`
+Associa oggetti a stanze specifiche.
+
+| Attributo      | Tipo          | Vincoli                       | Descrizione                                           |
+|----------------|---------------|-------------------------------|-------------------------------------------------------|
+| `oggetto_id`   | `VARCHAR(3)`  | `PRIMARY KEY`, `FOREIGN KEY`  | Collegamento all'oggetto.                            |
+| `stanza_id`    | `VARCHAR(2)`  | `PRIMARY KEY`, `FOREIGN KEY`  | Collegamento alla stanza in cui si trova l'oggetto.  |
+| `edificio_id`  | `VARCHAR(2)`  | `PRIMARY KEY`, `FOREIGN KEY`  | Collegamento all'edificio in cui si trova la stanza. |
+
+**Relazioni:**  
+La tabella `OggettiStanze` ha vincoli di chiave esterna su `oggetto_id`, `stanza_id` e `edificio_id`, che fanno riferimento rispettivamente a `Oggetti(oggetto_id)`, `Stanze(stanza_id)` e `Stanze(edificio_id)`.
+
+---
+
+### Tabella `Movimenti`
+Definisce i collegamenti tra le stanze.
+
+| Attributo      | Tipo          | Vincoli                       | Descrizione                                           |
+|----------------|---------------|-------------------------------|-------------------------------------------------------|
+| `edificio_id`  | `VARCHAR(2)`  | `PRIMARY KEY`, `FOREIGN KEY`  | Identificativo dell'edificio.                        |
+| `stanza_partenza`| `VARCHAR(2)`| `PRIMARY KEY`, `FOREIGN KEY`  | Identificativo della stanza di partenza.             |
+| `direzione`    | `INT`         | `PRIMARY KEY`                 | Direzione del movimento (es: 1=NORD, 2=SUD, ecc.).   |
+| `stanza_arrivo`| `VARCHAR(2)`  | `NOT NULL`, `FOREIGN KEY`     | Identificativo della stanza di destinazione.         |
+
+**Relazioni:**  
+La tabella `Movimenti` ha vincoli di chiave esterna su `edificio_id`, `stanza_partenza` e `stanza_arrivo`, che fanno riferimento rispettivamente a `Stanze(edificio_id)`, `Stanze(stanza_id)` e `Stanze(stanza_id)`.
+
+
+
 ## Direzioni
 Nord = 1  
 Sud = 2  
