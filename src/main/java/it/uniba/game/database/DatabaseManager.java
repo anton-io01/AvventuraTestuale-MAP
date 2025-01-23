@@ -3,26 +3,57 @@ package it.uniba.game.database;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Properties;
 
 public class DatabaseManager {
-    private static final String URL = "jdbc:h2:./gamedb"; // Percorso del database
-    private static final String USER = "user"; // Nome utente
-    private static final String PASSWORD = "1234"; // Password
 
-    /**
-     * Ottiene una connessione al database usando la classe Properties.
-     *
-     * @return Connection oggetto per la connessione al database
-     * @throws SQLException in caso di errori durante la connessione
-     */
-    public static Connection getConnection() throws SQLException {
-        Properties dbprops = new Properties();
-        dbprops.setProperty("user", USER);
-        dbprops.setProperty("password", PASSWORD);
+    // URL del database
+    private static final String DB_URL = "jdbc:sqlite:game_database.db";
 
-        // Connessione al database
-        return DriverManager.getConnection(URL, dbprops);
+    // Connessione singleton
+    private static Connection connection = null;
+
+    // Metodo per ottenere la connessione al database
+    public static Connection getConnection() {
+        if (connection == null) {
+            try {
+                connection = DriverManager.getConnection(DB_URL);
+                System.out.println("Connessione al database stabilita.");
+            } catch (SQLException e) {
+                System.err.println("Errore durante la connessione al database.");
+                e.printStackTrace();
+            }
+        }
+        return connection;
     }
-}
 
+    // Metodo per chiudere la connessione al database
+    public static void closeConnection() {
+        if (connection != null) {
+            try {
+                connection.close();
+                connection = null;
+                System.out.println("Connessione al database chiusa.");
+            } catch (SQLException e) {
+                System.err.println("Errore durante la chiusura della connessione al database.");
+                e.printStackTrace();
+            }
+        }
+    }
+
+    // Metodo per ottenere l'istanza di un DAO
+    /*public static EdificioDAO getEdificioDAO() {
+        return new EdificioDAO(getConnection());
+    }
+
+    public static StanzaDAO getStanzaDAO() {
+        return new StanzaDAO(getConnection());
+    }
+
+    public static OggettoDAO getOggettoDAO() {
+        return new OggettoDAO(getConnection());
+    }
+
+    public static MovimentoDAO getMovimentoDAO() {
+        return new MovimentoDAO(getConnection());
+    }*/
+}
