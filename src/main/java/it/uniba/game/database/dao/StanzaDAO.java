@@ -76,6 +76,29 @@ public class StanzaDAO {
         return null;
     }
 
+    // Metodo per ottenere le stanze di un edificio
+    public List<Stanza> getStanzeByEdificio(String edificioId) {
+        List<Stanza> stanze = new ArrayList<>();
+        String query = "SELECT * FROM Stanze WHERE edificio_id = ?";
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setString(1, edificioId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    Stanza stanza = new Stanza(
+                            rs.getString("edificio_id"),
+                            rs.getString("stanza_id"),
+                            rs.getString("nome"),
+                            rs.getBoolean("accessibile")
+                    );
+                    stanze.add(stanza);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return stanze;
+    }
+
     // Metodo per aggiornare una stanza
     public void updateStanza(String edificioId, String stanzaId, String nome, boolean accessibile) {
         String query = "UPDATE Stanze SET nome = ?, accessibile = ? WHERE edificio_id = ? AND stanza_id = ?";
