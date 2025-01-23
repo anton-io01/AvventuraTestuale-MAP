@@ -173,21 +173,22 @@ Basso = 6
 ### Distretto di polizia
 
 ### Ospedale di Neo Tokyo - 02
-|Codice|Luogo|Nord|Sud|Est|Ovest|Alto|Basso|
-|--|--|--|--|--|--|--|--|
-|01|Ingresso|Reception|Uscita|-|-|-|-|
-|02|Reception|Cappella|Ingresso|Sala d'attesa|-|Corridoio1.1|-|
-|03|Sala d'attesa|-|-|-|Reception|-|-|
-|04|Cappella|-|Reception|-|-|-|-|
-|05|Corridoio1.1|Corridoio1.2|-|Camera201|Camera200|-|Reception|
-|06|Corridoio1.2|-|Corridoio1.1|Camera203|Camera202|Corridoio2|-|
-|07|Stanza200|-|-|Corridoio1.1|-|-|-|
-|08|Sanza201|-|-|-|Corridoio1.1|-|-|
-|09|Sanza202|-|-|Corridoio1.2|-|-|-|
-|10|Sanza203|-|-|-|Corridoio1.2|-|-|
-|11|Corridoio2|-|Ufficio Dr. Chen|-|-|-|Corridoio1.2|
-|12|Ufficio Dr. Chen|Corridoio2|-|-|-|-|-|
-|13|Laboratorio medico|-|-|-|Corridoio2|-|-|
+| Codice | Luogo              |Nord|Sud|Est|Ovest|Alto|Basso|
+|--|--------------------|--|-|--|--|--|--|
+|01|Uscita|-|-|-|-|-|-|
+|02|Ingresso|Reception|Uscita|-|-|-|-|
+|03|Reception|Cappella|Ingresso|Sala d'attesa|-|Corridoio1.1|-|
+|04|Sala d'attesa|-|-|-|Reception|-|-|
+|05|Cappella|-|Reception|-|-|-|-|
+|06|Corridoio1.1|Corridoio1.2|-|Camera201|Camera200|-|Reception|
+|07|Corridoio1.2|-|Corridoio1.1|Camera203|Camera202|Corridoio2|-|
+|08|Stanza200|-|-|Corridoio1.1|-|-|-|
+|09|Sanza201|-|-|-|Corridoio1.1|-|-|
+|10|Sanza202|-|-|Corridoio1.2|-|-|-|
+|11|Sanza203|-|-|-|Corridoio1.2|-|-|
+|12|Corridoio2|-|Ufficio Dr. Chen|-|-|-|Corridoio1.2|
+|13|Ufficio Dr. Chen|Corridoio2|-|-|-|-|-|
+|14|Laboratorio medico|-|-|-|Corridoio2|-|-|
 
 ### Clinica del Dott. Tanaka - 03
 |Codice|Luogo|Nord|Sud|Est|Ovest|Alto|Basso|
