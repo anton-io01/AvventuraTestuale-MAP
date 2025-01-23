@@ -1,4 +1,4 @@
-package it.uniba.game.comandi;
+package it.uniba.game.command;
 
 public enum Direzione {
     NORD(1),

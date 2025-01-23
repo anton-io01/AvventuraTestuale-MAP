@@ -1,4 +1,4 @@
-package it.uniba.game.oggetti;
+package it.uniba.game.model;
 
 public class Oggetto {
     private String oggettoId;

@@ -1,4 +1,4 @@
-package it.uniba.game.locations;
+package it.uniba.game.model;
 
 public class Edificio {
     private String EdificioId;          // formato "01", "02", ecc.

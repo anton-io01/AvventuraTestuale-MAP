@@ -1,4 +1,4 @@
-package it.uniba.game.locations;
+package it.uniba.game.model;
 
 import java.util.HashMap;
 import java.util.Map;
