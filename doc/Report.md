@@ -193,11 +193,12 @@ Basso = 6
 ### Clinica del Dott. Tanaka - 03
 |Codice|Luogo|Nord|Sud|Est|Ovest|Alto|Basso|
 |--|--|--|--|--|--|--|--|
-|01|Porta di Sicurezza|Atrio|Uscita|-|-|-|-|
-|02|Atrio|Laboratorio Principale|Porta di Sicurezza|-|-|-|-|
-|03|Laboratorio Principale|Testing Area|Atrio|Ufficio|Server Room|-|-|
-|04|Ufficio|-|-|-|Laboratorio Principale|-|-|
-|05|Server Room|-|-|Laboratorio Principale|-|-|-|
-|06|Testing Area|-|Laboratorio Principale|-|-|-|-|
+|01|Uscita|-|-|-|-|-|-|
+|02|Porta di Sicurezza|Atrio|Uscita|-|-|-|-|
+|03|Atrio|Laboratorio Principale|Porta di Sicurezza|-|-|-|-|
+|04|Laboratorio Principale|Testing Area|Atrio|Ufficio|Server Room|-|-|
+|05|Ufficio|-|-|-|Laboratorio Principale|-|-|
+|06|Server Room|-|-|Laboratorio Principale|-|-|-|
+|07|Testing Area|-|Laboratorio Principale|-|-|-|-|
 
 ### Nascondiglio di Sato
