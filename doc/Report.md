@@ -74,8 +74,8 @@ Contiene informazioni sulle stanze presenti negli edifici.
 
 | Attributo      | Tipo          | Vincoli                       | Descrizione                                           |
 |----------------|---------------|-------------------------------|-------------------------------------------------------|
-| `stanza_id`    | `VARCHAR(2)`  | `PRIMARY KEY`                 | Identificativo univoco della stanza (es: "01").       |
 | `edificio_id`  | `VARCHAR(2)`  | `NOT NULL`, `FOREIGN KEY`     | Collegamento all'edificio a cui appartiene la stanza. |
+| `stanza_id`    | `VARCHAR(2)`  | `PRIMARY KEY`                 | Identificativo univoco della stanza (es: "01").       |
 | `nome`         | `VARCHAR(100)`| `NOT NULL`                    | Nome della stanza (es: "Reception").                 |
 | `accessibile`  | `BOOLEAN`     | `DEFAULT true`                | Se la stanza è accessibile (default: `true`).        |
 
@@ -89,8 +89,8 @@ Contiene le descrizioni dettagliate delle stanze.
 
 | Attributo            | Tipo          | Vincoli                       | Descrizione                                           |
 |----------------------|---------------|-------------------------------|-------------------------------------------------------|
-| `stanza_id`          | `VARCHAR(2)`  | `PRIMARY KEY`, `FOREIGN KEY`  | Identificativo univoco della stanza.                 |
 | `edificio_id`        | `VARCHAR(2)`  | `PRIMARY KEY`, `FOREIGN KEY`  | Identificativo dell'edificio.                        |
+| `stanza_id`          | `VARCHAR(2)`  | `PRIMARY KEY`, `FOREIGN KEY`  | Identificativo univoco della stanza.                 |
 | `descrizione_breve`  | `TEXT`        |                               | Breve descrizione visibile da stanze vicine.         |
 | `descrizione_completa`| `TEXT`        |                               | Descrizione completa della stanza.                   |
 
@@ -137,6 +137,27 @@ Definisce i collegamenti tra le stanze.
 
 **Relazioni:**  
 La tabella `Movimenti` ha vincoli di chiave esterna su `edificio_id`, `stanza_partenza` e `stanza_arrivo`, che fanno riferimento rispettivamente a `Stanze(edificio_id)`, `Stanze(stanza_id)` e `Stanze(stanza_id)`.
+
+
+### Tabella `Movimenti`
+Definisce i collegamenti tra le stanze nelle varie direzioni.
+
+| Attributo     | Tipo         | Vincoli                        | Descrizione                                            |
+|---------------|--------------|--------------------------------|--------------------------------------------------------|
+| `edificio_id` | `VARCHAR(2)` | `PRIMARY KEY`, `FOREIGN KEY`   | Identificativo dell'edificio.                         |
+| `stanza_id`   | `VARCHAR(2)` | `PRIMARY KEY`, `FOREIGN KEY`   | Identificativo della stanza.                          |
+| `nord`        | `VARCHAR(2)` | `FOREIGN KEY`                  | Stanza raggiungibile muovendosi a nord.               |
+| `sud`         | `VARCHAR(2)` | `FOREIGN KEY`                  | Stanza raggiungibile muovendosi a sud.                |
+| `est`         | `VARCHAR(2)` | `FOREIGN KEY`                  | Stanza raggiungibile muovendosi a est.                |
+| `ovest`       | `VARCHAR(2)` | `FOREIGN KEY`                  | Stanza raggiungibile muovendosi a ovest.              |
+| `alto`        | `VARCHAR(2)` | `FOREIGN KEY`                  | Stanza raggiungibile muovendosi verso l'alto.         |
+| `basso`       | `VARCHAR(2)` | `FOREIGN KEY`                  | Stanza raggiungibile muovendosi verso il basso.       |
+
+**Relazioni:**  
+La tabella `Movimenti` ha vincoli di chiave esterna su:
+- `edificio_id`, che fa riferimento a `Edifici(edificio_id)`.
+- `stanza_id`, che fa riferimento a `Stanze(stanza_id)`.
+- `nord`, `sud`, `est`, `ovest`, `alto`, `basso`, che fanno riferimento a `Stanze(stanza_id)`.
 
 
 
