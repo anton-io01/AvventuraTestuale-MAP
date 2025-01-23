@@ -2,20 +2,18 @@ package it.uniba.game.database;
 
 import it.uniba.game.util.CSVLoader;
 
-import java.io.File;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
 public class DatabaseInitializer {
 
-    private static final String DATABASE_FILE = "game_database.db"; // Nome file SQLite
-    private static final String EDIFICI_CSV = "resources/edifici.csv";
-    private static final String STANZE_CSV = "resources/stanze.csv";
-    private static final String DESCRIZIONI_STANZE_CSV = "resources/descrizioni_stanze.csv";
-    private static final String OGGETTI_CSV = "resources/oggetti.csv";
-    private static final String OGGETTI_STANZE_CSV = "resources/oggetti_stanze.csv";
-    private static final String MOVIMENTI_CSV = "resources/movimenti.csv";
+    private static final String EDIFICI_CSV = "src/main/resources/csv/edifici.csv";
+    private static final String STANZE_CSV = "src/main/resources/csv/stanze.csv";
+    private static final String DESCRIZIONI_STANZE_CSV = "src/main/resources/csv/descrizioni_stanze.csv";
+    private static final String OGGETTI_CSV = "src/main/resources/csv/oggetti.csv";
+    private static final String OGGETTI_STANZE_CSV = "src/main/resources/csv/oggetti_stanze.csv";
+    private static final String MOVIMENTI_CSV = "src/main/resources/csv/movimenti.csv";
 
     /**
      * Metodo principale per inizializzare il database.
@@ -52,7 +50,7 @@ public class DatabaseInitializer {
     private static boolean isDatabaseCreated() {
         try (Connection connection = DatabaseManager.getConnection();
              Statement stmt = connection.createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT name FROM sqlite_master WHERE type='table' AND name='Edifici'")) {
+             ResultSet rs = stmt.executeQuery("SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'EDIFICI'")) {
 
             return rs.next(); // Ritorna true se la tabella "Edifici" esiste
 
