@@ -55,13 +55,22 @@ public class CSVLoader {
                     continue;
                 }
 
+                // Imposta i valori nella query
                 for (int i = 0; i < columnCount; i++) {
-                    pstmt.setString(i + 1, data[i].trim());
+                    String value = data[i].trim();
+                    if (value.equalsIgnoreCase("NULL")) {
+                        pstmt.setNull(i + 1, java.sql.Types.VARCHAR);
+                    } else {
+                        pstmt.setString(i + 1, value);
+                    }
                 }
                 pstmt.executeUpdate();
             }
 
-            System.out.println("Dati caricati con successo nella tabella!");
+            // Estrai il nome del file
+            String[] pathName = filePath.split("/");
+            String fileName = pathName[pathName.length - 1].split("\\.")[0];
+            System.out.println("Dati caricati con successo nella tabella " + fileName + "!");
 
         } catch (Exception e) {
             e.printStackTrace();
