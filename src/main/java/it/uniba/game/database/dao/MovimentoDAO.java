@@ -2,94 +2,95 @@ package it.uniba.game.database.dao;
 
 import it.uniba.game.entity.Movimento;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MovimentoDAO {
-
     private final Connection connection;
 
+    /**
+     * Costruttore che accetta una connessione al database.
+     *
+     * @param connection La connessione al database da utilizzare.
+     */
     public MovimentoDAO(Connection connection) {
         this.connection = connection;
     }
 
-    // Metodo per inserire un nuovo movimento nel database
-    public void insertMovimento(String edificioId, String stanzaPartenza, String direzione, String stanzaArrivo) {
-        String query = "INSERT INTO Movimenti (edificio_id, stanza_partenza, direzione, stanza_arrivo) VALUES (?, ?, ?, ?)";
+    /**
+     * Ottiene i movimenti per una determinata stanza di un edificio.
+     *
+     * @param edificioId L'ID dell'edificio.
+     * @param stanzaId   L'ID della stanza.
+     * @return Una lista di oggetti Movimento contenenti i movimenti della stanza.
+     */
+    public List<Movimento> getMovimentiByStanza(String edificioId, String stanzaId) {
+        List<Movimento> movimenti = new ArrayList<>();
+        String query = "SELECT * FROM Movimenti WHERE edificio_id = ? AND stanza_id = ?";
+
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
             pstmt.setString(1, edificioId);
-            pstmt.setString(2, stanzaPartenza);
-            pstmt.setString(3, direzione);
-            pstmt.setString(4, stanzaArrivo);
-            pstmt.executeUpdate();
-            System.out.println("Movimento inserito con successo.");
-        } catch (SQLException e) {
-            System.err.println("Errore durante l'inserimento del movimento.");
-            e.printStackTrace();
-        }
-    }
+            pstmt.setString(2, stanzaId);
 
-    // Metodo per ottenere tutti i movimenti dal database
-    public List<Movimento> getAllMovimenti() {
-        List<Movimento> movimenti = new ArrayList<>();
-        String query = "SELECT * FROM Movimenti";
-        try (Statement stmt = connection.createStatement();
-             ResultSet rs = stmt.executeQuery(query)) {
-
-            while (rs.next()) {
-                Movimento movimento = new Movimento(
-                        rs.getString("edificio_id"),
-                        rs.getString("stanza_partenza"),
-                        rs.getString("direzione"),
-                        rs.getString("stanza_arrivo")
-                );
-                movimenti.add(movimento);
-            }
-        } catch (SQLException e) {
-            System.err.println("Errore durante l'ottenimento dei movimenti.");
-            e.printStackTrace();
-        }
-        return movimenti;
-    }
-
-    // Metodo per ottenere i movimenti da una stanza specifica
-    public List<Movimento> getMovimentiByStanza(String edificioId, String stanzaPartenza) {
-        List<Movimento> movimenti = new ArrayList<>();
-        String query = "SELECT * FROM Movimenti WHERE edificio_id = ? AND stanza_partenza = ?";
-        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
-            pstmt.setString(1, edificioId);
-            pstmt.setString(2, stanzaPartenza);
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
-                    Movimento movimento = new Movimento(
-                            rs.getString("edificio_id"),
-                            rs.getString("stanza_partenza"),
-                            rs.getString("direzione"),
-                            rs.getString("stanza_arrivo")
-                    );
-                    movimenti.add(movimento);
+                    String nord = rs.getString("nord");
+                    if (nord != null) {
+                        movimenti.add(new Movimento(edificioId, stanzaId, "nord", nord));
+                    }
+                    String sud = rs.getString("sud");
+                    if (sud != null) {
+                        movimenti.add(new Movimento(edificioId, stanzaId, "sud", sud));
+                    }
+                    String est = rs.getString("est");
+                    if (est != null) {
+                        movimenti.add(new Movimento(edificioId, stanzaId, "est", est));
+                    }
+                    String ovest = rs.getString("ovest");
+                    if (ovest != null) {
+                        movimenti.add(new Movimento(edificioId, stanzaId, "ovest", ovest));
+                    }
+                    String alto = rs.getString("alto");
+                    if (alto != null) {
+                        movimenti.add(new Movimento(edificioId, stanzaId, "alto", alto));
+                    }
+                    String basso = rs.getString("basso");
+                    if (basso != null) {
+                        movimenti.add(new Movimento(edificioId, stanzaId, "basso", basso));
+                    }
                 }
             }
         } catch (SQLException e) {
-            System.err.println("Errore durante l'ottenimento dei movimenti dalla stanza specificata.");
+            System.err.println("Errore durante il recupero dei movimenti per la stanza " + stanzaId +
+                    " nell'edificio " + edificioId + ": " + e.getMessage());
             e.printStackTrace();
         }
+
         return movimenti;
     }
 
-    // Metodo per eliminare un movimento
-    public void deleteMovimento(String edificioId, String stanzaPartenza, String direzione) {
-        String query = "DELETE FROM Movimenti WHERE edificio_id = ? AND stanza_partenza = ? AND direzione = ?";
-        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
-            pstmt.setString(1, edificioId);
-            pstmt.setString(2, stanzaPartenza);
-            pstmt.setString(3, direzione);
-            pstmt.executeUpdate();
-            System.out.println("Movimento eliminato con successo.");
+    /**
+     * Elimina i movimenti associati a una stanza in un edificio.
+     *
+     * @param edificioId L'ID dell'edificio.
+     * @param stanzaId   L'ID della stanza.
+     * @return true se almeno un movimento è stato eliminato, false altrimenti.
+     */
+    public boolean deleteMovimentiByStanza(String edificioId, String stanzaId) {
+        String query = "DELETE FROM Movimenti WHERE edificio_id = ? AND stanza_id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, edificioId);
+            stmt.setString(2, stanzaId);
+            return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
-            System.err.println("Errore durante l'eliminazione del movimento.");
+            System.err.println("Errore durante l'eliminazione dei movimenti per la stanza " + stanzaId +
+                    " nell'edificio " + edificioId + ": " + e.getMessage());
             e.printStackTrace();
+            return false;
         }
     }
 }
