@@ -13,10 +13,10 @@ edificio_id,stanza_id,nome,accessibile
 02,12,corridoio,true
 02,13,ufficio Dr. Chen,true
 02,14,laboratorio medico,true
-03,01,uscita,true
-03,02,porta di sicurezza,false
-03,03,trio,true
-03,04,laboratorio principale,true
-03,05,ufficio,true
-03,06,server room,true
-03,07,testing area,true
+03,15,uscita,true
+03,16,porta di sicurezza,false
+03,17,trio,true
+03,18,laboratorio principale,true
+03,19,ufficio,true
+03,20,server room,true
+03,21,testing area,true
