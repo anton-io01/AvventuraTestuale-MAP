@@ -53,10 +53,21 @@ public class CSVLoader {
         loadFromCSV(filePath, query, new int[]{java.sql.Types.INTEGER, java.sql.Types.INTEGER, java.sql.Types.VARCHAR, java.sql.Types.INTEGER});
     }
     public static void loadEffettiFromCSV(String filePath) {
-        String query = "INSERT INTO Effetti (effetto_id, nome, descrizione, tipo, dati) VALUES (?, ?, ?, ?, ?)";
-        loadFromCSV(filePath, query, new int[]{java.sql.Types.INTEGER, java.sql.Types.VARCHAR, java.sql.Types.VARCHAR, java.sql.Types.VARCHAR, java.sql.Types.VARCHAR});
+        String query = "INSERT INTO Effetti (effetto_id, nome, descrizione, tipo) VALUES (?, ?, ?, ?)";
+        loadFromCSV(filePath, query, new int[]{java.sql.Types.INTEGER, java.sql.Types.VARCHAR, java.sql.Types.VARCHAR, java.sql.Types.VARCHAR});
     }
-
+    public static void loadEffettiStatoFromCSV(String filePath) {
+        String query = "INSERT INTO EffettiStato (effetto_id, oggetto_id, stato) VALUES (?, ?, ?)";
+        loadFromCSV(filePath, query, new int[]{java.sql.Types.INTEGER, java.sql.Types.INTEGER, java.sql.Types.VARCHAR});
+    }
+    public static void loadEffettiInventarioFromCSV(String filePath) {
+        String query = "INSERT INTO EffettiInventario (effetto_id, oggetto_id, tipo) VALUES (?, ?, ?)";
+        loadFromCSV(filePath, query, new int[]{java.sql.Types.INTEGER, java.sql.Types.INTEGER, java.sql.Types.VARCHAR});
+    }
+    public static void loadEffettiCondizionaliFromCSV(String filePath) {
+        String query = "INSERT INTO EffettiCondizionali (effetto_id, condition, doorId, targetStanzaId) VALUES (?, ?, ?, ?)";
+        loadFromCSV(filePath, query, new int[]{java.sql.Types.INTEGER, java.sql.Types.VARCHAR, java.sql.Types.INTEGER, java.sql.Types.INTEGER});
+    }
 
     private static void loadFromCSV(String filePath, String query, int[] columnTypes) {
         try (Connection connection = DatabaseManager.getConnection();
