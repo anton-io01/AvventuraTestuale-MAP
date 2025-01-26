@@ -1,6 +1,7 @@
 package it.uniba.game.database.dao;
 
 import it.uniba.game.entity.Movimento;
+import it.uniba.game.entity.Stanza;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -74,23 +75,36 @@ public class MovimentoDAO {
     }
 
     /**
-     * Elimina i movimenti associati a una stanza in un edificio.
+     * Restituisce la stanza di arrivo per una determinata direzione.
      *
      * @param edificioId L'ID dell'edificio.
-     * @param stanzaId   L'ID della stanza.
-     * @return true se almeno un movimento è stato eliminato, false altrimenti.
+     * @param stanzaId   L'ID della stanza di partenza.
+     * @param direzione  La direzione del movimento.
+     * @return La stanza di arrivo o null se il movimento non è possibile.
      */
-    public boolean deleteMovimentiByStanza(String edificioId, String stanzaId) {
-        String query = "DELETE FROM Movimenti WHERE edificio_id = ? AND stanza_id = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setString(1, edificioId);
-            stmt.setString(2, stanzaId);
-            return stmt.executeUpdate() > 0;
+    public Stanza getStanzaDiArrivo(String edificioId, String stanzaId, String direzione) {
+        String query = "SELECT " + direzione + " FROM Movimenti WHERE edificio_id = ? AND stanza_id = ?";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setString(1, edificioId);
+            pstmt.setString(2, stanzaId);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    String stanzaArrivoId = rs.getString(1);
+                    if (stanzaArrivoId != null) {
+                        // Recupera la stanza dal suo DAO
+                        StanzaDAO stanzaDAO = new StanzaDAO(connection);
+                        return stanzaDAO.getStanzaById(edificioId, stanzaArrivoId);
+                    }
+                }
+            }
         } catch (SQLException e) {
-            System.err.println("Errore durante l'eliminazione dei movimenti per la stanza " + stanzaId +
-                    " nell'edificio " + edificioId + ": " + e.getMessage());
+            System.err.println("Errore durante il recupero della stanza di arrivo: " + e.getMessage());
             e.printStackTrace();
-            return false;
         }
+
+        return null; // Movimento non disponibile
     }
+
 }
