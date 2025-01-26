@@ -4,20 +4,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Giocatore {
-    private Stanza posizioneAttuale;
+    private Edificio posizioneAttuale_edificio;
+    private Stanza posizioneAttuale_stanza;
     private List<Oggetto> inventario;
 
-    public Giocatore(Stanza posizioneAttuale) {
-        this.posizioneAttuale = posizioneAttuale;
+    public Giocatore(Edificio posizioneAttuale_edificio, Stanza posizioneAttuale_stanza) {
+        this.posizioneAttuale_edificio = posizioneAttuale_edificio;
+        this.posizioneAttuale_stanza = posizioneAttuale_stanza;
         this.inventario = new ArrayList<>();
     }
 
-    public Stanza getPosizioneAttuale() {
-        return posizioneAttuale;
+    public Edificio getPosizioneAttuale_edificio() {
+        return posizioneAttuale_edificio;
     }
 
-    public void setPosizioneAttuale(Stanza posizioneAttuale) {
-        this.posizioneAttuale = posizioneAttuale;
+    public void setPosizioneAttuale_edificio(Edificio posizioneAttuale_edificio) {
+        this.posizioneAttuale_edificio = posizioneAttuale_edificio;
+    }
+
+    public Stanza getPosizioneAttuale_stanza() {
+        return posizioneAttuale_stanza;
+    }
+
+    public void setPosizioneAttuale(Stanza posizioneAttuale_stanza) {
+        this.posizioneAttuale_stanza = posizioneAttuale_stanza;
     }
 
     public List<Oggetto> getInventario() {
