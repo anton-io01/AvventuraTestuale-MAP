@@ -39,6 +39,16 @@ public class CSVLoader {
         loadFromCSV(filePath, query, 8);
     }
 
+    public static void loadAzioniFromCSV(String filePath) {
+        String query = "INSERT INTO Azioni (alias, azione_id, categoria) VALUES (?, ?, ?)";
+        loadFromCSV(filePath, query, 3);
+    }
+
+    public static void loadAzioniOggettiFromCSV(String filePath) {
+        String query = "INSERT INTO AzioniInterazione (azione_id, oggetto_id) VALUES (?, ?)";
+        loadFromCSV(filePath, query, 2);
+    }
+
     private static void loadFromCSV(String filePath, String query, int columnCount) {
         try (Connection connection = DatabaseManager.getConnection();
              BufferedReader br = new BufferedReader(new FileReader(filePath));
