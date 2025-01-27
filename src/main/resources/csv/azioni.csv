@@ -1,4 +1,4 @@
-alias,azione_id,categoria
+nome,azione_id,categoria
 nord,01,navigazione
 sud,02,navigazione
 est,02,navigazione
@@ -8,12 +8,11 @@ basso,06,navigazione
 esci,07,globali
 salva,08,globali
 inventario,09,globali
-guarda,10,globali
-osserva,11,globali
-esamina,12,interazione
-prendi,13,interazione
-lascia,14,interazione
-usa,15,interazione
-parla,16,interazione
-apri,17,interazione
-chiudi,18,interazione
+osserva,10,globali
+esamina,11,interazione
+prendi,12,interazione
+lascia,13,interazione
+usa,14,interazione
+parla,15,interazione
+apri,16,interazione
+chiudi,17,interazione
