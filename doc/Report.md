@@ -220,10 +220,10 @@ La tabella `Movimenti` ha vincoli di chiave esterna su:
 ### Nascondiglio di Sato
 |Codice|Luogo|Nord|Sud|Est|Ovest|Alto|Basso|
 |--|--|--|--|--|--|--|--|
-|01|Uscita|-|-|-|-|-|-|
-|02|Hall Principale|Corridoio|Uscita|-|-|-|-|
-|03|Corridoio|-|Hall Principale|-|-|-|Server Room|
-|04|Server Room|-|-|Sala di Controllo|-|-|Magazzino|
-|05|Sala di Controllo|-|-|-|Server Room|-|-|
-|06|Magazzino|-|-|-|-|Server Room|Nascodiglio di Sato|
-|07|Nascodiglio di Sato|-|-|-|-|-|Magazzino|
+|22|Uscita|-|-|-|-|-|-|
+|23|Hall Principale|Corridoio|Uscita|-|-|-|-|
+|24|Corridoio|-|Hall Principale|-|-|-|Server Room|
+|25|Server Room|-|-|Sala di Controllo|-|-|Magazzino|
+|26|Sala di Controllo|-|-|-|Server Room|-|-|
+|27|Magazzino|-|-|-|-|Server Room|Nascodiglio di Sato|
+|28|Nascodiglio di Sato|-|-|-|-|-|Magazzino|
