@@ -28,7 +28,7 @@ CREATE TABLE DescrizioniStanze (
 
 -- Creazione della tabella Oggetti
 CREATE TABLE Oggetti (
-                         oggetto_id VARCHAR(3) PRIMARY KEY,
+                         oggetto_id VARCHAR(2) PRIMARY KEY,
                          nome VARCHAR(100) NOT NULL UNIQUE,
                          descrizione TEXT,
                          raccoglibile BOOLEAN DEFAULT false
@@ -69,14 +69,14 @@ CREATE TABLE Movimenti (
 -- Creazione della tabella Azioni
 CREATE TABLE Azioni (
                         alias VARCHAR(50) PRIMARY KEY,
-                        azione_id INTEGER NOT NULL,
+                        azione_id VARCHAR(2) NOT NULL,
                         categoria VARCHAR(20) NOT NULL CHECK (categoria IN ('globali', 'interazione', 'navigazione'))
 );
 
 -- Creazione della tabella AzioniInterazione
 CREATE TABLE AzioniInterazione (
                                    azione_id INTEGER PRIMARY KEY,
-                                   oggetto_id VARCHAR(3) NOT NULL,
+                                   oggetto_id VARCHAR(2) NOT NULL,
                                    descrizione TEXT NOT NULL,
                                    CONSTRAINT fk_oggetto FOREIGN KEY (oggetto_id) REFERENCES Oggetti(oggetto_id) ON DELETE CASCADE
 );
