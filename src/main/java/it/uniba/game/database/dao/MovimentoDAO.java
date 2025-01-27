@@ -77,17 +77,15 @@ public class MovimentoDAO {
     /**
      * Restituisce la stanza di arrivo per una determinata direzione.
      *
-     * @param edificioId L'ID dell'edificio.
      * @param stanzaId   L'ID della stanza di partenza.
      * @param direzione  La direzione del movimento.
      * @return La stanza di arrivo o null se il movimento non è possibile.
      */
-    public Stanza getStanzaDiArrivo(String edificioId, String stanzaId, String direzione) {
+    public Stanza getStanzaDiArrivo(String stanzaId, String direzione) {
         String query = "SELECT " + direzione + " FROM Movimenti WHERE edificio_id = ? AND stanza_id = ?";
 
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
-            pstmt.setString(1, edificioId);
-            pstmt.setString(2, stanzaId);
+            pstmt.setString(1, stanzaId);
 
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
@@ -95,7 +93,7 @@ public class MovimentoDAO {
                     if (stanzaArrivoId != null) {
                         // Recupera la stanza dal suo DAO
                         StanzaDAO stanzaDAO = new StanzaDAO(connection);
-                        return stanzaDAO.getStanzaById(edificioId, stanzaArrivoId);
+                        return stanzaDAO.getStanzaById(stanzaArrivoId);
                     }
                 }
             }

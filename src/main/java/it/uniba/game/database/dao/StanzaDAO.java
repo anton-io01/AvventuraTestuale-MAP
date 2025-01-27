@@ -54,11 +54,10 @@ public class StanzaDAO {
     }
 
     // Metodo per ottenere una stanza specifica tramite ID
-    public Stanza getStanzaById(String edificioId, String stanzaId) {
-        String query = "SELECT * FROM Stanze WHERE edificio_id = ? AND stanza_id = ?";
+    public Stanza getStanzaById(String stanzaId) {
+        String query = "SELECT * FROM Stanze WHERE stanza_id = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
-            pstmt.setString(1, edificioId);
-            pstmt.setString(2, stanzaId);
+            pstmt.setString(1, stanzaId);
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
                     return new Stanza(
@@ -116,11 +115,10 @@ public class StanzaDAO {
     }
 
     // Metodo per eliminare una stanza
-    public void deleteStanza(String edificioId, String stanzaId) {
-        String query = "DELETE FROM Stanze WHERE edificio_id = ? AND stanza_id = ?";
+    public void deleteStanza(String stanzaId) {
+        String query = "DELETE FROM Stanze WHERE stanza_id = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
-            pstmt.setString(1, edificioId);
-            pstmt.setString(2, stanzaId);
+            pstmt.setString(1, stanzaId);
             pstmt.executeUpdate();
             System.out.println("Stanza eliminata con successo.");
         } catch (SQLException e) {
