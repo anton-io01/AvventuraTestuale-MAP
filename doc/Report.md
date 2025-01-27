@@ -161,16 +161,32 @@ La tabella `Movimenti` ha vincoli di chiave esterna su:
 
 
 
-## Direzioni
-Nord = 1  
-Sud = 2  
-Est = 3  
-Ovest = 4  
-Alto = 5  
-Basso = 6
+## Azioni
+### Movimento
+- Nord
+- Sud
+- Est
+- Ovest
+- Alto
+- Basso
+
+### Generali
+- Esci
+- Salva
+- Inventario
+- Guarda
+- Osserva
+
+### Interazione
+- Esamina
+- Prendi
+- Lascia
+- Usa
+- Apri
+- Chiudi
+- Parla
 
 ## Edifici
-### Distretto di polizia
 
 ### Ospedale di Neo Tokyo - 02
 | Codice | Luogo              |Nord|Sud|Est|Ovest|Alto|Basso|
@@ -202,3 +218,12 @@ Basso = 6
 |07|Testing Area|-|Laboratorio Principale|-|-|-|-|
 
 ### Nascondiglio di Sato
+|Codice|Luogo|Nord|Sud|Est|Ovest|Alto|Basso|
+|--|--|--|--|--|--|--|--|
+|01|Uscita|-|-|-|-|-|-|
+|02|Hall Principale|Corridoio|Uscita|-|-|-|-|
+|03|Corridoio|-|Hall Principale|-|-|-|Server Room|
+|04|Server Room|-|-|Sala di Controllo|-|-|Magazzino|
+|05|Sala di Controllo|-|-|-|Server Room|-|-|
+|06|Magazzino|-|-|-|-|Server Room|Nascodiglio di Sato|
+|07|Nascodiglio di Sato|-|-|-|-|-|Magazzino|
