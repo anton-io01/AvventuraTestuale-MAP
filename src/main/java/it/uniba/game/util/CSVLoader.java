@@ -78,7 +78,6 @@ public class CSVLoader {
                 pstmt.executeUpdate();
             }
 
-            System.out.println("Dati caricati con successo nella tabella!");
             // Estrai il nome del file
             String[] pathName = filePath.split("/");
             String fileName = pathName[pathName.length - 1].split("\\.")[0];
