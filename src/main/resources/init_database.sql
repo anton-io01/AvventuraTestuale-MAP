@@ -75,8 +75,8 @@ CREATE TABLE Azioni (
 
 -- Creazione della tabella AzioniInterazione
 CREATE TABLE AzioniInterazione (
-                                   azione_id INTEGER PRIMARY KEY,
+                                   azione_id VARCHAR(2) PRIMARY KEY,
                                    oggetto_id VARCHAR(2) NOT NULL,
-                                   descrizione TEXT NOT NULL,
+                                   descrizione TEXT,
                                    CONSTRAINT fk_oggetto FOREIGN KEY (oggetto_id) REFERENCES Oggetti(oggetto_id) ON DELETE CASCADE
 );
