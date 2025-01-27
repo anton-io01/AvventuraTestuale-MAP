@@ -14,6 +14,8 @@ public class DatabaseInitializer {
     private static final String OGGETTI_CSV = "src/main/resources/csv/oggetti.csv";
     private static final String OGGETTI_STANZE_CSV = "src/main/resources/csv/oggetti_stanze.csv";
     private static final String MOVIMENTI_CSV = "src/main/resources/csv/movimenti.csv";
+    private static final String AZIONI_CSV = "src/main/resources/csv/azioni.csv";
+    private static final String AZIONI_INTERAZIONE_CSV = "src/main/resources/csv/azioni_interazione.csv";
 
     /**
      * Metodo principale per inizializzare il database.
@@ -101,7 +103,7 @@ public class DatabaseInitializer {
 
         String oggettiTable = """
                 CREATE TABLE IF NOT EXISTS Oggetti (
-                    oggetto_id VARCHAR(3) PRIMARY KEY,
+                    oggetto_id VARCHAR(2) PRIMARY KEY,
                     nome VARCHAR(100) NOT NULL UNIQUE,
                     descrizione TEXT,
                     raccoglibile BOOLEAN DEFAULT false
@@ -110,7 +112,7 @@ public class DatabaseInitializer {
 
         String oggettiStanzeTable = """
                 CREATE TABLE IF NOT EXISTS OggettiStanze (
-                    oggetto_id VARCHAR(3) NOT NULL,
+                    oggetto_id VARCHAR(2) NOT NULL,
                     stanza_id VARCHAR(2) NOT NULL,
                     edificio_id VARCHAR(2) NOT NULL,
                     PRIMARY KEY (oggetto_id, stanza_id, edificio_id),
@@ -142,12 +144,31 @@ public class DatabaseInitializer {
                 );
                 """;
 
+        String azioniTable = """
+                CREATE TABLE IF NOT EXISTS Azioni (
+                    alias VARCHAR(50) PRIMARY KEY,
+                    azione_id VARCHAR(2) NOT NULL,
+                    categoria VARCHAR(20) NOT NULL
+                );
+                """;
+
+        String azioniInterazioneTable = """
+                CREATE TABLE IF NOT EXISTS AzioniInterazione (
+                    azione_id VARCHAR(2) PRIMARY KEY,
+                    oggetto_id VARCHAR(2) NOT NULL,
+                    descrizione TEXT,
+                    FOREIGN KEY (oggetto_id) REFERENCES Oggetti(oggetto_id)
+                );
+                """;
+
         stmt.execute(edificiTable);
         stmt.execute(stanzeTable);
         stmt.execute(descrizioniStanzeTable);
         stmt.execute(oggettiTable);
         stmt.execute(oggettiStanzeTable);
         stmt.execute(movimentiTable);
+        stmt.execute(azioniTable);
+        stmt.execute(azioniInterazioneTable);
 
         System.out.println("Tabelle create con successo.");
     }
@@ -162,5 +183,7 @@ public class DatabaseInitializer {
         CSVLoader.loadOggettiFromCSV(OGGETTI_CSV);
         CSVLoader.loadOggettiStanzeFromCSV(OGGETTI_STANZE_CSV);
         CSVLoader.loadMovimentiFromCSV(MOVIMENTI_CSV);
+        CSVLoader.loadAzioniFromCSV(AZIONI_CSV);
+        CSVLoader.loadAzioniOggettiFromCSV(AZIONI_INTERAZIONE_CSV);
     }
 }
