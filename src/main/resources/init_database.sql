@@ -65,3 +65,18 @@ CREATE TABLE Movimenti (
                            CONSTRAINT fk_alto_movimenti FOREIGN KEY (alto) REFERENCES Stanze(stanza_id) ON DELETE SET NULL,
                            CONSTRAINT fk_basso_movimenti FOREIGN KEY (basso) REFERENCES Stanze(stanza_id) ON DELETE SET NULL
 );
+
+-- Creazione della tabella Azioni
+CREATE TABLE Azioni (
+                        alias VARCHAR(50) PRIMARY KEY,
+                        azione_id INTEGER NOT NULL,
+                        categoria VARCHAR(20) NOT NULL CHECK (categoria IN ('globali', 'interazione', 'navigazione'))
+);
+
+-- Creazione della tabella AzioniInterazione
+CREATE TABLE AzioniInterazione (
+                                   azione_id INTEGER PRIMARY KEY,
+                                   oggetto_id VARCHAR(3) NOT NULL,
+                                   descrizione TEXT NOT NULL,
+                                   CONSTRAINT fk_oggetto FOREIGN KEY (oggetto_id) REFERENCES Oggetti(oggetto_id) ON DELETE CASCADE
+);
