@@ -223,7 +223,7 @@ La tabella `Movimenti` ha vincoli di chiave esterna su:
 |22|Uscita|-|-|-|-|-|-|
 |23|Hall Principale|Corridoio|Uscita|-|-|-|-|
 |24|Corridoio|-|Hall Principale|-|-|-|Server Room|
-|25|Server Room|-|-|Sala di Controllo|-|-|Magazzino|
+|25|Server Room|-|-|Sala di Controllo|-|Corridoio|Magazzino|
 |26|Sala di Controllo|-|-|-|Server Room|-|-|
 |27|Magazzino|-|-|-|-|Server Room|Nascodiglio di Sato|
 |28|Nascodiglio di Sato|-|-|-|-|-|Magazzino|
