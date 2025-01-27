@@ -1,6 +1,5 @@
-package it.uniba.game.database;
+package it.uniba.game.database.dao;
 
-import it.uniba.game.entity.Giocatore;
 import java.sql.*;
 
 public class AzioneDAO {
