@@ -5,13 +5,13 @@ import it.uniba.game.entity.Stanza;
 import it.uniba.game.database.dao.MovimentoDAO;
 import it.uniba.game.database.DatabaseManager;
 import java.util.List;
-import java.util.Locale;
 
-public class AzioniMovimento extends AzioneBase {
-    private DatabaseManager databaseManager; // Gestore del database per recuperare i movimenti disponibili
+public class AzioneMovimento extends AzioneBase {
+    private final MovimentoDAO movimentoDAO; // DAO per i movimenti
 
-    public AzioniMovimento(Giocatore giocatore) {
+    public AzioneMovimento(Giocatore giocatore, MovimentoDAO movimentoDAO) {
         super(giocatore);
+        this.movimentoDAO = movimentoDAO;
     }
 
     @Override
@@ -23,18 +23,14 @@ public class AzioniMovimento extends AzioneBase {
 
         String direzione = parametri.get(0).toLowerCase();
         Stanza stanzaAttuale = giocatore.getPosizioneAttuale();
-        String stanzaId = stanzaAttuale.getStanzaId();
-
-        // Recupera l'istanza del DAO per i movimenti
-        MovimentoDAO movimentoDAO = DatabaseManager.getMovimentoDAO();
 
         // Ottiene la stanza di arrivo per la direzione specificata
-        Stanza stanzaDiArrivo = movimentoDAO.getStanzaDiArrivo(stanzaId, direzione);
+        Stanza stanzaDiArrivo = movimentoDAO.getStanzaDiArrivo(stanzaAttuale.getStanzaId(), direzione);
 
         if (stanzaDiArrivo != null) {
             // Aggiorna la posizione del giocatore
             giocatore.setPosizioneAttuale(stanzaDiArrivo);
-            return "Ti sei spostato verso " + direzione + " nella stanza: " + stanzaDiArrivo.getNome() + ".";
+            return "Ti sei spostato verso " + direzione + " nella stanza: " + stanzaDiArrivo.getNome() + ".\n" + movimentoDAO.getMovimentiByStanza(giocatore.getPosizioneAttuale());
         } else {
             return "Non puoi andare in quella direzione.";
         }
