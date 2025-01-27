@@ -23,14 +23,15 @@ public class MovimentoDAO {
     }
 
     /**
-     * Ottiene i movimenti per una determinata stanza di un edificio.
+     * Ottiene i movimenti disponibili per una determinata stanza e li restituisce come testo formattato.
      *
-     * @param edificioId L'ID dell'edificio.
-     * @param stanzaId   L'ID della stanza.
-     * @return Una lista di oggetti Movimento contenenti i movimenti della stanza.
+     * @param stanza La stanza di partenza.
+     * @return Una stringa che descrive i movimenti disponibili con i nomi delle stanze di arrivo.
      */
-    public List<Movimento> getMovimentiByStanza(String edificioId, String stanzaId) {
-        List<Movimento> movimenti = new ArrayList<>();
+    public String getMovimentiByStanza(Stanza stanza) {
+        StringBuilder descrizioneMovimenti = new StringBuilder();
+        String edificioId = stanza.getEdificioId();
+        String stanzaId = stanza.getStanzaId();
         String query = "SELECT * FROM Movimenti WHERE edificio_id = ? AND stanza_id = ?";
 
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
@@ -39,29 +40,29 @@ public class MovimentoDAO {
 
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
-                    String nord = rs.getString("nord");
-                    if (nord != null) {
-                        movimenti.add(new Movimento(edificioId, stanzaId, "nord", nord));
+                    if (rs.getString("nord") != null) {
+                        Stanza stanzaArrivo = new StanzaDAO(connection).getStanzaById(rs.getString("nord"));
+                        descrizioneMovimenti.append("A nord la stanza ").append(stanzaArrivo.getNome()).append(".\n");
                     }
-                    String sud = rs.getString("sud");
-                    if (sud != null) {
-                        movimenti.add(new Movimento(edificioId, stanzaId, "sud", sud));
+                    if (rs.getString("sud") != null) {
+                        Stanza stanzaArrivo = new StanzaDAO(connection).getStanzaById(rs.getString("sud"));
+                        descrizioneMovimenti.append("A sud la stanza ").append(stanzaArrivo.getNome()).append(".\n");
                     }
-                    String est = rs.getString("est");
-                    if (est != null) {
-                        movimenti.add(new Movimento(edificioId, stanzaId, "est", est));
+                    if (rs.getString("est") != null) {
+                        Stanza stanzaArrivo = new StanzaDAO(connection).getStanzaById(rs.getString("est"));
+                        descrizioneMovimenti.append("A est la stanza ").append(stanzaArrivo.getNome()).append(".\n");
                     }
-                    String ovest = rs.getString("ovest");
-                    if (ovest != null) {
-                        movimenti.add(new Movimento(edificioId, stanzaId, "ovest", ovest));
+                    if (rs.getString("ovest") != null) {
+                        Stanza stanzaArrivo = new StanzaDAO(connection).getStanzaById(rs.getString("ovest"));
+                        descrizioneMovimenti.append("A ovest la stanza ").append(stanzaArrivo.getNome()).append(".\n");
                     }
-                    String alto = rs.getString("alto");
-                    if (alto != null) {
-                        movimenti.add(new Movimento(edificioId, stanzaId, "alto", alto));
+                    if (rs.getString("alto") != null) {
+                        Stanza stanzaArrivo = new StanzaDAO(connection).getStanzaById(rs.getString("alto"));
+                        descrizioneMovimenti.append("In alto la stanza ").append(stanzaArrivo.getNome()).append(".\n");
                     }
-                    String basso = rs.getString("basso");
-                    if (basso != null) {
-                        movimenti.add(new Movimento(edificioId, stanzaId, "basso", basso));
+                    if (rs.getString("basso") != null) {
+                        Stanza stanzaArrivo = new StanzaDAO(connection).getStanzaById(rs.getString("basso"));
+                        descrizioneMovimenti.append("In basso la stanza ").append(stanzaArrivo.getNome()).append(".\n");
                     }
                 }
             }
@@ -71,7 +72,12 @@ public class MovimentoDAO {
             e.printStackTrace();
         }
 
-        return movimenti;
+        // Restituisce il risultato, oppure un messaggio se non ci sono movimenti
+        if (descrizioneMovimenti.length() == 0) {
+            return "Non ci sono movimenti disponibili per questa stanza.";
+        }
+
+        return descrizioneMovimenti.toString();
     }
 
     /**
@@ -82,7 +88,7 @@ public class MovimentoDAO {
      * @return La stanza di arrivo o null se il movimento non è possibile.
      */
     public Stanza getStanzaDiArrivo(String stanzaId, String direzione) {
-        String query = "SELECT " + direzione + " FROM Movimenti WHERE edificio_id = ? AND stanza_id = ?";
+        String query = "SELECT " + direzione + " FROM Movimenti WHERE stanza_id = ?";
 
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
             pstmt.setString(1, stanzaId);
