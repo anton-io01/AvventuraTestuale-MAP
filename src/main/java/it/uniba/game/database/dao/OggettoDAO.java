@@ -76,6 +76,23 @@ public class OggettoDAO {
         return null;
     }
 
+    // Metodo per ottenere l'id dell'oggetto tramite il nome
+    public String getOggettoIdByNome(String nome) {
+        String query = "SELECT oggetto_id FROM Oggetti WHERE nome = ?";
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setString(1, nome);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("oggetto_id");
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Errore durante la ricerca dell'oggetto per nome.");
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     // Metodo per aggiornare un oggetto
     public void updateOggetto(String oggettoId, String nome, String descrizione, boolean raccoglibile) {
         String query = "UPDATE Oggetti SET nome = ?, descrizione = ?, raccoglibile = ? WHERE oggetto_id = ?";
@@ -171,4 +188,41 @@ public class OggettoDAO {
 
         return false; // Default: se qualcosa fallisce, ritorna false
     }
+
+    /**
+     * Verifica se l'oggetto si può leggere nella stanza specificata.
+     *
+     * @param oggettoId l'ID dell'oggetto da verificare
+     * @param stanzaId  l'ID della stanza in cui verificare la presenza dell'oggetto
+     */
+    public boolean isOggettoLeggibile(String oggettoId, String stanzaId) {
+        String query = """
+            SELECT COUNT(*) 
+            FROM Oggetti o
+            JOIN OggettiStanze os ON o.oggetto_id = os.oggetto_id
+            WHERE o.oggetto_id = ? 
+              AND os.stanza_id = ? 
+              AND o.descrizione IS NOT NULL
+        """;
+
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            // Assegna i parametri alla query
+            statement.setString(1, oggettoId);
+            statement.setString(2, stanzaId);
+
+            // Esegue la query
+            try (ResultSet resultSet = statement.executeQuery()) {
+                // Se il risultato è maggiore di 0, allora esiste almeno un oggetto leggibile nella stanza
+                if (resultSet.next()) {
+                    return resultSet.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Gestione dell'errore o rilancio come eccezione personalizzata
+        }
+
+        return false; // Default: se qualcosa fallisce, ritorna false
+    }
+
 }

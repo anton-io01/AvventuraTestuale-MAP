@@ -11,17 +11,19 @@ public class AzioneDAO {
         this.connection = connection;
     }
 
-    // Verifica se un alias è presente nella tabella Azioni
-    public boolean isAliasPresente(String alias) throws SQLException {
-        String query = "SELECT COUNT(*) FROM Azioni WHERE alias = ?";
+    // Metodo per ottenere l'id dell'azione dato il nome
+    public String getAzioneIdByNome(String nome) {
+        String query = "SELECT azione_id FROM Azioni WHERE nome = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setString(1, alias);
+            stmt.setString(1, nome);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
-                return rs.getInt(1) > 0;
+                return rs.getString("azione_id");
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        return false;
+        return null;
     }
 
     // Restituisce l'azione_id se la combinazione esiste
@@ -58,5 +60,28 @@ public class AzioneDAO {
             }
         }
         return null;  // Restituisce null se non trova il valore
+    }
+
+    /**
+     * Restituisce la descrizione dell'AzioneInterazione
+     * @param azioneId
+     * @param oggettoId
+     * @param stanzaId
+     * @return la descrizione dell'azione
+     */
+    public String getDescrizioneAzioneInterazione(String azioneId, String oggettoId, String stanzaId) {
+        String query = "SELECT descrizione FROM AzioniInterazione WHERE azione_id = ? AND oggetto_id = ? AND stanza_id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, azioneId);
+            stmt.setString(2, oggettoId);
+            stmt.setString(3, stanzaId);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getString("descrizione");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
