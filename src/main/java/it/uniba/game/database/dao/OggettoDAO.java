@@ -93,6 +93,22 @@ public class OggettoDAO {
     }
 
     /**
+     * Aggiunge un oggetto a una stanza nella tabella OggettiStanze.
+     *
+     * @param oggettoId ID dell'oggetto.
+     * @param stanzaId  ID della stanza.
+     * @throws SQLException se si verifica un errore durante l'inserimento.
+     */
+    public void aggiungiOggettoAStanza(String oggettoId, String stanzaId) throws SQLException {
+        String sql = "INSERT INTO OggettiStanze (oggetto_id, stanza_id) VALUES (?, ?)";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, oggettoId);
+            preparedStatement.setString(2, stanzaId);
+            preparedStatement.executeUpdate();
+        }
+    }
+
+    /**
      * Elimina un oggetto da una stanza nella tabella OggettiStanze.
      * @param oggettoId
      * @param stanzaId
