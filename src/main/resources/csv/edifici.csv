@@ -1,4 +1,4 @@
 edificio_id,nome,accessibile,descrizione
 01,Ospedale Neo Tokyo,true,NULL
 02,Clinica Dott.Tanaka,false,NULL
-03, Nascondiglio di Sato,false, NULL
+03,Nascondiglio di Sato,false, NULL
