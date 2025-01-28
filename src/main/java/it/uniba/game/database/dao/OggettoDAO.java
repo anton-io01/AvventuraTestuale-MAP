@@ -92,16 +92,33 @@ public class OggettoDAO {
         }
     }
 
-    // Metodo per eliminare un oggetto
-    public void deleteOggetto(String oggettoId) {
-        String query = "DELETE FROM Oggetti WHERE oggetto_id = ?";
-        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
-            pstmt.setString(1, oggettoId);
-            pstmt.executeUpdate();
-            System.out.println("Oggetto eliminato con successo.");
+    /**
+     * Elimina un oggetto da una stanza nella tabella OggettiStanze.
+     * @param oggettoId
+     * @param stanzaId
+     */
+    public void eliminaOggettoDaStanza(String oggettoId, String stanzaId) {
+        String query = """
+        DELETE FROM OggettiStanze
+        WHERE oggetto_id = ? AND stanza_id = ?
+    """;
+
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            // Imposta i parametri della query
+            statement.setString(1, oggettoId);
+            statement.setString(2, stanzaId);
+
+            // Esegui l'operazione
+            int rowsAffected = statement.executeUpdate();
+
+            if (rowsAffected > 0) {
+                System.out.println("Oggetto " + oggettoId + " rimosso dalla stanza " + stanzaId);
+            } else {
+                System.out.println("Oggetto " + oggettoId + " non trovato nella stanza " + stanzaId);
+            }
         } catch (SQLException e) {
-            System.err.println("Errore durante l'eliminazione dell'oggetto.");
-            e.printStackTrace();
+            System.err.println("Errore durante l'eliminazione dell'oggetto " + oggettoId +
+                    " dalla stanza " + stanzaId + ": " + e.getMessage());
         }
     }
 
