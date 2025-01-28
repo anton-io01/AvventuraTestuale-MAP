@@ -98,6 +98,42 @@ public class OggettoDAO {
     }
 
     /**
+     * Modifica il parametro visibile di un oggetto.
+     *
+     * @param oggettoId ID dell'oggetto
+     * @param visibile true se l'oggetto deve essere visibile, false altrimenti
+     */
+    public void setVisibilitaOggetto(String oggettoId, boolean visibile) {
+        String query = "UPDATE Oggetti SET visibile = ? WHERE oggetto_id = ?";
+
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setBoolean(1, visibile);
+            statement.setString(2, oggettoId);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("Errore durante l'aggiornamento della visibilità dell'oggetto: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Modifica il parametro raccoglibile di un oggetto.
+     *
+     * @param oggettoId ID dell'oggetto
+     * @param raccoglibile true se l'oggetto deve essere raccoglibile, false altrimenti
+     */
+    public void setRaccoglibilitaOggetto(String oggettoId, boolean raccoglibile) {
+        String query = "UPDATE Oggetti SET raccoglibile = ? WHERE oggetto_id = ?";
+
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setBoolean(1, raccoglibile);
+            statement.setString(2, oggettoId);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("Errore durante l'aggiornamento della raccoglibilità dell'oggetto: " + e.getMessage());
+        }
+    }
+
+    /**
      * Verifica se l'oggetto è raccoglibile e presente nella stanza specificata.
      *
      * @param oggettoId l'ID dell'oggetto da verificare
