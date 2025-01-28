@@ -15,7 +15,7 @@ public class StanzaDAO {
     }
 
     // Metodo per inserire una nuova stanza nel database
-    public void insertStanza(String edificioId, String stanzaId, String nome, boolean accessibile) {
+    public void inserisciStanza(String edificioId, String stanzaId, String nome, boolean accessibile) {
         String query = "INSERT INTO Stanze (edificio_id, stanza_id, nome, accessibile) VALUES (?, ?, ?, ?)";
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
             pstmt.setString(1, edificioId);
@@ -143,4 +143,51 @@ public class StanzaDAO {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Metodo per ottenere la descrizione completa di una stanza dato il suo ID.
+     *
+     * @param stanzaId L'ID della stanza da cercare.
+     */
+    public void getDescrizioneCompleta(String stanzaId) {
+        String query = "SELECT descrizione_completa FROM DescrizioniStanze WHERE stanza_id = ?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, stanzaId); // Imposta il parametro stanza_id
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    String descrizioneCompleta = resultSet.getString("descrizione_completa");
+                    System.out.println("Descrizione completa della stanza con ID " + stanzaId + ": " + descrizioneCompleta);
+                } else {
+                    System.out.println("Nessuna descrizione trovata per la stanza con ID " + stanzaId);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Errore durante il recupero della descrizione completa: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Metodo per ottenere la descrizione breve di una stanza dato il suo ID.
+     *
+     * @param stanzaId L'ID della stanza da cercare.
+     */
+    public void getDescrizioneBreve(String stanzaId) {
+        String query = "SELECT descrizione_breve FROM DescrizioniStanze WHERE stanza_id = ?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, stanzaId); // Imposta il parametro stanza_id
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    String descrizioneCompleta = resultSet.getString("descrizione_completa");
+                    System.out.println("Descrizione completa della stanza con ID " + stanzaId + ": " + descrizioneCompleta);
+                } else {
+                    System.out.println("Nessuna descrizione trovata per la stanza con ID " + stanzaId);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Errore durante il recupero della descrizione completa: " + e.getMessage());
+        }
+    }
+
 }
