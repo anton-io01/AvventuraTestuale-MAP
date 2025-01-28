@@ -15,45 +15,6 @@ public class OggettoDAO {
         this.connection = connection;
     }
 
-    // Metodo per inserire un nuovo oggetto nel database
-    public void insertOggetto(String oggettoId, String nome, String descrizione, boolean raccoglibile) {
-        String query = "INSERT INTO Oggetti (oggetto_id, nome, descrizione, raccoglibile) VALUES (?, ?, ?, ?)";
-        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
-            pstmt.setString(1, oggettoId);
-            pstmt.setString(2, nome);
-            pstmt.setString(3, descrizione);
-            pstmt.setBoolean(4, raccoglibile);
-            pstmt.executeUpdate();
-            System.out.println("Oggetto inserito con successo.");
-        } catch (SQLException e) {
-            System.err.println("Errore durante l'inserimento dell'oggetto.");
-            e.printStackTrace();
-        }
-    }
-
-    // Metodo per ottenere tutti gli oggetti dal database
-    public List<Oggetto> getAllOggetti() {
-        List<Oggetto> oggetti = new ArrayList<>();
-        String query = "SELECT * FROM Oggetti";
-        try (Statement stmt = connection.createStatement();
-             ResultSet rs = stmt.executeQuery(query)) {
-
-            while (rs.next()) {
-                Oggetto oggetto = new Oggetto(
-                        rs.getString("oggetto_id"),
-                        rs.getString("nome"),
-                        rs.getString("descrizione"),
-                        rs.getBoolean("raccoglibile")
-                );
-                oggetti.add(oggetto);
-            }
-        } catch (SQLException e) {
-            System.err.println("Errore durante l'ottenimento degli oggetti.");
-            e.printStackTrace();
-        }
-        return oggetti;
-    }
-
     // Metodo per ottenere un oggetto specifico tramite ID
     public Oggetto getOggettoById(String oggettoId) {
         String query = "SELECT * FROM Oggetti WHERE oggetto_id = ?";
@@ -91,22 +52,6 @@ public class OggettoDAO {
             e.printStackTrace();
         }
         return null;
-    }
-
-    // Metodo per aggiornare un oggetto
-    public void updateOggetto(String oggettoId, String nome, String descrizione, boolean raccoglibile) {
-        String query = "UPDATE Oggetti SET nome = ?, descrizione = ?, raccoglibile = ? WHERE oggetto_id = ?";
-        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
-            pstmt.setString(1, nome);
-            pstmt.setString(2, descrizione);
-            pstmt.setBoolean(3, raccoglibile);
-            pstmt.setString(4, oggettoId);
-            pstmt.executeUpdate();
-            System.out.println("Oggetto aggiornato con successo.");
-        } catch (SQLException e) {
-            System.err.println("Errore durante l'aggiornamento dell'oggetto.");
-            e.printStackTrace();
-        }
     }
 
     /**
@@ -167,6 +112,7 @@ public class OggettoDAO {
             WHERE o.oggetto_id = ? 
               AND os.stanza_id = ? 
               AND o.raccoglibile = true
+              AND o.visibile = true
         """;
 
         try (PreparedStatement statement = connection.prepareStatement(query)) {
@@ -190,39 +136,42 @@ public class OggettoDAO {
     }
 
     /**
-     * Verifica se l'oggetto si può leggere nella stanza specificata.
+     * Restituisce la descrizione breve di un oggetto.
      *
-     * @param oggettoId l'ID dell'oggetto da verificare
-     * @param stanzaId  l'ID della stanza in cui verificare la presenza dell'oggetto
+     * @param oggettoId ID dell'oggetto
      */
-    public boolean isOggettoLeggibile(String oggettoId, String stanzaId) {
-        String query = """
-            SELECT COUNT(*) 
-            FROM Oggetti o
-            JOIN OggettiStanze os ON o.oggetto_id = os.oggetto_id
-            WHERE o.oggetto_id = ? 
-              AND os.stanza_id = ? 
-              AND o.descrizione IS NOT NULL
-        """;
-
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
-            // Assegna i parametri alla query
-            statement.setString(1, oggettoId);
-            statement.setString(2, stanzaId);
-
-            // Esegue la query
-            try (ResultSet resultSet = statement.executeQuery()) {
-                // Se il risultato è maggiore di 0, allora esiste almeno un oggetto leggibile nella stanza
-                if (resultSet.next()) {
-                    return resultSet.getInt(1) > 0;
+    public String getDescrizioneBreveOggetto(String oggettoId) {
+        String query = "SELECT descrizione_breve FROM Oggetti WHERE oggetto_id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, oggettoId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("descrizione_breve");
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            // Gestione dell'errore o rilancio come eccezione personalizzata
         }
-
-        return false; // Default: se qualcosa fallisce, ritorna false
+        return null;
     }
 
+    /**
+     * Restituisce la descrizione dettagliata di un oggetto.
+     *
+     * @param oggettoId ID dell'oggetto
+     */
+    public String getDescrizioneDettagliataOggetto(String oggettoId) {
+        String query = "SELECT descrizione_dettagliata FROM Oggetti WHERE oggetto_id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, oggettoId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("descrizione_dettagliata");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
