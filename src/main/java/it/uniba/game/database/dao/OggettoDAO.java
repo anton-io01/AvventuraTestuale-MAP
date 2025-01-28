@@ -97,14 +97,16 @@ public class OggettoDAO {
      *
      * @param oggettoId ID dell'oggetto.
      * @param stanzaId  ID della stanza.
-     * @throws SQLException se si verifica un errore durante l'inserimento.
      */
-    public void aggiungiOggettoAStanza(String oggettoId, String stanzaId) throws SQLException {
-        String sql = "INSERT INTO OggettiStanze (oggetto_id, stanza_id) VALUES (?, ?)";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+    public void aggiungiOggettoAStanza(String oggettoId, String stanzaId) {
+        String query = "INSERT INTO OggettiStanze (oggetto_id, stanza_id) VALUES (?, ?)";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, oggettoId);
             preparedStatement.setString(2, stanzaId);
             preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("Errore durante l'aggiunta dell'oggetto alla stanza: " + e.getMessage());
         }
     }
 
@@ -127,11 +129,6 @@ public class OggettoDAO {
             // Esegui l'operazione
             int rowsAffected = statement.executeUpdate();
 
-            if (rowsAffected > 0) {
-                System.out.println("Oggetto " + oggettoId + " rimosso dalla stanza " + stanzaId);
-            } else {
-                System.out.println("Oggetto " + oggettoId + " non trovato nella stanza " + stanzaId);
-            }
         } catch (SQLException e) {
             System.err.println("Errore durante l'eliminazione dell'oggetto " + oggettoId +
                     " dalla stanza " + stanzaId + ": " + e.getMessage());
