@@ -1,6 +1,7 @@
 package it.uniba.game.database.dao;
 
 import it.uniba.game.entity.Oggetto;
+import it.uniba.game.entity.Stanza;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -102,5 +103,42 @@ public class OggettoDAO {
             System.err.println("Errore durante l'eliminazione dell'oggetto.");
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Verifica se l'oggetto è raccoglibile e presente nella stanza specificata.
+     *
+     * @param oggettoId l'ID dell'oggetto da verificare
+     * @param stanzaId  l'ID della stanza in cui verificare la presenza dell'oggetto
+     * @return true se l'oggetto è raccoglibile e presente nella stanza, false altrimenti
+     */
+    public boolean isOggettoRaccoglibile(String oggettoId, String stanzaId) {
+        String query = """
+            SELECT COUNT(*) 
+            FROM Oggetti o
+            JOIN OggettiStanze os ON o.oggetto_id = os.oggetto_id
+            WHERE o.oggetto_id = ? 
+              AND os.stanza_id = ? 
+              AND o.raccoglibile = true
+        """;
+
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            // Assegna i parametri alla query
+            statement.setString(1, oggettoId);
+            statement.setString(2, stanzaId);
+
+            // Esegue la query
+            try (ResultSet resultSet = statement.executeQuery()) {
+                // Se il risultato è maggiore di 0, allora esiste almeno un oggetto raccoglibile nella stanza
+                if (resultSet.next()) {
+                    return resultSet.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Gestione dell'errore o rilancio come eccezione personalizzata
+        }
+
+        return false; // Default: se qualcosa fallisce, ritorna false
     }
 }
