@@ -6,19 +6,15 @@ import it.uniba.game.database.dao.MovimentoDAO;
 import it.uniba.game.database.DatabaseManager;
 import java.util.List;
 
-public class AzioneMovimento extends AzioneBase {
-    private final MovimentoDAO movimentoDAO; // DAO per i movimenti
+public class AzioneMovimento {
+    private MovimentoDAO movimentoDAO; // DAO per i movimenti
 
-    public AzioneMovimento(Giocatore giocatore, MovimentoDAO movimentoDAO) {
-        super(giocatore);
-        this.movimentoDAO = movimentoDAO;
-    }
+    public AzioneMovimento() {}
 
-    @Override
-    public String esegui(Giocatore giocatore, List<String> parametri) {
+    public void movimento(Giocatore giocatore, List<String> parametri) {
         // Controlla se la direzione è valida
         if (parametri == null || parametri.isEmpty()) {
-            return "Devi specificare una direzione valida.";
+            System.out.println("Devi specificare una direzione valida.");
         }
 
         String direzione = parametri.get(0).toLowerCase();
@@ -30,9 +26,9 @@ public class AzioneMovimento extends AzioneBase {
         if (stanzaDiArrivo != null) {
             // Aggiorna la posizione del giocatore
             giocatore.setPosizioneAttuale(stanzaDiArrivo);
-            return "Ti sei spostato verso " + direzione + " nella stanza: " + stanzaDiArrivo.getNome() + ".\n" + movimentoDAO.getMovimentiByStanza(giocatore.getPosizioneAttuale());
+            System.out.println("Ti sei spostato verso " + direzione + " nella stanza: " + stanzaDiArrivo.getNome() + ".\n" + movimentoDAO.getMovimentiByStanza(giocatore.getPosizioneAttuale()));
         } else {
-            return "Non puoi andare in quella direzione.";
+            System.out.println("Non puoi andare in quella direzione.");
         }
     }
 }
