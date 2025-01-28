@@ -20,6 +20,10 @@ public class Giocatore {
         this.posizioneAttuale = posizioneAttuale;
     }
 
+    public String getPosizioneAttualeId() {
+        return posizioneAttuale.getStanzaId();
+    }
+
     public List<Oggetto> getInventario() {
         return inventario;
     }
