@@ -13,7 +13,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 public class Parser {
-    private final String STOPWORDS_FILE = "src/main/resources/stopwords.txt";
+    private final String STOPWORDS_FILE = "/stopwords.txt";
     private final AzioneDAO azioneDAO;
     private final OggettoDAO oggettoDAO;
     private final Set<String> stopwords;
