@@ -1,15 +1,14 @@
-oggetto_id,nome,descrizione,raccoglibile
-oggetto_id,nome,descrizione,raccoglibile
-01,flipperzero,dispositivo multifunzione per hackerare sistemi elettronici, utile per decifrare file. Il resto è da scoprire...,true
-02,tessera della polizia,tesserino di riconoscimento della polizia,true
-03,biglietto da visita del dott. tanaka,indizio con l'indirizzo della clinica del dott. tanaka,false
-04,pacemaker infetto,dispositivo medico che contiene un virus letale,false
-05,cartella medica della vittima,documenti medici che includono dettagli sui trattamenti recenti,false
-06,registro degli appuntamenti,elenco delle visite alla clinica che contiene indizi importanti,false
-07,computer del dott. tanaka,terminale bloccato da una password, contiene software compromettente,false
-08,mazzo di chiavi,chiavi che permettono di aprire porte e cassetti importanti,true
-09,hard disk criptato,dispositivo di archiviazione contenente file che collegano sato al caso,false
-10,ritaglio di giornale,articolo che racconta la morte della sorella di sato e fornisce un possibile movente,false
-11,note mediche segrete,documenti che confermano esperimenti non etici del dott. tanaka,false
-12,computer,terminale generico utilizzato per analizzare prove e decifrare file,false
-13, receptionist dell'ospedale, impiegata che può fornire informazioni utili,false
+oggetto_id,nome,raccoglibile,visibile
+01,flipperzero,true,true
+02,bigliettino,false,false
+03,pacemaker infetto,false,true
+04,cartella,false,true
+05,registro,false,true
+06,computer,false,true
+07,chiavi,true,true
+08,ssd,false,true
+09,giornale,false,true
+10,appunti,false,true
+11,terminale,false,true
+12,receptionist,false,true
+13,armadio,false,true
