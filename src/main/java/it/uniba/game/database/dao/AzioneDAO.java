@@ -26,62 +26,51 @@ public class AzioneDAO {
         return null;
     }
 
-    // Restituisce l'azione_id se la combinazione esiste
-    public String getAzioneIdSeCombinazionePresente(String azioneId, String oggettoId) throws SQLException {
-        // Controlliamo prima se la combinazione esiste
-        String queryCheckCombinazione = "SELECT COUNT(*) FROM AzioniInterazione WHERE azione_id = ? AND oggetto_id = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(queryCheckCombinazione)) {
-            stmt.setString(1, azioneId);
-            stmt.setString(2, oggettoId);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next() && rs.getInt(1) > 0) {
-                // Se la combinazione è presente, otteniamo l'azione_id
-                String queryGetAzioneId = "SELECT azione_id FROM Azioni WHERE azione_id = ?";
-                try (PreparedStatement stmt2 = connection.prepareStatement(queryGetAzioneId)) {
-                    stmt2.setString(1, azioneId);
-                    ResultSet rs2 = stmt2.executeQuery();
-                    if (rs2.next()) {
-                        return rs2.getString("azione_id");
-                    }
-                }
-            }
-        }
-        return null;  // Restituisce null se non trova il valore
-    }
-
-    // Restituisce l'azione_id dato un alias
-    public String getAzioneIdPerAlias(String alias) throws SQLException {
-        String query = "SELECT azione_id FROM Azioni WHERE alias = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setString(1, alias);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                return rs.getString("azione_id");
-            }
-        }
-        return null;  // Restituisce null se non trova il valore
-    }
-
-    /**
-     * Restituisce la descrizione dell'AzioneInterazione
-     * @param azioneId
-     * @param oggettoId
-     * @param stanzaId
-     * @return la descrizione dell'azione
-     */
-    public String getDescrizioneAzioneInterazione(String azioneId, String oggettoId, String stanzaId) {
-        String query = "SELECT descrizione FROM AzioniInterazione WHERE azione_id = ? AND oggetto_id = ? AND stanza_id = ?";
+    // Metodo per ottenere il nome dell'azione dato l'id
+    public String getNomeAzioneById(String azioneId) {
+        String query = "SELECT nome FROM Azioni WHERE azione_id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, azioneId);
-            stmt.setString(2, oggettoId);
-            stmt.setString(3, stanzaId);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
-                return rs.getString("descrizione");
+                return rs.getString("nome");
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
+    }
+
+    /**
+     * Verifica se esiste una riga nella tabella AzioniInterazione con i valori specificati.
+     *
+     * @param azioneId  ID dell'azione
+     * @param oggettoId ID dell'oggetto
+     * @param stanzaId  ID della stanza
+     * @return true se la combinazione esiste, false altrimenti
+     */
+    public boolean verificaAzioneInterazione(String azioneId, String oggettoId, String stanzaId) {
+        String query = """
+            SELECT COUNT(*) 
+            FROM AzioniInterazione 
+            WHERE azione_id = ? AND oggetto_id = ? AND (stanza_id = ? OR stanza_id IS NULL)
+        """;
+
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setString(1, azioneId);
+            ps.setString(2, oggettoId);
+            ps.setString(3, stanzaId);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Gestione dell'errore
+        }
+
+        return false;
     }
 }
