@@ -148,46 +148,46 @@ public class StanzaDAO {
      * Metodo per ottenere la descrizione completa di una stanza dato il suo ID.
      *
      * @param stanzaId L'ID della stanza da cercare.
+     * @return La descrizione completa della stanza o null se non trovata.
      */
-    public void getDescrizioneCompleta(String stanzaId) {
+    public String getDescrizioneCompleta(String stanzaId) {
         String query = "SELECT descrizione_completa FROM DescrizioniStanze WHERE stanza_id = ?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, stanzaId); // Imposta il parametro stanza_id
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
-                    String descrizioneCompleta = resultSet.getString("descrizione_completa");
-                    System.out.println("Descrizione completa della stanza con ID " + stanzaId + ": " + descrizioneCompleta);
-                } else {
-                    System.out.println("Nessuna descrizione trovata per la stanza con ID " + stanzaId);
+                    return resultSet.getString("descrizione_completa");
                 }
             }
         } catch (SQLException e) {
             System.err.println("Errore durante il recupero della descrizione completa: " + e.getMessage());
         }
+
+        return null; // Restituisce null se non trova la stanza o in caso di errore
     }
 
     /**
-     * Metodo per ottenere la descrizione breve di una stanza dato il suo ID.
+     * Metodo per ottenere la descrizione completa di una stanza dato il suo ID.
      *
      * @param stanzaId L'ID della stanza da cercare.
+     * @return La descrizione breve della stanza o null se non trovata.
      */
-    public void getDescrizioneBreve(String stanzaId) {
+    public String getDescrizioneBreve(String stanzaId) {
         String query = "SELECT descrizione_breve FROM DescrizioniStanze WHERE stanza_id = ?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, stanzaId); // Imposta il parametro stanza_id
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
-                    String descrizioneCompleta = resultSet.getString("descrizione_completa");
-                    System.out.println("Descrizione completa della stanza con ID " + stanzaId + ": " + descrizioneCompleta);
-                } else {
-                    System.out.println("Nessuna descrizione trovata per la stanza con ID " + stanzaId);
+                    return resultSet.getString("descrizione_completa");
                 }
             }
         } catch (SQLException e) {
             System.err.println("Errore durante il recupero della descrizione completa: " + e.getMessage());
         }
+
+        return null; // Restituisce null se non trova la stanza o in caso di errore
     }
 
 }
