@@ -38,11 +38,9 @@ CREATE TABLE Oggetti (
 CREATE TABLE OggettiStanze (
                                oggetto_id VARCHAR(3),
                                stanza_id VARCHAR(2),
-                               edificio_id VARCHAR(2),
-                               PRIMARY KEY (oggetto_id, stanza_id, edificio_id),
+                               PRIMARY KEY (oggetto_id, stanza_id),
                                CONSTRAINT fk_oggetto_stanza FOREIGN KEY (oggetto_id) REFERENCES Oggetti(oggetto_id) ON DELETE CASCADE,
                                CONSTRAINT fk_stanza_oggetti FOREIGN KEY (stanza_id) REFERENCES Stanze(stanza_id) ON DELETE CASCADE,
-                               CONSTRAINT fk_edificio_oggetti FOREIGN KEY (edificio_id) REFERENCES Edifici(edificio_id) ON DELETE CASCADE
 );
 
 -- Creazione della tabella Movimenti
