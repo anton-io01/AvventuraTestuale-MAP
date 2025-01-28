@@ -11,5 +11,5 @@ public interface Azione {
      * @param parametri Una lista di parametri per l'azione. (es. direzione o nome dell'oggetto).
      * @return Una stringa che descrive il risultato dell'azione.
      */
-    String esegui(Giocatore giocatore, List<String> parametri);
+    void esegui(Giocatore giocatore, List<String> parametri);
 }
