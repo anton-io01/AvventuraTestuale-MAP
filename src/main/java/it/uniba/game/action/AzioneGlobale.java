@@ -10,18 +10,32 @@ public class AzioneGlobale {
 
     public AzioneGlobale() {}
 
-    public void inventario(Giocatore giocatore, List<String> parametri) {
+    public String inventario(Giocatore giocatore, List<String> parametri) {
         System.out.println("Inventario:");
         if (giocatore.getInventario().isEmpty()) {
-            System.out.println("L'inventario è vuoto.");
+            return "L'inventario è vuoto.";
         } else {
+            String inventario = null;
             for (int i = 0; i < giocatore.getInventario().size(); i++) {
-                System.out.println(giocatore.getInventario().get(i).getNome());
+                inventario = giocatore.getInventario().get(i).getNome() + "/n";
             }
+            return inventario;
         }
     }
+    
+    public Void esci(Giocatore giocatore, List<String> parametri) {
+        System.out.println("Arrivederci!");
+        System.exit(0);
+        return null;
+    }
 
-    public void osserva(Giocatore giocatore, List<String> parametri) {
-        System.out.println(stanzaDAO.getDescrizioneCompleta(giocatore.getPosizioneAttualeId()));
+    public Void salva(Giocatore giocatore, List<String> parametri) {
+        System.out.println("Salvataggio...");
+        System.out.println("Salvataggio completato.");
+        return null;
+    }
+
+    public String osserva(Giocatore giocatore, List<String> parametri) {
+        return stanzaDAO.getDescrizioneCompleta(giocatore.getPosizioneAttualeId());
     }
 }
