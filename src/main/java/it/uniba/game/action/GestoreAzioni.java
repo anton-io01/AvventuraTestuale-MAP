@@ -5,56 +5,54 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.function.BiFunction;
 
-public class GestoreAzioni {
-    private final HashMap<String, BiFunction<Giocatore, List<String>, Void>> azioniMap;
-    private final AzioneInterazione azioniInterazione;
+public class GestoreAzioni implements Azione{
+    private final HashMap<String, BiFunction<Giocatore, List<String>, ?>> azioniMap;
+    private final AzioneMovimento azioneMovimento;
+    private final AzioneGlobale azioneGlobale;
+    private final AzioneInterazione azioneInterazione;
 
     public GestoreAzioni() {
         this.azioniMap = new HashMap<>();
-        this.azioniInterazione = new AzioneInterazione();
+        this.azioneMovimento = new AzioneMovimento();
+        this.azioneGlobale = new AzioneGlobale();
+        this.azioneInterazione = new AzioneInterazione();
         inizializzaAzioni();
     }
 
     private void inizializzaAzioni() {
-        // Metodi generici
-        azioniMap.put("PR0000", azioniInterazione::prendi);
+        // Azioni di movimento
+        azioniMap.put("NO", azioneMovimento::movimento);
+        azioniMap.put("SU", azioneMovimento::movimento);
+        azioniMap.put("ES", azioneMovimento::movimento);
+        azioniMap.put("OV", azioneMovimento::movimento);
+        azioniMap.put("AL", azioneMovimento::movimento);
+        azioniMap.put("BA", azioneMovimento::movimento);
 
-        // Metodi specifici
-        azioniMap.put("US0101", azioniInterazione::usaFlipperZeroStanza1);
 
+        // Azioni globali
+        azioniMap.put("IN", azioneGlobale::inventario);
+        azioniMap.put("EX", azioneGlobale::esci);
+        azioniMap.put("SA", azioneGlobale::salva);
+        azioniMap.put("OS", azioneGlobale::osserva);
+
+        // Azioni di interazione
+        azioniMap.put("EM", azioneInterazione::esamina);
+        azioniMap.put("PR", azioneInterazione::prendi);
+        azioniMap.put("LA", azioneInterazione::lascia);
+        azioniMap.put("US", azioneInterazione::usa);
+        azioniMap.put("AP", azioneInterazione::apri);
+        azioniMap.put("CH", azioneInterazione::chiudi);
+        azioniMap.put("PA", azioneInterazione::parla);
+        azioniMap.put("LG", azioneInterazione::leggi);
     }
 
-    public String generaCodiceAzione(List<String> parametri, Giocatore giocatore) {
-        if (parametri == null || parametri.isEmpty()) {
-            throw new IllegalArgumentException("I parametri non possono essere vuoti");
-        }
+    public void esegui(Giocatore giocatore, List<String> parametri) {
 
-        String azioneBase = parametri.get(0).substring(0, 2).toUpperCase();
-        String stanzaId = String.format("%02d", giocatore.getPosizioneAttualeId());
-
-        // Se c'è solo un parametro, genera codice per azione generica
-        if (parametri.size() == 1) {
-            return azioneBase + "0000";
-        }
-
-        // Altrimenti genera codice per azione specifica
-        String oggettoId = String.format("%02d", getOggettoId(parametri.get(1)));
-        return azioneBase + oggettoId + stanzaId;
-    }
-
-    public void eseguiAzione(Giocatore giocatore, List<String> parametri) {
-
-        BiFunction<Giocatore, List<String>, Void> azione = azioniMap.get(codiceAzione);
-
-        if (azione == null && codiceAzione.length() == 6) {
-            // Se non trova l'azione specifica, prova con l'azione generica
-            String codiceGenerico = codiceAzione.substring(0, 2) + "0000";
-            azione = azioniMap.get(codiceGenerico);
-        }
-
+        BiFunction<Giocatore, List<String>, ?> azione = azioniMap.get(parametri.get(0));
         if (azione != null) {
             azione.apply(giocatore, parametri);
         } else {
             System.out.println("Azione non riconosciuta");
         }
+    }
 }
