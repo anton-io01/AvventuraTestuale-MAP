@@ -13,6 +13,7 @@ public class DatabaseInitializer {
     private static final String DESCRIZIONI_STANZE_CSV = "src/main/resources/csv/descrizioni_stanze.csv";
     private static final String OGGETTI_CSV = "src/main/resources/csv/oggetti.csv";
     private static final String OGGETTI_STANZE_CSV = "src/main/resources/csv/oggetti_stanze.csv";
+    private static final String DESCRIZIONI_OGGETTI_CSV = "src/main/resources/csv/descrizioni_oggetti.csv";
     private static final String MOVIMENTI_CSV = "src/main/resources/csv/movimenti.csv";
     private static final String AZIONI_CSV = "src/main/resources/csv/azioni.csv";
     private static final String AZIONI_INTERAZIONE_CSV = "src/main/resources/csv/azioni_interazione.csv";
@@ -105,8 +106,8 @@ public class DatabaseInitializer {
                 CREATE TABLE IF NOT EXISTS Oggetti (
                     oggetto_id VARCHAR(2) PRIMARY KEY,
                     nome VARCHAR(100) NOT NULL UNIQUE,
-                    descrizione TEXT,
-                    raccoglibile BOOLEAN DEFAULT false
+                    raccoglibile BOOLEAN DEFAULT false,
+                    visibile BOOLEAN DEFAULT true
                 );
                 """;
 
@@ -114,11 +115,19 @@ public class DatabaseInitializer {
                 CREATE TABLE IF NOT EXISTS OggettiStanze (
                     oggetto_id VARCHAR(2) NOT NULL,
                     stanza_id VARCHAR(2) NOT NULL,
-                    edificio_id VARCHAR(2) NOT NULL,
-                    PRIMARY KEY (oggetto_id, stanza_id, edificio_id),
+                    PRIMARY KEY (oggetto_id, stanza_id),
                     FOREIGN KEY (oggetto_id) REFERENCES Oggetti(oggetto_id),
-                    FOREIGN KEY (stanza_id) REFERENCES Stanze(stanza_id),
-                    FOREIGN KEY (edificio_id) REFERENCES Edifici(edificio_id)
+                    FOREIGN KEY (stanza_id) REFERENCES Stanze(stanza_id)
+                );
+                """;
+
+        String DescrizioneOggetti = """
+                CREATE TABLE IF NOT EXISTS DescrizioniOggetti (
+                    oggetto_id VARCHAR(2) PRIMARY KEY,
+                    descrizione_breve TEXT,
+                    descrizione_esamina TEXT,
+                    PRIMARY KEY (oggetto_id),
+                    FOREIGN KEY (oggetto_id) REFERENCES Oggetti(oggetto_id)
                 );
                 """;
 
@@ -145,18 +154,19 @@ public class DatabaseInitializer {
                 """;
 
         String azioniTable = """
-                CREATE TABLE IF NOT EXISTS Azioni (
-                    alias VARCHAR(50) PRIMARY KEY,
-                    azione_id VARCHAR(2) NOT NULL,
+                CREATE TABLE IF NOT EXISTS Azioni (                
+                    azione_id VARCHAR(2) PRIMARY KEY,
+                    nome VARCHAR(100) NOT NULL,
                     categoria VARCHAR(20) NOT NULL
                 );
                 """;
 
         String azioniInterazioneTable = """
                 CREATE TABLE IF NOT EXISTS AzioniInterazione (
-                    azione_id VARCHAR(2) PRIMARY KEY,
+                    azione_id VARCHAR(2) NOT NULL,
                     oggetto_id VARCHAR(2) NOT NULL,
-                    descrizione TEXT,
+                    stanza_id VARCHAR(2),                
+                    FOREIGN KEY (azione_id) REFERENCES Azioni(azione_id),
                     FOREIGN KEY (oggetto_id) REFERENCES Oggetti(oggetto_id)
                 );
                 """;
@@ -166,6 +176,7 @@ public class DatabaseInitializer {
         stmt.execute(descrizioniStanzeTable);
         stmt.execute(oggettiTable);
         stmt.execute(oggettiStanzeTable);
+        stmt.execute(DescrizioneOggetti);
         stmt.execute(movimentiTable);
         stmt.execute(azioniTable);
         stmt.execute(azioniInterazioneTable);
@@ -182,6 +193,7 @@ public class DatabaseInitializer {
         CSVLoader.loadDescrizioniStanzeFromCSV(DESCRIZIONI_STANZE_CSV);
         CSVLoader.loadOggettiFromCSV(OGGETTI_CSV);
         CSVLoader.loadOggettiStanzeFromCSV(OGGETTI_STANZE_CSV);
+        CSVLoader.loadDescrizioniOggettiFromCSV(DESCRIZIONI_OGGETTI_CSV);
         CSVLoader.loadMovimentiFromCSV(MOVIMENTI_CSV);
         CSVLoader.loadAzioniFromCSV(AZIONI_CSV);
         CSVLoader.loadAzioniOggettiFromCSV(AZIONI_INTERAZIONE_CSV);

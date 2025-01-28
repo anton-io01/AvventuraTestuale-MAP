@@ -25,12 +25,17 @@ public class CSVLoader {
     }
 
     public static void loadOggettiFromCSV(String filePath) {
-        String query = "INSERT INTO Oggetti (oggetto_id, nome, descrizione, raccoglibile) VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO Oggetti (oggetto_id, nome, raccoglibile, visibile) VALUES (?, ?, ?, ?)";
         loadFromCSV(filePath, query, 4);
     }
 
     public static void loadOggettiStanzeFromCSV(String filePath) {
-        String query = "INSERT INTO OggettiStanze (oggetto_id, stanza_id, edificio_id) VALUES (?, ?, ?)";
+        String query = "INSERT INTO OggettiStanze (oggetto_id, stanza_id) VALUES (?, ?)";
+        loadFromCSV(filePath, query, 2);
+    }
+
+    public static void loadDescrizioniOggettiFromCSV(String filePath) {
+        String query = "INSERT INTO DescrizioniOggetti (oggetto_id, descrizione_breve, descrizione_esamina) VALUES (?, ?, ?)";
         loadFromCSV(filePath, query, 3);
     }
 
@@ -40,13 +45,13 @@ public class CSVLoader {
     }
 
     public static void loadAzioniFromCSV(String filePath) {
-        String query = "INSERT INTO Azioni (alias, azione_id, categoria) VALUES (?, ?, ?)";
+        String query = "INSERT INTO Azioni (azione_id, nome, categoria) VALUES (?, ?, ?)";
         loadFromCSV(filePath, query, 3);
     }
 
     public static void loadAzioniOggettiFromCSV(String filePath) {
-        String query = "INSERT INTO AzioniInterazione (azione_id, oggetto_id) VALUES (?, ?)";
-        loadFromCSV(filePath, query, 2);
+        String query = "INSERT INTO AzioniInterazione (azione_id, oggetto_id, stanza_id) VALUES (?, ?, ?)";
+        loadFromCSV(filePath, query, 3);
     }
 
     private static void loadFromCSV(String filePath, String query, int columnCount) {
