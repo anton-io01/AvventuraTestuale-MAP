@@ -182,7 +182,7 @@ public class StanzaDAO {
             preparedStatement.setString(1, stanzaId); // Imposta il parametro stanza_id
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
-                    return resultSet.getString("descrizione_completa");
+                    return resultSet.getString("descrizione_breve");
                 }
             }
         } catch (SQLException e) {
