@@ -42,27 +42,27 @@ public class MovimentoDAO {
                 while (rs.next()) {
                     if (rs.getString("nord") != null) {
                         Stanza stanzaArrivo = new StanzaDAO().getStanzaById(rs.getString("nord"));
-                        descrizioneMovimenti.append("A nord la stanza ").append(stanzaArrivo.getNome()).append(".\n");
+                        descrizioneMovimenti.append("- A nord la stanza ").append(stanzaArrivo.getNome()).append(".\n");
                     }
                     if (rs.getString("sud") != null) {
                         Stanza stanzaArrivo = new StanzaDAO().getStanzaById(rs.getString("sud"));
-                        descrizioneMovimenti.append("A sud la stanza ").append(stanzaArrivo.getNome()).append(".\n");
+                        descrizioneMovimenti.append("- A sud la stanza ").append(stanzaArrivo.getNome()).append(".\n");
                     }
                     if (rs.getString("est") != null) {
                         Stanza stanzaArrivo = new StanzaDAO().getStanzaById(rs.getString("est"));
-                        descrizioneMovimenti.append("A est la stanza ").append(stanzaArrivo.getNome()).append(".\n");
+                        descrizioneMovimenti.append("- A est la stanza ").append(stanzaArrivo.getNome()).append(".\n");
                     }
                     if (rs.getString("ovest") != null) {
                         Stanza stanzaArrivo = new StanzaDAO().getStanzaById(rs.getString("ovest"));
-                        descrizioneMovimenti.append("A ovest la stanza ").append(stanzaArrivo.getNome()).append(".\n");
+                        descrizioneMovimenti.append("- A ovest la stanza ").append(stanzaArrivo.getNome()).append(".\n");
                     }
                     if (rs.getString("alto") != null) {
                         Stanza stanzaArrivo = new StanzaDAO().getStanzaById(rs.getString("alto"));
-                        descrizioneMovimenti.append("In alto la stanza ").append(stanzaArrivo.getNome()).append(".\n");
+                        descrizioneMovimenti.append("- In alto la stanza ").append(stanzaArrivo.getNome()).append(".\n");
                     }
                     if (rs.getString("basso") != null) {
                         Stanza stanzaArrivo = new StanzaDAO().getStanzaById(rs.getString("basso"));
-                        descrizioneMovimenti.append("In basso la stanza ").append(stanzaArrivo.getNome()).append(".\n");
+                        descrizioneMovimenti.append("- In basso la stanza ").append(stanzaArrivo.getNome()).append(".\n");
                     }
                 }
             }
