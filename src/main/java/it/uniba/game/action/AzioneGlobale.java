@@ -5,7 +5,6 @@ import it.uniba.game.entity.Giocatore;
 import it.uniba.game.database.dao.StanzaDAO;
 
 import java.util.List;
-import java.util.ArrayList;
 
 public class AzioneGlobale {
     public StanzaDAO stanzaDAO = new StanzaDAO();
@@ -13,17 +12,15 @@ public class AzioneGlobale {
 
     public AzioneGlobale() {}
 
-    public List<String> inventario(Giocatore giocatore, List<String> parametri) {
+    public String inventario(Giocatore giocatore, List<String> parametri) {
         if (giocatore.getInventario().isEmpty()) {
-            List<String> listaInventario = new ArrayList<>();
-            listaInventario.add("L'inventario è vuoto.");
-            return listaInventario;
+            return "L'inventario è vuoto.\n\n";
         } else {
-            List<String> listaInventario = new ArrayList<>();
+            StringBuilder inventario = new StringBuilder();
             for (int i = 0; i < giocatore.getInventario().size(); i++) {
-                listaInventario.add(giocatore.getInventario().get(i).getNome());
+                inventario.append(giocatore.getInventario().get(i).getNome()).append("\n");
             }
-            return listaInventario;
+            return inventario.toString() + "\n\n";
         }
     }
 
