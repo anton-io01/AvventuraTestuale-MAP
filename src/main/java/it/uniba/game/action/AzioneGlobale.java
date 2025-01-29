@@ -39,4 +39,24 @@ public class AzioneGlobale {
         System.out.println(stanzaDAO.getDescrizioneCompleta(giocatore.getPosizioneAttualeId()));
         return null;
     }
+
+    public Void entra(Giocatore giocatore, List<String> parametri) {
+        return null;
+    }
+
+    public Void aiuto(Giocatore giocatore, List<String> parametri) {
+        System.out.println("Comandi Disponibili:");
+        System.out.println("- nord, sud, est, ovest, alto, basso (per muoverti)");
+        System.out.println("- osserva (per mostrare gli oggetti all'interno della stanza)");
+        System.out.println("- esamina [oggetto] (per esaminare un oggetto)");
+        System.out.println("- prendi [oggetto] (per prendere un oggetto)");
+        System.out.println("- lascia [oggetto] (per lasciare un oggetto)");
+        System.out.println("- apri [oggetto] (per aprire un armadio o una porta)");
+        System.out.println("- chiudi [oggetto] (per chiudere un armadio o una porta)");
+        System.out.println("- usa [oggetto] (per utilizzare un oggetto)");
+        System.out.println("- inventario (per visualizzare l'inventario)");
+        System.out.println("- salva (per salvare la partita)");
+        System.out.println("- esci (per uscire dal gioco)");
+        return null;
+    }
 }
