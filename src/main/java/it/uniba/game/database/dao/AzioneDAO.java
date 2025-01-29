@@ -1,5 +1,7 @@
 package it.uniba.game.database.dao;
 
+import it.uniba.game.database.DatabaseManager;
+
 import java.sql.*;
 
 public class AzioneDAO {
@@ -7,8 +9,12 @@ public class AzioneDAO {
     private Connection connection;
 
     // Costruttore che accetta una connessione al database
-    public AzioneDAO(Connection connection) {
-        this.connection = connection;
+    public AzioneDAO() {
+        try {
+            this.connection = DatabaseManager.getConnection();
+        } catch (SQLException e) {
+            throw new RuntimeException("Errore durante l'ottenimento della connessione dal DatabaseManager", e);
+        }
     }
 
     // Metodo per ottenere l'id dell'azione dato il nome
