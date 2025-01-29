@@ -1,4 +1,4 @@
 edificio_id,nome,accessibile,descrizione
-01,Ospedale Neo Tokyo,true,NULL
-02,Clinica Dott.Tanaka,false,NULL
-03,Nascondiglio di Sato,false, NULL
+01,Ospedale di Neo Tokyo,true, "L'Ospedale Neo Tokyo si erge imponente davanti a te, con le sue pareti in acciaio e le finestre illuminate. L'ingresso principale è affollato di ambulanze e personale medico che si affrettano. Un cartello digitale indica l'accettazione al pronto soccorso, mentre nell'aria si avverte un odore pungente di disinfettante. L'atmosfera è di frenesia e preoccupazione."
+02,Clinica Dott.Tanaka,false,"Sei davanti alla clinica del Dott. Tanaka, un edificio anonimo e poco appariscente, nascosto tra le vie secondarie. La facciata è invecchiata, con la vernice che si sfoglia in alcuni punti. Le finestre sono oscurate e non si sente alcun rumore provenire dall'interno. C'è una vaga sensazione di abbandono, come se nessuno si occupasse più del posto."
+03,Magazzino abbandonato,false,"Un magazzino abbandonato si erge tra le ombre, con le sue pareti di mattoni scrostati e le finestre rotte. L'area è desolata, cosparsa di detriti e coperta da un manto di polvere e sporcizia. La porta principale è chiusa e arrugginita, con segni di scasso e manomissioni. L'atmosfera è pesante, si percepisce che questo posto è stato dimenticato da tempo."
