@@ -10,3 +10,89 @@ oggetto_id,alias
 03,pace maker
 03,pace-maker
 03,pacemaker infetto
+04,cartella
+04,cartella clinica
+04,cartella vittima
+05,registro
+05,registro appuntamenti
+05,registro clinica
+06,computer
+06,computer tanaka
+06,pc tanaka
+07,chiave
+07,chiavi
+07,mazzo chiavi
+08,hard disk
+08,disco
+08,hd
+09,ritaglio
+09,ritaglio giornale
+10,note
+10,note mediche
+11,terminale
+12,receptionist
+12,impiegata
+12,assistente
+13,armadio
+14,paziente
+15,barra
+15,barra sicurezza
+16,lettore
+16,lettore digitale
+16,lettore impronte
+17,impronta
+17,impronta digitale
+18,pianta
+18,piante
+18,piante decorative
+19,fontana
+20,ritratto
+20,ritratto tanaka
+21,software
+21,software pacemaker
+21,controllo pacemaker
+22,usb
+22,chiave usb
+22,chiavi usb
+23,cavo
+23,cavi
+24,scheda
+24,scheda logica
+24,schede
+24,schede logiche
+25,catena
+26,orologio
+27,cartello
+27,cartello pericolo
+28,libreria
+29,libro
+30,pannello
+30,pannello controllo
+31,guanto
+31,guanto lattice
+32,fiala
+32,fiala medicinale
+33,mappa
+33,mappa ospedale
+33,mappa piani
+34,macchia
+34,macchia sospetta
+35,macchia sangue
+35,macchia di sangue
+36,campanello
+36,campanello emergenza
+37,avviso
+37,avviso privacy
+38,crocifisso
+39,tenda
+39,tende
+40,scheda
+40,scheda logica
+40,schede
+40,schede logiche
+41,microscopio
+42,monitor
+43,foglio
+43,fogli
+44,cavo
+44,cavi

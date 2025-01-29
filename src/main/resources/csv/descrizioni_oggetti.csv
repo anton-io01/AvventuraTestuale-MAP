@@ -1,14 +1,45 @@
 oggetto_id,descrizione_breve,descrizione_esamina
-01,coltellino svizzero dell'hacker,dispositivo multifunzione per hackerare sistemi elettronici e utile per decifrare file. Il resto è da scoprire...
-02,bigliettino da visita, indizio con l'indirizzo della clinica del dott. Tanaka
-03,dispositivo medico,dispositivo medico che contiene un virus letale
-04,cartella clinica della vittima,documenti medici che includono dettagli sui trattamenti recenti
-05,registro degli appuntamenti,elenco delle visite alla clinica che contiene indizi importanti
-06,computer del dott.Tanaka,terminale bloccato da una password, contiene software compromettente
-07,mazzo di chiavi,chiavi che permettono di aprire porte e cassetti importanti
-08,dispositivo di archiviazione,dispositivo di archiviazione contenente file che collegano sato al caso
-09,ritaglio di giornale,articolo che racconta la morte della sorella di sato e fornisce un possibile movente
-10,note mediche,documenti che confermano esperimenti non etici del dott. Tanaka
-11,terminale,terminale generico utilizzato per analizzare prove e decifrare file
-12,impiegata dell'ospedale,impiegata che può fornire informazioni utili
-13,armadio,armadio con oggetti utili
+01,"flipper zero","dispositivo multifunzione per hackerare sistemi elettronici e utile per decifrare file. Il resto è da scoprire..."
+02,"bigliettino da visita","Un bigliettino da visita con il nome ""Dr. Tanaka"" e un indirizzo. Sul retro, un numero di telefono è stato scarabocchiato con una penna."
+03,"pacemaker infetto","Un dispositivo medico che contiene un virus letale, in grado di alterare il battito cardiaco. Il numero seriale è parzialmente illeggibile."
+04,"cartella clinica della vittima","Documenti medici che includono dettagli sui trattamenti recenti. La cartella è stata aperta di recente."
+05,"registro degli appuntamenti","Un registro con l'elenco delle visite alla clinica, con alcuni orari evidenziati con un cerchio rosso. Le annotazioni sembrano scritte frettolosamente."
+06,"computer del dott.Tanaka","Il computer è bloccato da una password. Analizzando lo schermo sembra che contenga un software compromettente e diverse cartelle."
+07,"mazzo di chiavi","Un mazzo di chiavi di diverse dimensioni, alcune con etichette in codice. Una delle chiavi è consumata, come se fosse stata usata spesso."
+08,"hard disk","Un dispositivo di archiviazione contenente file criptati che sembrano collegare Sato al caso. Sul disco è presente un'etichetta ""PROTOCOLLO_SEGRETO""."
+09,"ritaglio di giornale","Un articolo di giornale ingiallito che racconta la morte della sorella di Sato, vittima di un fallito esperimento medico del dott. Tanaka. Il ritaglio presenta un'annotazione scritta a matita."
+10,"note mediche","Documenti che confermano esperimenti non etici del dott. Tanaka su pazienti con malattie cardiache. Il testo è scritto con un linguaggio medico estremamente tecnico."
+11,"terminale","Un terminale generico utilizzato per analizzare prove e decifrare file. Lo schermo mostra l'interfaccia di un sistema di decriptazione e una notifica lampeggiante che indica la presenza di dati recenti."
+12,"receptionist","Un'impiegata dell'ospedale che potrebbe fornire informazioni utili. L'espressione sul suo viso è impaziente."
+13,"armadio","Un armadio chiuso. Sembra contenere degli oggetti. La serratura è arrugginita."
+14,"paziente","Un paziente addormentato nel suo letto, che sembra non aver notato la tua presenza. Il suo respiro è affannoso e l'aspetto generale è sofferente."
+15,"barra di sicurezza","Una barra di sicurezza in acciaio che blocca la porta. Sembra saldamente fissata."
+16,"lettore digitale","Un lettore digitale per carte magnetiche, simile a quello utilizzato per gli accessi di sicurezza. Sembra che abbia una funzione per lo sblocco con impronta digitale."
+17,"impronta digitale","Una traccia di un'impronta digitale sul lettore."
+18,"piante decorative","Piante decorative che creano un'atmosfera accogliente. Non sembrano nascondere nulla di particolare."
+19,"fontana","Una fontana ornamentale. L'acqua sembra essere cristallina."
+20,"ritratto del dottor Tanaka","Un ritratto del dottor Tanaka che ti osserva con sguardo severo. Il quadro è appeso al muro in modo preciso."
+21,"software per il controllo remoto dei pacemaker","Un software per il controllo remoto dei pacemaker che sembra essere in grado di modificare i parametri e generare impulsi elettrici."
+22,"chiavi usb","Alcune chiavi usb sparse sulla scrivania. Alcune sono etichettate con simboli e scritte in codice."
+23,"cavi","Cavi elettrici che collegano i server. Alcuni cavi sembrano essere stati tagliati di recente e le loro estremità sono state lasciate a terra."
+24,"schede logiche","Schede logiche con microchip e circuiti. Sembrano essere collegate agli strumenti nell'area di test."
+25,"catena","Una catena pesante appoggiata di lato. Sembra essere stata usata di recente."
+26,"orologio","Un grande orologio sulla parete che segna un'ora errata. Le lancette si muovono lentamente e il ticchettio sembra essere accelerato."
+27,"cartello pericolo","Un cartello con la scritta ""pericolo"". Le lettere sono state scritte in fretta e sembrano tracciate con una bomboletta spray."
+28,"libreria","Una grande libreria impolverata piena di libri. Tra tutti i volumi, uno sembra essere stato toccato di recente."
+29,"libro","Un libro di colore scuro. Il titolo sulla copertina è illeggibile, ma sembra essere stato spostato di recente."
+30,"pannello di controllo","Un pannello di controllo danneggiato. Diversi interruttori e pulsanti sono rotti e alcuni cavi penzolano dai fori."
+31,"guanto di lattice","Un guanto di lattice appoggiato sul pavimento. Sembra essere stato gettato via frettolosamente e presenta una macchia scura sul palmo."
+32,"fiala di medicinale","Una fiala di medicinale mezza vuota. Il contenuto sembra essere un farmaco sperimentale per problemi cardiaci."
+33,"mappa dei piani dell'ospedale","Una mappa dei piani dell'ospedale. Un piccolo segno con un pennarello indica il laboratorio medico."
+34,"macchia sospetta","Una macchia sospetta sul pavimento. Il colore e l'odore sembrano indicare che si tratti di sangue."
+35,"macchia di sangue","Una macchia di sangue sul lenzuolo del letto. La macchia appare fresca."
+36,"campanello d'emergenza","Un campanello d'emergenza che pende dal lato del letto. Sembra essere funzionante."
+37,"avviso sulla privacy","Un avviso sulla privacy affisso al muro che indica i diritti e le responsabilità dei pazienti. Le scritte sono sbiadite a causa del tempo."
+38,"crocifisso","Un piccolo crocifisso appeso sopra l'altare. Il legno sembra consumato a causa delle preghiere."
+39,"tende","Tende bianche che nascondono la finestra. Sembrano mosse da un leggero vento proveniente dall'esterno."
+40,"schede logiche","Schede logiche sparse su un banco da lavoro. Alcune sembrano essere state modificate di recente."
+41,"microscopio","Un microscopio posizionato su un tavolo. La lente è appannata."
+42,"monitor","Un monitor collegato ad alcuni strumenti sul tavolo. Lo schermo non mostra nessuna immagine."
+43,"fogli","Fogli sparsi sulla scrivania dell'ufficio. Sembrano appunti scritti in fretta."
+44,"cavi a terra","Cavi a terra provenienti dal corridoio. Sembrano essere stati tagliati di recente"
