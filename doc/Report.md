@@ -189,6 +189,9 @@ La tabella `Movimenti` ha vincoli di chiave esterna su:
 ## Edifici
 
 ### Ospedale di Neo Tokyo - 01
+
+![Ospdeale di Neo Tokyo](./img/OspedaleNeoTOkyo.png)
+
 | Codice | Luogo              |Nord|Sud|Est|Ovest|Alto|Basso|
 |--|--------------------|--|-|--|--|--|--|
 |01|Uscita|-|-|-|-|-|-|
@@ -207,6 +210,9 @@ La tabella `Movimenti` ha vincoli di chiave esterna su:
 |14|Laboratorio medico|-|-|-|Corridoio2|-|-|
 
 ### Clinica del Dott. Tanaka - 02
+
+![Clinica del Dott. Tanaka](./img/ClinicaDottTanaka.png)
+
 |Codice|Luogo|Nord|Sud|Est|Ovest|Alto|Basso|
 |--|--|--|--|--|--|--|--|
 |15|Uscita|-|-|-|-|-|-|
@@ -218,6 +224,9 @@ La tabella `Movimenti` ha vincoli di chiave esterna su:
 |21|Testing Area|-|Laboratorio Principale|-|-|-|-|
 
 ### Nascondiglio di Sato - 03
+
+![Nascondiglio di Sato](./img/NascondiglioSato.png)
+
 |Codice|Luogo|Nord|Sud|Est|Ovest|Alto|Basso|
 |--|--|--|--|--|--|--|--|
 |22|Uscita|-|-|-|-|-|-|
