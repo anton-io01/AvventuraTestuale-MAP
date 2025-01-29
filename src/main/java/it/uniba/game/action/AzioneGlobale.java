@@ -20,7 +20,7 @@ public class AzioneGlobale {
             for (int i = 0; i < giocatore.getInventario().size(); i++) {
                 inventario.append(giocatore.getInventario().get(i).getNome()).append("\n");
             }
-            return inventario.toString() + "\n\n";
+            return inventario.toString();
         }
     }
 
