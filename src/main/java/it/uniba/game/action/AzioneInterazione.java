@@ -5,7 +5,6 @@ import it.uniba.game.entity.Giocatore;
 import it.uniba.game.database.dao.OggettoDAO;
 import it.uniba.game.entity.Oggetto;
 
-import java.sql.Connection;
 import java.util.List;
 
 public class AzioneInterazione {
@@ -139,4 +138,5 @@ public class AzioneInterazione {
         }
         return null;
     }
+
 }
