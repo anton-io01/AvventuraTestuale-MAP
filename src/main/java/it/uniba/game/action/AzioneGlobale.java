@@ -6,7 +6,7 @@ import it.uniba.game.database.dao.StanzaDAO;
 import java.util.List;
 
 public class AzioneGlobale {
-    private StanzaDAO stanzaDAO;
+    public StanzaDAO stanzaDAO = new StanzaDAO();
 
     public AzioneGlobale() {}
 
@@ -35,7 +35,8 @@ public class AzioneGlobale {
         return null;
     }
 
-    public String osserva(Giocatore giocatore, List<String> parametri) {
-        return stanzaDAO.getDescrizioneCompleta(giocatore.getPosizioneAttualeId());
+    public Void osserva(Giocatore giocatore, List<String> parametri) {
+        System.out.println(stanzaDAO.getDescrizioneCompleta(giocatore.getPosizioneAttualeId()));
+        return null;
     }
 }
