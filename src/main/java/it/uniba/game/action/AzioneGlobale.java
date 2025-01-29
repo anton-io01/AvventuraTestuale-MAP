@@ -37,7 +37,7 @@ public class AzioneGlobale {
     }
 
     public String osserva(Giocatore giocatore, List<String> parametri) {
-        return stanzaDAO.getDescrizioneCompleta(giocatore.getPosizioneAttualeId()) + "\n\n";
+        return stanzaDAO.getAllOggettiStanza(giocatore.getPosizioneAttualeId()) + "\n\n";
     }
 
     public String entra(Giocatore giocatore, List<String> parametri) {
