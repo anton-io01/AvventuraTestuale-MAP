@@ -1,11 +1,12 @@
 package it.uniba.game.util;
 
 import it.uniba.game.database.DatabaseManager;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CSVLoader {
 
@@ -27,6 +28,11 @@ public class CSVLoader {
     public static void loadOggettiFromCSV(String filePath) {
         String query = "INSERT INTO Oggetti (oggetto_id, nome, raccoglibile, visibile) VALUES (?, ?, ?, ?)";
         loadFromCSV(filePath, query, 4);
+    }
+
+    public static void loadOggettiAliasFromCSV(String filePath) {
+        String query = "INSERT INTO OggettiAlias (oggetto_id, alias) VALUES (?, ?)";
+        loadFromCSV(filePath, query, 2);
     }
 
     public static void loadOggettiStanzeFromCSV(String filePath) {
@@ -64,16 +70,16 @@ public class CSVLoader {
 
             // Leggi il file riga per riga
             while ((line = br.readLine()) != null) {
-                String[] data = line.split(",");
-                if (data.length < columnCount) {
+                List<String> data = parseCSVLine(line);
+
+                if (data.size() < columnCount) {
                     System.err.println("Riga non valida nel file CSV: " + line);
                     continue;
                 }
 
                 // Imposta i valori nella query
                 for (int i = 0; i < columnCount; i++) {
-                    pstmt.setString(i + 1, data[i].trim());
-                    String value = data[i].trim();
+                    String value = data.get(i).trim();
                     if (value.equalsIgnoreCase("NULL")) {
                         pstmt.setNull(i + 1, java.sql.Types.VARCHAR);
                     } else {
@@ -87,9 +93,27 @@ public class CSVLoader {
             String[] pathName = filePath.split("/");
             String fileName = pathName[pathName.length - 1].split("\\.")[0];
             System.out.println("Dati caricati con successo nella tabella " + fileName + "!");
-
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private static List<String> parseCSVLine(String line) {
+        List<String> values = new ArrayList<>();
+        boolean inQuotes = false;
+        StringBuilder currentField = new StringBuilder();
+
+        for (char c : line.toCharArray()) {
+            if (c == '"') {
+                inQuotes = !inQuotes;
+            } else if (c == ',' && !inQuotes) {
+                values.add(currentField.toString());
+                currentField = new StringBuilder();
+            } else {
+                currentField.append(c);
+            }
+        }
+        values.add(currentField.toString());
+        return values;
     }
 }
