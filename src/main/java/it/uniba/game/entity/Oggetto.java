@@ -3,14 +3,14 @@ package it.uniba.game.entity;
 public class Oggetto {
     private String oggettoId;
     private String nome;
-    private String descrizione;
     private boolean raccoglibile;
+    private boolean visibile;
 
-    public Oggetto(String oggettoId, String nome, String descrizione, boolean raccoglibile) {
+    public Oggetto(String oggettoId, String nome, boolean raccoglibile, boolean visibile) {
         this.oggettoId = oggettoId;
         this.nome = nome;
-        this.descrizione = descrizione;
         this.raccoglibile = raccoglibile;
+        this.visibile = visibile;
     }
 
     public String getOggettoId() {
@@ -29,14 +29,6 @@ public class Oggetto {
         this.nome = nome;
     }
 
-    public String getDescrizione() {
-        return descrizione;
-    }
-
-    public void setDescrizione(String descrizione) {
-        this.descrizione = descrizione;
-    }
-
     public boolean isRaccoglibile() {
         return raccoglibile;
     }
@@ -45,13 +37,11 @@ public class Oggetto {
         this.raccoglibile = raccoglibile;
     }
 
-    @Override
-    public String toString() {
-        return "Oggetto{" +
-                "oggettoId='" + oggettoId + '\'' +
-                ", nome='" + nome + '\'' +
-                ", descrizione='" + descrizione + '\'' +
-                ", raccoglibile=" + raccoglibile +
-                '}';
+    public boolean isVisibile() {
+        return visibile;
+    }
+
+    public void setVisibile(boolean visibile) {
+        this.visibile = visibile;
     }
 }
