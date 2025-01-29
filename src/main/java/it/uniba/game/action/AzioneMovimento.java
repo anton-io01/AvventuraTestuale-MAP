@@ -30,7 +30,7 @@ public class AzioneMovimento {
         if (stanzaDiArrivo != null) {
             // Aggiorna la posizione del giocatore
             giocatore.setPosizioneAttuale(stanzaDiArrivo);
-            return "Ti sei spostato verso " + direzione + " nella stanza: " + stanzaDiArrivo.getNome() + ".\n" + stanzaDAO.getDescrizioneBreve(stanzaDiArrivo.getStanzaId()) + "\n\n";
+            return "Ti sei spostato verso " + direzione + " nella stanza: " + stanzaDiArrivo.getNome() + ".\n" + stanzaDAO.getDescrizioneCompleta(stanzaDiArrivo.getStanzaId()) + "\n\n";
         } else {
             return "Non puoi andare in quella direzione.\n\n";
         }
