@@ -1,18 +1,20 @@
 package it.uniba.game.database.dao;
 
 import it.uniba.game.entity.Oggetto;
-import it.uniba.game.entity.Stanza;
+import it.uniba.game.database.DatabaseManager;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class OggettoDAO {
 
     private final Connection connection;
 
-    public OggettoDAO(Connection connection) {
-        this.connection = connection;
+    public OggettoDAO() {
+        try {
+            this.connection = DatabaseManager.getConnection();
+        } catch (SQLException e) {
+            throw new RuntimeException("Errore durante l'ottenimento della connessione dal DatabaseManager", e);
+        }
     }
 
     // Metodo per ottenere un oggetto specifico tramite ID
@@ -177,7 +179,7 @@ public class OggettoDAO {
      * @param oggettoId ID dell'oggetto
      */
     public String getDescrizioneBreveOggetto(String oggettoId) {
-        String query = "SELECT descrizione_breve FROM Oggetti WHERE oggetto_id = ?";
+        String query = "SELECT descrizione_breve FROM DescrizioniOggetti WHERE oggetto_id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, oggettoId);
             try (ResultSet rs = stmt.executeQuery()) {
@@ -197,12 +199,12 @@ public class OggettoDAO {
      * @param oggettoId ID dell'oggetto
      */
     public String getDescrizioneDettagliataOggetto(String oggettoId) {
-        String query = "SELECT descrizione_dettagliata FROM Oggetti WHERE oggetto_id = ?";
+        String query = "SELECT descrizione_esamina FROM DescrizioniOggetti WHERE oggetto_id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, oggettoId);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    return rs.getString("descrizione_dettagliata");
+                    return rs.getString("descrizione_esamina");
                 }
             }
         } catch (SQLException e) {
