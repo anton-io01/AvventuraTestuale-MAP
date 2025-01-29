@@ -3,15 +3,13 @@ package it.uniba.game.util;
 import it.uniba.game.database.dao.AzioneDAO;
 import it.uniba.game.database.dao.OggettoDAO;
 
+import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.Arrays;
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 
 public class Parser {
     private final String STOPWORDS_FILE = "src/main/resources/stopwords.txt";
@@ -92,17 +90,18 @@ public class Parser {
 
         // Se ci sono più parole, cerca l'oggetto
         if (parole.size() > 1) {
-            String oggettoInput = String.join(" ", parole.subList(1, parole.size()));
-            String oggettoId = cercaOggetto(oggettoInput);
+            String oggettoId = cercaOggetto(parole.subList(1, parole.size()));
             if (oggettoId != null) {
                 parametri.add(oggettoId);
             } else {
+                String oggettoInput = String.join(" ", parole.subList(1, parole.size()));
                 System.err.println("Oggetto non riconosciuto: " + oggettoInput);
             }
         }
 
         return parametri;
     }
+
 
     /**
      * Cerca l'ID di un'azione nel database.
@@ -118,14 +117,14 @@ public class Parser {
             return null;
         }
     }
-
     /**
-     * Cerca l'ID di un oggetto nel database.
+     * Cerca l'ID di un oggetto nel database, gestendo nomi composti.
      *
-     * @param input Il nome dell'oggetto.
+     * @param inputWords Lista di parole che compongono il nome dell'oggetto.
      * @return L'ID dell'oggetto, o null se non trovato.
      */
-    private String cercaOggetto(String input) {
+    private String cercaOggetto(List<String> inputWords) {
+        String input = String.join(" ", inputWords);
         try {
             return oggettoDAO.getOggettoIdByNome(input);
         } catch (Exception e) {
