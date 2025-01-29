@@ -1,5 +1,6 @@
 package it.uniba.game.action;
 
+import it.uniba.game.database.dao.MovimentoDAO;
 import it.uniba.game.entity.Giocatore;
 import it.uniba.game.database.dao.StanzaDAO;
 
@@ -7,56 +8,73 @@ import java.util.List;
 
 public class AzioneGlobale {
     public StanzaDAO stanzaDAO = new StanzaDAO();
+    public MovimentoDAO movimentoDAO = new MovimentoDAO();
 
     public AzioneGlobale() {}
 
     public String inventario(Giocatore giocatore, List<String> parametri) {
-        System.out.println("Inventario:");
         if (giocatore.getInventario().isEmpty()) {
-            return "L'inventario è vuoto.";
+            return "L'inventario è vuoto.\n\n";
         } else {
-            String inventario = null;
+            StringBuilder inventario = new StringBuilder();
             for (int i = 0; i < giocatore.getInventario().size(); i++) {
-                inventario = giocatore.getInventario().get(i).getNome() + "/n";
+                inventario.append(giocatore.getInventario().get(i).getNome()).append("\n");
             }
-            return inventario;
+            return inventario.toString() + "\n\n";
         }
     }
-    
-    public Void esci(Giocatore giocatore, List<String> parametri) {
+
+    public String esci(Giocatore giocatore, List<String> parametri) {
         System.out.println("Arrivederci!");
         System.exit(0);
         return null;
     }
 
-    public Void salva(Giocatore giocatore, List<String> parametri) {
+    public String salva(Giocatore giocatore, List<String> parametri) {
         System.out.println("Salvataggio...");
         System.out.println("Salvataggio completato.");
         return null;
     }
 
-    public Void osserva(Giocatore giocatore, List<String> parametri) {
-        System.out.println(stanzaDAO.getDescrizioneCompleta(giocatore.getPosizioneAttualeId()));
+    public String osserva(Giocatore giocatore, List<String> parametri) {
+        return stanzaDAO.getDescrizioneCompleta(giocatore.getPosizioneAttualeId()) + "\n\n";
+    }
+
+    public String entra(Giocatore giocatore, List<String> parametri) {
         return null;
     }
 
-    public Void entra(Giocatore giocatore, List<String> parametri) {
-        return null;
+    /**
+     * Mostra l'elenco dei comandi disponibili.
+     * @param giocatore
+     * @param parametri
+     * @return
+     */
+    public String aiuto(Giocatore giocatore, List<String> parametri) {
+        return "Comandi Disponibili:\n" +
+                "- nord, sud, est, ovest, alto, basso (per muoverti)\n" +
+                "- osserva (per mostrare gli oggetti all'interno della stanza)\n" +
+                "- esamina [oggetto] (per esaminare un oggetto)\n" +
+                "- prendi [oggetto] (per prendere un oggetto)\n" +
+                "- lascia [oggetto] (per lasciare un oggetto)\n" +
+                "- usa [oggetto] (per utilizzare un oggetto)\n" +
+                "- apri [oggetto] (per aprire un armadio o una porta)\n" +
+                "- chiudi [oggetto] (per chiudere un armadio o una porta)\n" +
+                "- parla [oggetto] (per parlare con un personaggio)\n" +
+                "- leggi [oggetto] (per leggere un libro o un appunto)\n"+
+                "- inventario (per visualizzare l'inventario)\n" +
+                "- salva (per salvare la partita)\n" +
+                "- esci (per uscire dal gioco)\n\n";
     }
 
-    public Void aiuto(Giocatore giocatore, List<String> parametri) {
-        System.out.println("Comandi Disponibili:");
-        System.out.println("- nord, sud, est, ovest, alto, basso (per muoverti)");
-        System.out.println("- osserva (per mostrare gli oggetti all'interno della stanza)");
-        System.out.println("- esamina [oggetto] (per esaminare un oggetto)");
-        System.out.println("- prendi [oggetto] (per prendere un oggetto)");
-        System.out.println("- lascia [oggetto] (per lasciare un oggetto)");
-        System.out.println("- apri [oggetto] (per aprire un armadio o una porta)");
-        System.out.println("- chiudi [oggetto] (per chiudere un armadio o una porta)");
-        System.out.println("- usa [oggetto] (per utilizzare un oggetto)");
-        System.out.println("- inventario (per visualizzare l'inventario)");
-        System.out.println("- salva (per salvare la partita)");
-        System.out.println("- esci (per uscire dal gioco)");
-        return null;
+    /**
+     * Mostra la mappa del gioco.
+     *
+     * @param giocatore
+     * @param parametri
+     * @return
+     */
+    public String mappa(Giocatore giocatore, List<String> parametri) {
+        return movimentoDAO.getMovimentiByStanza(giocatore.getPosizioneAttuale()) + "\n\n";
     }
 }
