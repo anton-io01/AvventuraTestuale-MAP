@@ -1,6 +1,7 @@
 package it.uniba.game.database.dao;
 
 import it.uniba.game.entity.Edificio;
+import it.uniba.game.database.DatabaseManager;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -10,8 +11,12 @@ public class EdificioDAO {
 
     private final Connection connection;
 
-    public EdificioDAO(Connection connection) {
-        this.connection = connection;
+    public EdificioDAO() {
+        try {
+            this.connection = DatabaseManager.getConnection();
+        } catch (SQLException e) {
+            throw new RuntimeException("Errore durante l'ottenimento della connessione dal DatabaseManager", e);
+        }
     }
 
     // Metodo per inserire un nuovo edificio nel database
