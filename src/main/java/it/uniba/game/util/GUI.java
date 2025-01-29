@@ -154,13 +154,6 @@ public class GUI extends JFrame {
         bottomPanel.add(inputPanel, BorderLayout.SOUTH);
         add(bottomPanel, BorderLayout.SOUTH);
 
-        // Inizializza inventario
-        inventory = new ArrayList<>();
-        inventory.add("Badge della polizia");
-        inventory.add("Laptop forense");
-        inventory.add("Kit di analisi");
-        inventory.add("Smartphone criptato");
-
         // Action Listeners
         mapButton.addActionListener(e -> {
             String output = engine.processCommand("mappa");
