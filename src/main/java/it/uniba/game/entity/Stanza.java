@@ -4,13 +4,11 @@ public class Stanza {
     private String edificioId;
     private String stanzaId;
     private String nome;
-    private boolean accessibile;
 
-    public Stanza(String edificioId, String stanzaId, String nome, boolean accessibile) {
+    public Stanza(String edificioId, String stanzaId, String nome) {
         this.edificioId = edificioId;
         this.stanzaId = stanzaId;
         this.nome = nome;
-        this.accessibile = accessibile;
     }
 
     public String getEdificioId() {
@@ -35,23 +33,5 @@ public class Stanza {
 
     public void setNome(String nome) {
         this.nome = nome;
-    }
-
-    public boolean isAccessibile() {
-        return accessibile;
-    }
-
-    public void setAccessibile(boolean accessibile) {
-        this.accessibile = accessibile;
-    }
-
-    @Override
-    public String toString() {
-        return "Stanza{" +
-                "edificioId='" + edificioId + '\'' +
-                ", stanzaId='" + stanzaId + '\'' +
-                ", nome='" + nome + '\'' +
-                ", accessibile=" + accessibile +
-                '}';
     }
 }
