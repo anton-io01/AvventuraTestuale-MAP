@@ -36,6 +36,7 @@ public class GestoreAzioni implements Azione{
         azioniMap.put("OS", azioneGlobale::osserva);
         azioniMap.put("AI", azioneGlobale::aiuto);
         azioniMap.put("EN", azioneGlobale::entra);
+        azioniMap.put("MA", azioneGlobale::mappa);
 
         // Azioni di interazione
         azioniMap.put("EM", azioneInterazione::esamina);
@@ -43,18 +44,19 @@ public class GestoreAzioni implements Azione{
         azioniMap.put("LA", azioneInterazione::lascia);
         azioniMap.put("US", azioneInterazione::usa);
         azioniMap.put("AP", azioneInterazione::apri);
-        azioniMap.put("CH", azioneInterazione::chiudi);
         azioniMap.put("PA", azioneInterazione::parla);
         azioniMap.put("LG", azioneInterazione::leggi);
     }
 
-    public void esegui(Giocatore giocatore, List<String> parametri) {
+    public String esegui(Giocatore giocatore, List<String> parametri) {
 
         BiFunction<Giocatore, List<String>, ?> azione = azioniMap.get(parametri.get(0));
         if (azione != null) {
-            azione.apply(giocatore, parametri);
+            String output =  (String) azione.apply(giocatore, parametri);
+            return output;
         } else {
             System.out.println("Azione non riconosciuta");
+            return null;
         }
     }
 }
