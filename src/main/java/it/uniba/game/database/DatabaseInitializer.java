@@ -12,6 +12,7 @@ public class DatabaseInitializer {
     private static final String STANZE_CSV = "src/main/resources/csv/stanze.csv";
     private static final String DESCRIZIONI_STANZE_CSV = "src/main/resources/csv/descrizioni_stanze.csv";
     private static final String OGGETTI_CSV = "src/main/resources/csv/oggetti.csv";
+    private static final String OGGETTI_ALIAS_CSV = "src/main/resources/csv/oggetti_alias.csv";
     private static final String OGGETTI_STANZE_CSV = "src/main/resources/csv/oggetti_stanze.csv";
     private static final String DESCRIZIONI_OGGETTI_CSV = "src/main/resources/csv/descrizioni_oggetti.csv";
     private static final String MOVIMENTI_CSV = "src/main/resources/csv/movimenti.csv";
@@ -111,6 +112,15 @@ public class DatabaseInitializer {
                 );
                 """;
 
+        String oggettiAliasTable = """
+                CREATE TABLE IF NOT EXISTS OggettiAlias (
+                    oggetto_id VARCHAR(2) NOT NULL,
+                    alias VARCHAR(100) NOT NULL,
+                    PRIMARY KEY (oggetto_id, alias),
+                    FOREIGN KEY (oggetto_id) REFERENCES Oggetti(oggetto_id)
+                );
+                """;
+
         String oggettiStanzeTable = """
                 CREATE TABLE IF NOT EXISTS OggettiStanze (
                     oggetto_id VARCHAR(2) NOT NULL,
@@ -175,6 +185,7 @@ public class DatabaseInitializer {
         stmt.execute(stanzeTable);
         stmt.execute(descrizioniStanzeTable);
         stmt.execute(oggettiTable);
+        stmt.execute(oggettiAliasTable);
         stmt.execute(oggettiStanzeTable);
         stmt.execute(DescrizioneOggetti);
         stmt.execute(movimentiTable);
@@ -192,6 +203,7 @@ public class DatabaseInitializer {
         CSVLoader.loadStanzeFromCSV(STANZE_CSV);
         CSVLoader.loadDescrizioniStanzeFromCSV(DESCRIZIONI_STANZE_CSV);
         CSVLoader.loadOggettiFromCSV(OGGETTI_CSV);
+        CSVLoader.loadOggettiAliasFromCSV(OGGETTI_ALIAS_CSV);
         CSVLoader.loadOggettiStanzeFromCSV(OGGETTI_STANZE_CSV);
         CSVLoader.loadDescrizioniOggettiFromCSV(DESCRIZIONI_OGGETTI_CSV);
         CSVLoader.loadMovimentiFromCSV(MOVIMENTI_CSV);
