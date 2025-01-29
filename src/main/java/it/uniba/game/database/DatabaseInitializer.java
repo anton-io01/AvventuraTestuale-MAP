@@ -106,7 +106,7 @@ public class DatabaseInitializer {
         String oggettiTable = """
                 CREATE TABLE IF NOT EXISTS Oggetti (
                     oggetto_id VARCHAR(2) PRIMARY KEY,
-                    nome VARCHAR(100) NOT NULL UNIQUE,
+                    nome VARCHAR(100) NOT NULL,
                     raccoglibile BOOLEAN DEFAULT false,
                     visibile BOOLEAN DEFAULT true
                 );
