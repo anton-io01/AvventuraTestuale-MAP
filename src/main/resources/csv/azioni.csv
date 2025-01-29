@@ -9,11 +9,12 @@ EX,esci,globali
 SA,salva,globali
 IN,inventario,globali
 OS,osserva,globali
+EN,entra,globale
+AI,aiuto,globale
 EM,esamina,interazione
 PR,prendi,interazione
 LA,lascia,interazione
 US,usa,interazione
 PA,parla,interazione
 AP,apri,interazione
-CH,chiudi,interazione
 LG,leggi,interazione
