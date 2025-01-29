@@ -1,45 +1,45 @@
 oggetto_id,nome,raccoglibile,visibile
-01,flipper zero,true,true
-02,bigliettino da visita,false,true
-03,pacemaker infetto,false,true
-04,cartella clinica della vittima,false,true
-05,registro degli appuntamenti,false,true
-06,computer computer del dott.Tanaka,false,true
-07,chiavi,true,true
-08,hard disk,false,true
-09,ritaglio di giornale,false,true
-10,note mediche,false,true
-11,terminale,false,true
-12,receptionist,false,true
-13,armadio,false,true
-14,paziente,false,true
-15,barra di sicurezza,false,true
-16,lettore digitale,false,true
-17,impronta digitale,false,true
-18,piante decorative,false,true
-19,fontana,false,true
-20,ritratto del dottor Tanaka,false,true
-21,software per il controllo remoto dei pacemaker,false,true
-22,chiavi usb,true,true
-23,cavi,false,true
-24,schede logiche,false,true
-25,catena,false,true
-26,orologio,false,true
-27,cartello pericolo,false,true
-28,libreria,false,true
-29,libro,true,true
-30,pannello di controllo,false,true
-31,guanto di lattice,true,true
-32,fiala di medicinale,true,true
-33,mappa dei piani dell'ospedale,false,true
-34,macchia sospetta,false,true
-35,macchia di sangue,false,true
-36,campanello d'emergenza,false,true
-37,avviso sulla privacy,false,true
-38,crocifisso,false,true
-39,tende,false,true
-40,schede logiche,false,true
-41,microscopio,false,true
-42,monitor,false,true
-43,fogli,true,true
-44,cavi a terra,false,true
+01,Flipper Zero,true,true
+02,Bigliettino da visita,false,true
+03,Pacemaker infetto,false,true
+04,Cartella clinica della vittima,false,true
+05,Registro degli appuntamenti,false,true
+06,Computer computer del dott.Tanaka,false,true
+07,Chiavi,true,true
+08,Hard Disk,false,true
+09,Ritaglio di giornale,false,true
+10,Note mediche,false,true
+11,Terminale,false,true
+12,Receptionist,false,true
+13,Armadio,false,true
+14,Paziente,false,true
+15,Barra di sicurezza,false,true
+16,Lettore digitale,false,true
+17,Impronta digitale,false,true
+18,Piante decorative,false,true
+19,Fontana,false,true
+20,Ritratto del dottor Tanaka,false,true
+21,Software per il controllo remoto dei pacemaker,false,true
+22,Chiavi usb,true,true
+23,Cavi,false,true
+24,Schede logiche,false,true
+25,Catena,false,true
+26,Orologio,false,true
+27,Cartello pericolo,false,true
+28,Libreria,false,true
+29,Libro,true,true
+30,Pannello di controllo,false,true
+31,Guanto di lattice,true,true
+32,Fiala di medicinale,true,true
+33,Mappa dei piani dell'ospedale,false,true
+34,Macchia sospetta,false,true
+35,Macchia di sangue,false,true
+36,Campanello d'emergenza,false,true
+37,Avviso sulla privacy,false,true
+38,Crocifisso,false,true
+39,Tende,false,true
+40,Schede logiche,false,true
+41,Microscopio,false,true
+42,Monitor,false,true
+43,Fogli,true,true
+44,Cavi a terra,false,true
