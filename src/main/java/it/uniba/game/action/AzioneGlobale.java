@@ -5,6 +5,7 @@ import it.uniba.game.entity.Giocatore;
 import it.uniba.game.database.dao.StanzaDAO;
 
 import java.util.List;
+import java.util.ArrayList;
 
 public class AzioneGlobale {
     public StanzaDAO stanzaDAO = new StanzaDAO();
@@ -12,15 +13,17 @@ public class AzioneGlobale {
 
     public AzioneGlobale() {}
 
-    public String inventario(Giocatore giocatore, List<String> parametri) {
+    public List<String> inventario(Giocatore giocatore, List<String> parametri) {
         if (giocatore.getInventario().isEmpty()) {
-            return "L'inventario è vuoto.\n\n";
+            List<String> listaInventario = new ArrayList<>();
+            listaInventario.add("L'inventario è vuoto.");
+            return listaInventario;
         } else {
-            StringBuilder inventario = new StringBuilder();
+            List<String> listaInventario = new ArrayList<>();
             for (int i = 0; i < giocatore.getInventario().size(); i++) {
-                inventario.append(giocatore.getInventario().get(i).getNome()).append("\n");
+                listaInventario.add(giocatore.getInventario().get(i).getNome());
             }
-            return inventario.toString() + "\n\n";
+            return listaInventario;
         }
     }
 
@@ -52,6 +55,10 @@ public class AzioneGlobale {
      */
     public String aiuto(Giocatore giocatore, List<String> parametri) {
         return "Comandi Disponibili:\n" +
+                "- mappa (per visualizzare la mappa)\n" +
+                "- inventario (per visualizzare l'inventario)\n" +
+                "- salva (per salvare la partita)\n" +
+                "- esci (per uscire dal gioco)\n" +
                 "- nord, sud, est, ovest, alto, basso (per muoverti)\n" +
                 "- osserva (per mostrare gli oggetti all'interno della stanza)\n" +
                 "- esamina [oggetto] (per esaminare un oggetto)\n" +
@@ -61,10 +68,7 @@ public class AzioneGlobale {
                 "- apri [oggetto] (per aprire un armadio o una porta)\n" +
                 "- chiudi [oggetto] (per chiudere un armadio o una porta)\n" +
                 "- parla [oggetto] (per parlare con un personaggio)\n" +
-                "- leggi [oggetto] (per leggere un libro o un appunto)\n"+
-                "- inventario (per visualizzare l'inventario)\n" +
-                "- salva (per salvare la partita)\n" +
-                "- esci (per uscire dal gioco)\n\n";
+                "- leggi [oggetto] (per leggere un libro o un appunto)\n\n";
     }
 
     /**
