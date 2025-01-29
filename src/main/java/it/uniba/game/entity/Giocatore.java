@@ -10,7 +10,7 @@ public class Giocatore {
     public Giocatore() {
         this.posizioneAttuale = new Stanza("01","02","ingresso");
         this.inventario = new ArrayList<>();
-        this.inventario.add(new Oggetto("01","flipperzero"));
+        this.inventario.add(new Oggetto("01","Flipper Zero"));
     }
 
     public Stanza getPosizioneAttuale() {
