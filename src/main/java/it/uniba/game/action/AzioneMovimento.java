@@ -4,11 +4,13 @@ import it.uniba.game.entity.Giocatore;
 import it.uniba.game.entity.Stanza;
 import it.uniba.game.database.dao.MovimentoDAO;
 import it.uniba.game.database.dao.AzioneDAO;
+import it.uniba.game.database.DatabaseManager;
+
 import java.util.List;
 
 public class AzioneMovimento {
-    private MovimentoDAO movimentoDAO; // DAO per i movimenti
-    private AzioneDAO azioneDAO; // DAO per le azioni
+    public MovimentoDAO movimentoDAO = new MovimentoDAO(); // DAO per i movimenti
+    public AzioneDAO azioneDAO = new AzioneDAO(); // DAO per le azioni
 
     public AzioneMovimento() {}
 
