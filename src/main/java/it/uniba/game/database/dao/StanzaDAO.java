@@ -192,4 +192,47 @@ public class StanzaDAO {
         return null; // Restituisce null se non trova la stanza o in caso di errore
     }
 
+    /**
+     * Metodo per ottenere una stringa descrittiva degli oggetti presenti in una stanza.
+     *
+     * @param stanzaId L'ID della stanza di cui si vogliono ottenere gli oggetti.
+     * @return Una stringa che descrive gli oggetti presenti nella stanza,
+     *         o un messaggio se non ci sono oggetti o in caso di errore.
+     */
+    public String getAllOggettiStanza(String stanzaId) {
+        String query = "SELECT o.nome FROM Oggetti o " +
+                "JOIN OggettiStanze os ON o.oggetto_id = os.oggetto_id " +
+                "WHERE os.stanza_id = ?";
+        StringBuilder sb = new StringBuilder();
+        List<String> oggetti = new ArrayList<>();
+
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setString(1, stanzaId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    oggetti.add(rs.getString("nome"));
+                }
+            }
+
+            if (oggetti.isEmpty()) {
+                return "Non sembra esserci nulla di interessante qui intorno.\n";
+            } else {
+                sb.append("Osservando attentamente, noti:\n");
+                for(int i = 0; i < oggetti.size(); i++){
+                    sb.append("- ").append(oggetti.get(i));
+                    if(i < oggetti.size() -1) {
+                        sb.append(",\n");
+                    } else {
+                        sb.append(".\n");
+                    }
+                }
+
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Errore durante l'ottenimento degli oggetti della stanza: " + e.getMessage());
+            return "C'è qualcosa che non va, ma non sai identificare cosa.\n";
+        }
+        return sb.toString();
+    }
 }
