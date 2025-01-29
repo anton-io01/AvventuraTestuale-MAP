@@ -7,9 +7,10 @@ public class Giocatore {
     private Stanza posizioneAttuale;
     private List<Oggetto> inventario;
 
-    public Giocatore(Stanza posizioneAttuale) {
-        this.posizioneAttuale = posizioneAttuale;
+    public Giocatore() {
+        this.posizioneAttuale = new Stanza("01","02","ingresso");
         this.inventario = new ArrayList<>();
+        this.inventario.add(new Oggetto("01","flipperzero"));
     }
 
     public Stanza getPosizioneAttuale() {
