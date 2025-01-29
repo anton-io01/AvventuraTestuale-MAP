@@ -46,8 +46,7 @@ public class StanzaDAO {
                 Stanza stanza = new Stanza(
                         rs.getString("edificio_id"),
                         rs.getString("stanza_id"),
-                        rs.getString("nome"),
-                        rs.getBoolean("accessibile")
+                        rs.getString("nome")
                 );
                 stanze.add(stanza);
             }
@@ -68,8 +67,7 @@ public class StanzaDAO {
                     return new Stanza(
                             rs.getString("edificio_id"),
                             rs.getString("stanza_id"),
-                            rs.getString("nome"),
-                            rs.getBoolean("accessibile")
+                            rs.getString("nome")
                     );
                 }
             }
@@ -108,8 +106,7 @@ public class StanzaDAO {
                     Stanza stanza = new Stanza(
                             rs.getString("edificio_id"),
                             rs.getString("stanza_id"),
-                            rs.getString("nome"),
-                            rs.getBoolean("accessibile")
+                            rs.getString("nome")
                     );
                     stanze.add(stanza);
                 }
