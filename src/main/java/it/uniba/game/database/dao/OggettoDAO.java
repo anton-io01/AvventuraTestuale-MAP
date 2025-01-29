@@ -25,8 +25,8 @@ public class OggettoDAO {
                     return new Oggetto(
                             rs.getString("oggetto_id"),
                             rs.getString("nome"),
-                            rs.getString("descrizione"),
-                            rs.getBoolean("raccoglibile")
+                            rs.getBoolean("raccoglibile"),
+                            rs.getBoolean("visibile")
                     );
                 }
             }
