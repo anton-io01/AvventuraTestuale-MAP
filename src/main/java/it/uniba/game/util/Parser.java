@@ -19,9 +19,9 @@ public class Parser {
     private final OggettoDAO oggettoDAO;
     private final Set<String> stopwords;
 
-    public Parser(AzioneDAO azioneDAO, OggettoDAO oggettoDAO) {
-        this.azioneDAO = azioneDAO;
-        this.oggettoDAO = oggettoDAO;
+    public Parser() {
+        this.azioneDAO = new AzioneDAO();
+        this.oggettoDAO = new OggettoDAO();
         this.stopwords = caricaStopwords();
     }
 
