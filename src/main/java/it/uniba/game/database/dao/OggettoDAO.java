@@ -39,7 +39,7 @@ public class OggettoDAO {
 
     // Metodo per ottenere l'id dell'oggetto tramite il nome
     public String getOggettoIdByNome(String nome) {
-        String query = "SELECT oggetto_id FROM Oggetti WHERE nome = ?";
+        String query = "SELECT oggetto_id FROM OggettiAlias WHERE alias = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
             pstmt.setString(1, nome);
             try (ResultSet rs = pstmt.executeQuery()) {
