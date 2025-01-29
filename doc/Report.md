@@ -188,7 +188,7 @@ La tabella `Movimenti` ha vincoli di chiave esterna su:
 
 ## Edifici
 
-### Ospedale di Neo Tokyo - 02
+### Ospedale di Neo Tokyo - 01
 | Codice | Luogo              |Nord|Sud|Est|Ovest|Alto|Basso|
 |--|--------------------|--|-|--|--|--|--|
 |01|Uscita|-|-|-|-|-|-|
@@ -206,18 +206,18 @@ La tabella `Movimenti` ha vincoli di chiave esterna su:
 |13|Ufficio Dr. Chen|Corridoio2|-|-|-|-|-|
 |14|Laboratorio medico|-|-|-|Corridoio2|-|-|
 
-### Clinica del Dott. Tanaka - 03
+### Clinica del Dott. Tanaka - 02
 |Codice|Luogo|Nord|Sud|Est|Ovest|Alto|Basso|
 |--|--|--|--|--|--|--|--|
-|01|Uscita|-|-|-|-|-|-|
-|02|Porta di Sicurezza|Atrio|Uscita|-|-|-|-|
-|03|Atrio|Laboratorio Principale|Porta di Sicurezza|-|-|-|-|
-|04|Laboratorio Principale|Testing Area|Atrio|Ufficio|Server Room|-|-|
-|05|Ufficio|-|-|-|Laboratorio Principale|-|-|
-|06|Server Room|-|-|Laboratorio Principale|-|-|-|
-|07|Testing Area|-|Laboratorio Principale|-|-|-|-|
+|15|Uscita|-|-|-|-|-|-|
+|16|Porta di Sicurezza|Atrio|Uscita|-|-|-|-|
+|17|Atrio|Laboratorio Principale|Porta di Sicurezza|-|-|-|-|
+|18|Laboratorio Principale|Testing Area|Atrio|Ufficio|Server Room|-|-|
+|19|Ufficio|-|-|-|Laboratorio Principale|-|-|
+|20|Server Room|-|-|Laboratorio Principale|-|-|-|
+|21|Testing Area|-|Laboratorio Principale|-|-|-|-|
 
-### Nascondiglio di Sato
+### Nascondiglio di Sato - 03
 |Codice|Luogo|Nord|Sud|Est|Ovest|Alto|Basso|
 |--|--|--|--|--|--|--|--|
 |22|Uscita|-|-|-|-|-|-|
