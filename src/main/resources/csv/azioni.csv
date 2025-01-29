@@ -11,6 +11,7 @@ IN,inventario,globali
 OS,osserva,globali
 EN,entra,globale
 AI,aiuto,globale
+MA,mappa,globale
 EM,esamina,interazione
 PR,prendi,interazione
 LA,lascia,interazione
