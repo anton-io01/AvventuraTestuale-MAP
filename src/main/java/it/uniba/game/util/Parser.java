@@ -3,6 +3,7 @@ package it.uniba.game.util;
 import it.uniba.game.database.dao.AzioneDAO;
 import it.uniba.game.database.dao.OggettoDAO;
 
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -13,7 +14,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 public class Parser {
-    private final String STOPWORDS_FILE = "/stopwords.txt";
+    private final String STOPWORDS_FILE = "src/main/resources/stopwords.txt";
     private final AzioneDAO azioneDAO;
     private final OggettoDAO oggettoDAO;
     private final Set<String> stopwords;
@@ -31,8 +32,7 @@ public class Parser {
      */
     private Set<String> caricaStopwords() {
         Set<String> stopwordsSet = new HashSet<>();
-        try (InputStream inputStream = getClass().getResourceAsStream(STOPWORDS_FILE);
-             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(STOPWORDS_FILE))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 stopwordsSet.add(line.trim().toLowerCase());
