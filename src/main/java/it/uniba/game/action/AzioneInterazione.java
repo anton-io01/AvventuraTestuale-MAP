@@ -9,10 +9,8 @@ import java.sql.Connection;
 import java.util.List;
 
 public class AzioneInterazione {
-    private Connection connection;
-    private OggettoDAO oggettoDAO;
-    private AzioneDAO azioneDAO;
-    private Oggetto oggetto;
+    private OggettoDAO oggettoDAO = new OggettoDAO();
+    private AzioneDAO azioneDAO = new AzioneDAO();
 
     public AzioneInterazione() {
     }
