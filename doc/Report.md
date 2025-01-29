@@ -1,58 +1,37 @@
 # Report - Heartcode: il Virus
 
-## Trama
+## Indice
+- [Componenti del gruppo](#Componenti-del-gruppo)
+- [Descrizione del caso di studio](#Descrizione-del-caso-di-studio)
+- [Diagramma delle classi](#Diagramma-delle-classi)
+- [Specifica algebrica](#Specifica-algebrica)
+- [Applicazione degli argomenti del corso](#Applicazione-degli-argomenti-del-corso)
+- [Struttura del Database](#Struttura-del-Database)
+  - [Tabella `Edifici`](#Tabella-Edifici)
+  - [Tabella `Stanze`](#Tabella-Stanze)
+  - [Tabella `DescrizioniStanze`](#Tabella-DescrizioniStanze)
+  - [Tabella `Oggetti`](#Tabella-Oggetti)
+  - [Tabella `OggettiStanze`](#Tabella-OggettiStanze)
+  - [Tabella `Movimenti`](#Tabella-Movimenti)
+- [Azioni](#Azioni)
+- [Trama del gioco](#Trama-del-gioco)
+- [Mappa del gioco](#Mappa-del-gioco)
+  - [Ospedale di Neo Tokyo - 01](#Ospedale-di-Neo-Tokyo---01)
+  - [Clinica del Dott. Tanaka - 02](#Clinica-del-Dott.-Tanaka---02)
+  - [Nascondiglio di Sato - 03](#Nascondiglio-di-Sato---03)
 
-### **Prologo**: Nuovo Distretto
-- Il protagonista, un agente di polizia, viene assegnato a un nuovo distretto a Neo Tokyo.
-- Durante il primo turno, una chiamata informa di una morte sospetta presso l'ospedale della città.
 
-### **Capitolo 1**: Indagini in Ospedale
-1. **Arrivo in Ospedale**:
-    - L'agente si reca in auto presso l'ospedale per raccogliere maggiori informazioni.
-    - Alla reception, parla con l'assistente del dottore, che lo indirizza verso la stanza della vittima.
-2. **Indizi nella Stanza della Vittima**:
-    - Trova un biglietto da visita del dott. Tanaka.
-    - Riceve una nuova chiamata dalla centrale: un altro caso di morte sospetta viene segnalato. Anche in questo caso, la vittima portava un pacemaker difettoso.
-3. **Analisi del Pacemaker**:
-    - L'agente si reca al laboratorio tecnico dell'ospedale.
-    - Scopre che il pacemaker contiene un virus che altera il battito cardiaco inviando impulsi letali al cuore.
-4. **Nuovo Indizio**:
-    - Gli agenti scoprono che la vittima era stata dal dott. Tanaka pochi giorni prima.
-    - L'agente collega questo messaggio al biglietto da visita trovato nella stanza della vittima.
 
-### **Capitolo 2**: La Clinica del Dott. Tanaka
-1. **Scoperta della Clinica**:
-    - L'agente si reca alla clinica del dott. Tanaka, che appare vuota.
-    - All'interno trova un registro degli appuntamenti con una lista di persone che avevano visitato la clinica.
-2. **Indizi nella Clinica**:
-    - Accede al computer del dottore e scopre un software per controllare da remoto i pacemaker.
-    - Trova il corpo del dott. Tanaka, morto, con un mazzo di chiavi al collo.
-3. **Hard Disk e Video**:
-    - Trova un hard disk contenente file criptati.
-    - Decifra i file e scopre filmati delle telecamere che mostrano una persona, identificata come Sato, entrare nella clinica.
+## Componenti del gruppo
 
-### **Capitolo 3**: La Connessione con Sato
-1. **Ricerca su Sato**:
-    - L'agente scopre che Sato è un programmatore esperto.
-    - Trova un ritaglio di giornale che rivela la storia di Sato: sua sorella era una paziente del dott. Tanaka e morì a causa di esperimenti medici falliti.
-2. **Scoperta del Nascondiglio**:
-    - Analizzando il registro degli appuntamenti della clinica, l'agente nota orari sospetti (ad esempio, mezzanotte).
-    - I pazienti a quegli orari usavano nomi falsi, e le prime lettere dei nomi formano l'indirizzo del nascondiglio di Sato.
+## Descrizione del caso di studio
 
-### **Capitolo 4**: Il Nascondiglio di Sato
-1. **Ingresso**:
-    - L'agente si reca al nascondiglio e trova una porta di sicurezza, che riesce ad aprire risolvendo un puzzle.
-2. **Il Piano di Sato**:
-    - Sato sta pianificando un attacco informatico per uccidere persone con pacemaker, in segno di vendetta contro il dott. Tanaka.
-    - Parte un timer: l'agente deve fermare l'attacco risolvendo una serie di minigame al computer.
+## Diagramma delle classi
 
-### **Epilogo**: Finale Ramificato
-1. **Finale Positivo**:
-    - L'agente disattiva l'attacco in tempo, salvando le vittime.
-    - Riesce ad aprire la porta dove si trova Sato e lo arresta, portando prove schiaccianti.
-2. **Finale Negativo**:
-    - Se fallisce nel disattivare l'attacco, molte persone muoiono.
-    - Se non riesce ad aprire la porta in tempo, Sato cancella tutte le prove e, nonostante venga arrestato, viene rilasciato.
+## Specifica algebrica
+
+## Applicazione degli argomenti del corso
+
 
 
 ## Struttura del Database
@@ -126,20 +105,6 @@ La tabella `OggettiStanze` ha vincoli di chiave esterna su `oggetto_id`, `stanza
 ---
 
 ### Tabella `Movimenti`
-Definisce i collegamenti tra le stanze.
-
-| Attributo      | Tipo          | Vincoli                       | Descrizione                                           |
-|----------------|---------------|-------------------------------|-------------------------------------------------------|
-| `edificio_id`  | `VARCHAR(2)`  | `PRIMARY KEY`, `FOREIGN KEY`  | Identificativo dell'edificio.                        |
-| `stanza_partenza`| `VARCHAR(2)`| `PRIMARY KEY`, `FOREIGN KEY`  | Identificativo della stanza di partenza.             |
-| `direzione`    | `INT`         | `PRIMARY KEY`                 | Direzione del movimento (es: 1=NORD, 2=SUD, ecc.).   |
-| `stanza_arrivo`| `VARCHAR(2)`  | `NOT NULL`, `FOREIGN KEY`     | Identificativo della stanza di destinazione.         |
-
-**Relazioni:**  
-La tabella `Movimenti` ha vincoli di chiave esterna su `edificio_id`, `stanza_partenza` e `stanza_arrivo`, che fanno riferimento rispettivamente a `Stanze(edificio_id)`, `Stanze(stanza_id)` e `Stanze(stanza_id)`.
-
-
-### Tabella `Movimenti`
 Definisce i collegamenti tra le stanze nelle varie direzioni.
 
 | Attributo     | Tipo         | Vincoli                        | Descrizione                                            |
@@ -186,7 +151,65 @@ La tabella `Movimenti` ha vincoli di chiave esterna su:
 - Chiudi
 - Parla
 
-## Edifici
+
+
+## Trama del gioco
+
+### **Prologo**: Nuovo Distretto
+- Il protagonista, un agente di polizia, viene assegnato a un nuovo distretto a Neo Tokyo.
+- Durante il primo turno, una chiamata informa di una morte sospetta presso l'ospedale della città.
+
+### **Capitolo 1**: Indagini in Ospedale
+1. **Arrivo in Ospedale**:
+   - L'agente si reca in auto presso l'ospedale per raccogliere maggiori informazioni.
+   - Alla reception, parla con l'assistente del dottore, che lo indirizza verso la stanza della vittima.
+2. **Indizi nella Stanza della Vittima**:
+   - Trova un biglietto da visita del dott. Tanaka.
+   - Riceve una nuova chiamata dalla centrale: un altro caso di morte sospetta viene segnalato. Anche in questo caso, la vittima portava un pacemaker difettoso.
+3. **Analisi del Pacemaker**:
+   - L'agente si reca al laboratorio tecnico dell'ospedale.
+   - Scopre che il pacemaker contiene un virus che altera il battito cardiaco inviando impulsi letali al cuore.
+4. **Nuovo Indizio**:
+   - Gli agenti scoprono che la vittima era stata dal dott. Tanaka pochi giorni prima.
+   - L'agente collega questo messaggio al biglietto da visita trovato nella stanza della vittima.
+
+### **Capitolo 2**: La Clinica del Dott. Tanaka
+1. **Scoperta della Clinica**:
+   - L'agente si reca alla clinica del dott. Tanaka, che appare vuota.
+   - All'interno trova un registro degli appuntamenti con una lista di persone che avevano visitato la clinica.
+2. **Indizi nella Clinica**:
+   - Accede al computer del dottore e scopre un software per controllare da remoto i pacemaker.
+   - Trova il corpo del dott. Tanaka, morto, con un mazzo di chiavi al collo.
+3. **Hard Disk e Video**:
+   - Trova un hard disk contenente file criptati.
+   - Decifra i file e scopre filmati delle telecamere che mostrano una persona, identificata come Sato, entrare nella clinica.
+
+### **Capitolo 3**: La Connessione con Sato
+1. **Ricerca su Sato**:
+   - L'agente scopre che Sato è un programmatore esperto.
+   - Trova un ritaglio di giornale che rivela la storia di Sato: sua sorella era una paziente del dott. Tanaka e morì a causa di esperimenti medici falliti.
+2. **Scoperta del Nascondiglio**:
+   - Analizzando il registro degli appuntamenti della clinica, l'agente nota orari sospetti (ad esempio, mezzanotte).
+   - I pazienti a quegli orari usavano nomi falsi, e le prime lettere dei nomi formano l'indirizzo del nascondiglio di Sato.
+
+### **Capitolo 4**: Il Nascondiglio di Sato
+1. **Ingresso**:
+   - L'agente si reca al nascondiglio e trova una porta di sicurezza, che riesce ad aprire risolvendo un puzzle.
+2. **Il Piano di Sato**:
+   - Sato sta pianificando un attacco informatico per uccidere persone con pacemaker, in segno di vendetta contro il dott. Tanaka.
+   - Parte un timer: l'agente deve fermare l'attacco risolvendo una serie di minigame al computer.
+
+### **Epilogo**: Finale Ramificato
+1. **Finale Positivo**:
+   - L'agente disattiva l'attacco in tempo, salvando le vittime.
+   - Riesce ad aprire la porta dove si trova Sato e lo arresta, portando prove schiaccianti.
+2. **Finale Negativo**:
+   - Se fallisce nel disattivare l'attacco, molte persone muoiono.
+   - Se non riesce ad aprire la porta in tempo, Sato cancella tutte le prove e, nonostante venga arrestato, viene rilasciato.
+
+
+
+## Mappa del gioco
 
 ### Ospedale di Neo Tokyo - 01
 
