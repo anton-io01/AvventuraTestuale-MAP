@@ -215,11 +215,19 @@ public class GUI extends JFrame {
     }
 
 
-    private void initializeGame(){
-        appendToMainText("Posizione: Ospedale Centrale - Reparto Cardiologia\n\n");
-        appendToMainText("Ti trovi nel reparto di cardiologia dell'ospedale centrale. "
-                + "I monitor dei computer mostrano attività sospette nei sistemi che controllano i pacemaker. "
-                + "È necessario investigare per prevenire ulteriori attacchi.\n\n");
+    private void initializeGame() {
+        appendToMainText("L'oscurità di Neo Tokyo nasconde sempre dei segreti. Quella di questa notte è particolarmente minacciosa.\n\n");
+        appendToMainText("Sei un agente della polizia di Neo Tokyo, abituato alle notti insonni e ai vicoli malfamati. " +
+                "Tuttavia, la chiamata di stanotte ha una nota diversa: l'ospedale centrale ha segnalato una morte sospetta.\n\n");
+        appendToMainText("Un paziente, apparentemente in ottima salute, è stato stroncato da un improvviso arresto cardiaco. " +
+                "Il referto parla di malfunzionamento del pacemaker, ma una serie di decessi simili nei giorni scorsi hanno allertato l'ospedale.\n\n");
+        appendToMainText("Una macchia d'ombra si allunga su questi casi, e la tua esperienza ti dice che non si tratta di semplici coincidenze. " +
+                "L'ospedale ha deciso di non tacere e ha chiamato la polizia, sperando di trovare una risposta alla radice di questi eventi.\n\n");
+        appendToMainText("Ti trovi nell'ingresso dell'ospedale di Neo Tokyo, l'odore di disinfettante si mescola con la tensione nell'aria.\n\n");
+        appendToMainText("La tua auto è parcheggiata fuori dall'edificio, pronta a portarti dove l'indagine ti condurrà. " +
+                "Per raggiungerla, ti basterà uscire dall'ospedale e digitare il comando 'usa auto'. (Puoi usare l'auto per spostarti tra i vari edifici, ma solo se ne conosci la posizione).\n\n");
+        appendToMainText("Premi il pulsante 'AIUTO' o digita 'aiuto' per scoprire i comandi disponibili e iniziare a svelare questo mistero.\n\n");
+
         setLocationRelativeTo(null);
     }
 
