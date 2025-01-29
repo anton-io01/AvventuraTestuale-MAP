@@ -1,25 +1,25 @@
 package it.uniba.game.database.dao;
 
-import it.uniba.game.entity.Movimento;
 import it.uniba.game.entity.Stanza;
+import it.uniba.game.database.DatabaseManager;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class MovimentoDAO {
     private final Connection connection;
 
     /**
      * Costruttore che accetta una connessione al database.
-     *
-     * @param connection La connessione al database da utilizzare.
      */
-    public MovimentoDAO(Connection connection) {
-        this.connection = connection;
+    public MovimentoDAO() {
+        try {
+            this.connection = DatabaseManager.getConnection();
+        } catch (SQLException e) {
+            throw new RuntimeException("Errore durante l'ottenimento della connessione dal DatabaseManager", e);
+        }
     }
 
     /**
@@ -41,27 +41,27 @@ public class MovimentoDAO {
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
                     if (rs.getString("nord") != null) {
-                        Stanza stanzaArrivo = new StanzaDAO(connection).getStanzaById(rs.getString("nord"));
+                        Stanza stanzaArrivo = new StanzaDAO().getStanzaById(rs.getString("nord"));
                         descrizioneMovimenti.append("A nord la stanza ").append(stanzaArrivo.getNome()).append(".\n");
                     }
                     if (rs.getString("sud") != null) {
-                        Stanza stanzaArrivo = new StanzaDAO(connection).getStanzaById(rs.getString("sud"));
+                        Stanza stanzaArrivo = new StanzaDAO().getStanzaById(rs.getString("sud"));
                         descrizioneMovimenti.append("A sud la stanza ").append(stanzaArrivo.getNome()).append(".\n");
                     }
                     if (rs.getString("est") != null) {
-                        Stanza stanzaArrivo = new StanzaDAO(connection).getStanzaById(rs.getString("est"));
+                        Stanza stanzaArrivo = new StanzaDAO().getStanzaById(rs.getString("est"));
                         descrizioneMovimenti.append("A est la stanza ").append(stanzaArrivo.getNome()).append(".\n");
                     }
                     if (rs.getString("ovest") != null) {
-                        Stanza stanzaArrivo = new StanzaDAO(connection).getStanzaById(rs.getString("ovest"));
+                        Stanza stanzaArrivo = new StanzaDAO().getStanzaById(rs.getString("ovest"));
                         descrizioneMovimenti.append("A ovest la stanza ").append(stanzaArrivo.getNome()).append(".\n");
                     }
                     if (rs.getString("alto") != null) {
-                        Stanza stanzaArrivo = new StanzaDAO(connection).getStanzaById(rs.getString("alto"));
+                        Stanza stanzaArrivo = new StanzaDAO().getStanzaById(rs.getString("alto"));
                         descrizioneMovimenti.append("In alto la stanza ").append(stanzaArrivo.getNome()).append(".\n");
                     }
                     if (rs.getString("basso") != null) {
-                        Stanza stanzaArrivo = new StanzaDAO(connection).getStanzaById(rs.getString("basso"));
+                        Stanza stanzaArrivo = new StanzaDAO().getStanzaById(rs.getString("basso"));
                         descrizioneMovimenti.append("In basso la stanza ").append(stanzaArrivo.getNome()).append(".\n");
                     }
                 }
@@ -98,7 +98,7 @@ public class MovimentoDAO {
                     String stanzaArrivoId = rs.getString(1);
                     if (stanzaArrivoId != null) {
                         // Recupera la stanza dal suo DAO
-                        StanzaDAO stanzaDAO = new StanzaDAO(connection);
+                        StanzaDAO stanzaDAO = new StanzaDAO();
                         return stanzaDAO.getStanzaById(stanzaArrivoId);
                     }
                 }
