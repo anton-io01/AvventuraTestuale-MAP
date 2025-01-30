@@ -5,6 +5,8 @@ public class Stanza {
     private String stanzaId;
     private String nome;
 
+    public Stanza() {}
+
     public Stanza(String edificioId, String stanzaId, String nome) {
         this.edificioId = edificioId;
         this.stanzaId = stanzaId;
