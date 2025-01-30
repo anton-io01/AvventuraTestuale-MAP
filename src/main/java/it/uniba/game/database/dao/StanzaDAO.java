@@ -1,6 +1,7 @@
 package it.uniba.game.database.dao;
 
 import it.uniba.game.entity.Stanza;
+import it.uniba.game.entity.Edificio;
 import it.uniba.game.database.DatabaseManager;
 
 import java.sql.*;
@@ -79,20 +80,27 @@ public class StanzaDAO {
     }
 
     // Metodo per ottenere l'edificio di una stanza tramite stanza_id
-    public String getEdificioByStanza(String stanzaId) {
-        String query = "SELECT edificio_id FROM Stanze WHERE stanza_id = ?";
+    public Edificio getEdificioByStanza(String stanzaId) {
+        Edificio edificio = null;
+        String query = "SELECT e.edificio_id, e.nome, e.accessibile, e.descrizione FROM Edifici e " +
+                "JOIN Stanze s ON e.edificio_id = s.edificio_id " +
+                "WHERE s.stanza_id = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
             pstmt.setString(1, stanzaId);
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
-                    return rs.getString("edificio_id");
+                    String edificioId = rs.getString("edificio_id");
+                    String nome = rs.getString("nome");
+                    boolean accessibile = rs.getBoolean("accessibile");
+                    String descrizione = rs.getString("descrizione");
+                    edificio = new Edificio(edificioId, nome, accessibile, descrizione);
                 }
             }
         } catch (SQLException e) {
-            System.err.println("Errore durante l'ottenimento dell'edificio per stanza.");
+            System.err.println("Errore durante l'ottenimento dell'edificio per stanza: " + e.getMessage());
             e.printStackTrace();
         }
-        return null;
+        return edificio;
     }
 
     // Metodo per ottenere le stanze di un edificio
