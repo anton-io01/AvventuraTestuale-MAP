@@ -24,6 +24,12 @@ public class SaveManager {
             System.out.println("Non è possibile effettuare il salvataggio di un database in memoria.");
             return false;
         }
+
+        // Rimuovi il prefisso "h2:" dal sourcePath
+        if (sourcePath.startsWith("h2:")) {
+            sourcePath = sourcePath.substring(sourcePath.indexOf(":") + 1);
+        }
+
         String destinationPath = SAVE_DIRECTORY + SAVE_FILE_NAME;
         try {
             // Crea la cartella di salvataggio se non esiste
@@ -76,6 +82,12 @@ public class SaveManager {
             System.out.println("Non è possibile effettuare il caricamento su un database in memoria.");
             return false;
         }
+
+        // Rimuovi il prefisso "h2:" dal destinationPath
+        if (destinationPath.startsWith("h2:")) {
+            destinationPath = destinationPath.substring(destinationPath.indexOf(":") + 1);
+        }
+
 
         File saveFile = new File(sourcePath);
 
