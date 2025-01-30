@@ -39,6 +39,14 @@ public class AzioneGlobale {
         }
     }
 
+    public String carica(Giocatore giocatore, List<String> parametri){
+        if (SaveManager.loadGame()) {
+            return "Caricamento completato con successo!\n\n";
+        } else {
+            return "Errore durante il caricamento del salvataggio o nessun salvataggio esistente.\n\n";
+        }
+    }
+
     public String osserva(Giocatore giocatore, List<String> parametri) {
         return stanzaDAO.getAllOggettiStanza(giocatore.getPosizioneAttualeId()) + "\n\n";
     }
