@@ -3,6 +3,7 @@ package it.uniba.game.action;
 import it.uniba.game.database.dao.MovimentoDAO;
 import it.uniba.game.entity.Giocatore;
 import it.uniba.game.database.dao.StanzaDAO;
+import it.uniba.game.util.SaveManager;
 
 import java.util.List;
 
@@ -31,9 +32,11 @@ public class AzioneGlobale {
     }
 
     public String salva(Giocatore giocatore, List<String> parametri) {
-        System.out.println("Salvataggio...");
-        System.out.println("Salvataggio completato.");
-        return null;
+        if(SaveManager.saveGame()){
+            return "Salvataggio completato con successo!\n\n";
+        } else {
+            return "Errore durante il salvataggio.\n\n";
+        }
     }
 
     public String osserva(Giocatore giocatore, List<String> parametri) {
