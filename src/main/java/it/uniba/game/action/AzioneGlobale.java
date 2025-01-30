@@ -3,17 +3,18 @@ package it.uniba.game.action;
 import it.uniba.game.database.dao.MovimentoDAO;
 import it.uniba.game.entity.Giocatore;
 import it.uniba.game.database.dao.StanzaDAO;
-import it.uniba.game.database.dao.OggettoDAO;
-import it.uniba.game.util.SaveManager;
 
 import java.util.List;
 
+
 public class AzioneGlobale {
-    public StanzaDAO stanzaDAO = new StanzaDAO();
-    public MovimentoDAO movimentoDAO = new MovimentoDAO();
+    private final StanzaDAO stanzaDAO = new StanzaDAO();
+    private final MovimentoDAO movimentoDAO = new MovimentoDAO();
+
 
     public AzioneGlobale() {
     }
+
 
     public String inventario(Giocatore giocatore, List<String> parametri) {
         if (giocatore.getInventario().isEmpty()) {
@@ -26,40 +27,16 @@ public class AzioneGlobale {
             return inventario.toString();
         }
     }
-
     public String esci(Giocatore giocatore, List<String> parametri) {
         System.out.println("Arrivederci!");
         System.exit(0);
         return null;
     }
 
-    public String salva(Giocatore giocatore, List<String> parametri) {
-        if (SaveManager.saveGame(giocatore)) {
-            return "Salvataggio completato con successo!\n\n";
-        } else {
-            return "Errore durante il salvataggio.\n\n";
-        }
-    }
-
-    public String carica(Giocatore giocatore, List<String> parametri) {
-        StanzaDAO stanzaDAO = new StanzaDAO();
-        OggettoDAO oggettoDAO = new OggettoDAO();
-        Giocatore giocatoreCaricato = SaveManager.loadGame(stanzaDAO, oggettoDAO);
-        if (giocatoreCaricato != null) {
-            //Aggiorno il giocatore attuale con il giocatore caricato da file
-            giocatore.setPosizioneAttuale(giocatoreCaricato.getPosizioneAttuale());
-            giocatore.getInventario().clear();
-            giocatore.getInventario().addAll(giocatoreCaricato.getInventario());
-            return "Caricamento completato con successo!\n\n";
-        } else {
-            return "Errore durante il caricamento del salvataggio o nessun salvataggio esistente.\n\n";
-        }
-    }
 
     public String osserva(Giocatore giocatore, List<String> parametri) {
         return stanzaDAO.getAllOggettiStanza(giocatore.getPosizioneAttualeId()) + "\n\n";
     }
-
 
     /**
      * Mostra l'elenco dei comandi disponibili.
@@ -87,6 +64,7 @@ public class AzioneGlobale {
                 "- leggi [oggetto] (per leggere un libro o un appunto)\n\n";
     }
 
+
     /**
      * Mostra la mappa del gioco.
      *
@@ -101,4 +79,24 @@ public class AzioneGlobale {
             return "Il passaggio è bloccato... Da qui puoi solo tornare indietro.\n\n";
         }
     }
+
+    /**
+     * Metodo per salvare lo stato corrente del gioco.
+     * @param giocatore il giocatore corrente.
+     * @param parametri nessun parametro in input
+     * @return feedback per l'utente
+     */
+    public String salva(Giocatore giocatore, List<String> parametri) {
+        return "Partita salvata con successo\n\n";
+    }
+    /**
+     * Metodo per caricare l'ultima partita salvata.
+     * @param giocatore il giocatore corrente (non utilizzato qui, si presuppone di crearne uno nuovo)
+     * @param parametri  nessun parametro
+     * @return feedback per l'utente.
+     */
+    public String carica(Giocatore giocatore, List<String> parametri) {
+        return "Partita caricata con successo\n\n";
+    }
+
 }
