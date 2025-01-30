@@ -1,6 +1,7 @@
 package it.uniba.game.action;
 
 import it.uniba.game.database.dao.AzioneDAO;
+import it.uniba.game.database.dao.EdificioDAO;
 import it.uniba.game.entity.Giocatore;
 import it.uniba.game.database.dao.OggettoDAO;
 import it.uniba.game.entity.Oggetto;
@@ -10,6 +11,7 @@ import java.util.List;
 public class AzioneInterazione {
     private OggettoDAO oggettoDAO = new OggettoDAO();
     private AzioneDAO azioneDAO = new AzioneDAO();
+    private EdificioDAO edificioDAO = new EdificioDAO();
 
     public AzioneInterazione() {
     }
@@ -24,7 +26,15 @@ public class AzioneInterazione {
         if (parametri.size() != 2) {
             return "Devi specificare un oggetto da esaminare.\n\n";
         }
-        String descrizioneOggetto = oggettoDAO.getDescrizioneDettagliataOggetto(parametri.get(1));
+        String azione_id = parametri.get(0);
+        String oggetto_id = parametri.get(1);
+        String stanza_id = giocatore.getPosizioneAttualeId();
+        switch(azione_id + oggetto_id + stanza_id){
+            case "EM0211":
+                edificioDAO.updateEdificioAccessibilita(stanza_id, true);
+        }
+
+        String descrizioneOggetto = oggettoDAO.getDescrizioneDettagliataOggetto(oggetto_id);
         if (descrizioneOggetto != null) {
             return descrizioneOggetto + "\n\n";
         } else {
@@ -119,23 +129,7 @@ public class AzioneInterazione {
                 }
         }
     }
-    /**
-     * Chiude un oggetto.
-     *
-     * @param giocatore
-     * @param parametri
-     */
-    public String chiudi(Giocatore giocatore, List<String> parametri) {
-        if(parametri.size() < 2){
-            return "Devi specificare un oggetto da chiudere\n\n";
-        }
-        if (azioneDAO.verificaAzioneInterazione(parametri.get(0), parametri.get(1), giocatore.getPosizioneAttualeId())) {
-            oggettoDAO.setVisibilitaOggetto(parametri.get(1), false);
-            return "Hai chiuso l'oggetto.\n\n";
-        } else {
-            return "Non puoi chiudere questo oggetto.\n\n";
-        }
-    }
+
     /**
      * Parla con un personaggio nella stanza.
      *
