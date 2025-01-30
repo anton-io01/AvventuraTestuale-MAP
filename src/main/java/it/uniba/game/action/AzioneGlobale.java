@@ -7,6 +7,14 @@ import it.uniba.game.entity.Giocatore;
 import it.uniba.game.database.dao.StanzaDAO;
 
 import java.util.List;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Base64;
+import java.nio.charset.StandardCharsets;
 
 
 public class AzioneGlobale {
@@ -87,20 +95,57 @@ public class AzioneGlobale {
     /**
      * Metodo per salvare lo stato corrente del gioco.
      * @param giocatore il giocatore corrente.
-     * @param parametri nessun parametro in input
+     * @param params tempo rimanente.
      * @return feedback per l'utente
      */
-    public String salva(Giocatore giocatore, List<String> parametri) {
-        return "Partita salvata con successo\n\n";
-    }
-    /**
-     * Metodo per caricare l'ultima partita salvata.
-     * @param giocatore il giocatore corrente (non utilizzato qui, si presuppone di crearne uno nuovo)
-     * @param parametri  nessun parametro
-     * @return feedback per l'utente.
-     */
-    public String carica(Giocatore giocatore, List<String> parametri) {
-        return "Partita caricata con successo\n\n";
-    }
+    public String salva(Giocatore giocatore, List<String> params) {
+        String filePath = "./src/main/resources/saves/save.txt"; // percorso dove salvare la partita
+        if(params.size() < 2) {
+            System.err.println("Parametri non sufficienti per il save");
+            return "Errore nel salvataggio della partita";
+        }
+        try {
+            String playerParams = giocatore.getPlayerParams(); // recupero lo stato del player
+            if(playerParams.equals("")){
+                return "Errore: Non sei ancora in una posizione nel mondo di gioco!";
+            }
+            // crea la cartella se non esiste
+            Path dirPath = Paths.get("./src/main/resources/saves");
+            if(!Files.exists(dirPath)) {
+                Files.createDirectories(dirPath);
+            }
+            try(BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
 
+                if (params != null && !params.isEmpty()) { //recupero il time restante
+                    try {
+                        int timeRemaining = Integer.parseInt(params.get(0)); //prendo l'info da string
+                        writer.write(timeRemaining + "\n");
+                    } catch (NumberFormatException e) {
+                        writer.write(7200+"\n"); //time default
+                    }
+                }else{
+                    writer.write(7200+"\n"); //default timer
+                }
+
+
+                writer.write(playerParams + "\n");
+                String encodedTextContent = params.get(1);
+                if (encodedTextContent!=null) {
+
+                    writer.write(new String(Base64.getDecoder().decode(encodedTextContent), StandardCharsets.UTF_8));// scrive la textarea decoded.
+
+                }
+                return "Partita salvata correttamente! Percorso file: " + filePath;
+
+            }
+
+
+        } catch (IOException e) {
+            System.err.println("Errore nel salvataggio della partita");
+            e.printStackTrace();
+            return "Errore nel salvataggio della partita" + e;
+
+
+        }
+    }
 }
