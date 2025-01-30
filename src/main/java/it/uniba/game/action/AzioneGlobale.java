@@ -76,11 +76,11 @@ public class AzioneGlobale {
      * @return
      */
     public String mappa(Giocatore giocatore, List<String> parametri) {
+        Edificio edificio = stanzaDAO.getEdificioByStanza(giocatore.getPosizioneAttualeId());
         if (stanzaDAO.isStanzaAccessibile(giocatore.getPosizioneAttuale().getStanzaId())) {
-            Edificio edificio = stanzaDAO.getEdificioByStanza(giocatore.getPosizioneAttualeId());
             return "Edificio: " + edificio.getNome() + "\nSei nella stanza: " + giocatore.getPosizioneAttuale().getNome() + ".\n" + movimentoDAO.getMovimentiByStanza(giocatore.getPosizioneAttuale()) + "\n\n";
         } else {
-            return "Il passaggio è bloccato... Da qui puoi solo tornare indietro.\n\n";
+            return "Edificio: " + edificio.getNome() + "\nSei nella stanza: " + giocatore.getPosizioneAttuale().getNome() + ".\n" +"Il passaggio è bloccato... Da qui puoi solo tornare indietro.\n\n";
         }
     }
 
