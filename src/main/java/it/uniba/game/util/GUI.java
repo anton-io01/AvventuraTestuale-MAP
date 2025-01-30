@@ -1,7 +1,11 @@
 package it.uniba.game.util;
 
-import it.uniba.game.Engine;
 import it.uniba.game.action.AzioneGlobale;
+import it.uniba.game.action.GestoreAzioni;
+import it.uniba.game.database.DatabaseInitializer;
+import it.uniba.game.database.dao.OggettoDAO;
+import it.uniba.game.database.dao.StanzaDAO;
+import it.uniba.game.entity.Giocatore;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,22 +21,32 @@ public class GUI extends JFrame {
     private JTextField inputField;
     private boolean isInventoryShowing = false;
     private boolean isMapShowing = false;
-    private Engine engine;
     private AzioneGlobale azioneGlobale;
     private JLabel timerLabel;    // Label per il timer
     private ScheduledExecutorService executor; //Gestione delle chiamate thread periodiche
     private int timeRemaining = 7200;  // 2 ore in seconds
+    private GestoreAzioni gestoreAzioni;
+    private Giocatore giocatore;
+    private Parser parser;
+    private StanzaDAO stanzaDAO;
+    private OggettoDAO oggettoDAO;
 
-    public GUI(Engine engine) {
+
+    public GUI() {
         super("Gioco Avventura Testuale");
-        this.engine = engine;
-        this.azioneGlobale = new AzioneGlobale();
-
-
         setupFrame();
         setupComponents();
         initializeGame();
+
+
+        this.parser = new Parser();
+
+        this.azioneGlobale = new AzioneGlobale();
+
+
+
     }
+
 
 
     private void setupFrame() {
@@ -61,29 +75,25 @@ public class GUI extends JFrame {
         // Menu bar
         JMenuBar menuBar = new JMenuBar();
         JMenu fileMenu = new JMenu("File");
+        JMenuItem newGameItem = new JMenuItem("Nuova Partita");
         JMenuItem saveItem = new JMenuItem("Salva");
-        JMenuItem loadItem = new JMenuItem("Carica Partita");
         JMenuItem exitItem = new JMenuItem("Esci");
 
+        fileMenu.add(newGameItem);
         fileMenu.add(saveItem);
-        fileMenu.add(loadItem);
         fileMenu.addSeparator();
         fileMenu.add(exitItem);
         menuBar.add(fileMenu);
         setJMenuBar(menuBar);
-        saveItem.addActionListener(e -> {
-            String output = (String) engine.processCommand("salva");
-            if(output !=null){
-                appendToMainText(output);
-
-            }
+        newGameItem.addActionListener(e -> {
+            resetGame();
         });
-        loadItem.addActionListener(e -> {
-            String output = (String) engine.processCommand("carica");
+        saveItem.addActionListener(e -> {
+            String output = (String) processCommand("salva");
             if(output !=null){
                 appendToMainText(output);
-            }
 
+            }
         });
 
 
@@ -192,7 +202,7 @@ public class GUI extends JFrame {
         bottomPanel.add(inputPanel, BorderLayout.SOUTH);
         add(bottomPanel, BorderLayout.SOUTH);
         mapButton.addActionListener(e -> {
-            String output = (String) engine.processCommand("mappa");
+            String output = (String) processCommand("mappa");
             if(output!= null){
                 appendToMainText(output);
                 isMapShowing = false;
@@ -208,7 +218,7 @@ public class GUI extends JFrame {
         });
 
         helpButton.addActionListener(e -> {
-            String output = (String) engine.processCommand("aiuto");
+            String output = (String) processCommand("aiuto");
             if (output != null) {
                 appendToMainText(output);
                 isMapShowing = false;
@@ -222,7 +232,7 @@ public class GUI extends JFrame {
             String text = inputField.getText().trim().toLowerCase();
             if (!text.isEmpty()) {
                 appendToMainText("> " + text + "\n\n");
-                Object output = engine.processCommand(text);
+                Object output = processCommand(text);
                 handleCommandOutput(text, output);
                 inputField.setText("");
 
@@ -256,9 +266,28 @@ public class GUI extends JFrame {
 
         }
     }
+    private void initializeGame(){
+        // Inizializzazione del database
+        try{
+            DatabaseInitializer.initializeDatabase();
 
-    private void initializeGame() {
+            //istanzio i DAO
+            stanzaDAO = new StanzaDAO();
+            oggettoDAO = new OggettoDAO();
+            gestoreAzioni = new GestoreAzioni();
 
+
+            //Creazione del giocatore di default all'avvio del game.
+            giocatore = new Giocatore();
+            //Imposto posizione iniziale
+            if(giocatore.getPosizioneAttuale()==null) { // set posizione default / lista oggetti
+                giocatore.setPosizioneAttuale(stanzaDAO.getStanzaById("02"));
+                giocatore.aggiungiOggetto(oggettoDAO.getOggettoById("01"));
+            }
+        }catch (Exception e){
+            System.err.println("Errore durante l'inizializzazione del gioco:");
+            e.printStackTrace();
+        }
         executor = Executors.newSingleThreadScheduledExecutor();
         executor.scheduleAtFixedRate(() -> {
             timeRemaining--;
@@ -292,8 +321,56 @@ public class GUI extends JFrame {
         appendToMainText("Premi il pulsante 'AIUTO' o digita 'aiuto' per scoprire i comandi disponibili e iniziare a svelare questo mistero.\n\n");
 
         setLocationRelativeTo(null);
-    }
+        this.setVisible(true); //imposto il frame come visibile solo al termine dell'inizializzazione.
 
+    }
+    private void resetGame() {
+        timeRemaining = 7200;  // Reset del timer a 2 ore in secondi
+        mainTextArea.setText("");    // Pulisci l'area di testo principale
+        this.giocatore = new Giocatore();    // Crea un nuovo giocatore
+        if(giocatore.getPosizioneAttuale()==null) { // set posizione default / lista oggetti
+            giocatore.setPosizioneAttuale(stanzaDAO.getStanzaById("02"));
+            giocatore.aggiungiOggetto(oggettoDAO.getOggettoById("01"));
+        }
+        //riavvio il timer con gli stessi dati
+        executor = Executors.newSingleThreadScheduledExecutor();
+        executor.scheduleAtFixedRate(() -> {
+            timeRemaining--;
+
+            String hours = String.format("%02d", timeRemaining / 3600);
+            String minutes = String.format("%02d", (timeRemaining % 3600) / 60);
+            String seconds = String.format("%02d", timeRemaining % 60);
+
+
+            if (timeRemaining <= 0) {
+                timerLabel.setText("Tempo scaduto. GAME OVER");
+                executor.shutdown();
+
+            } else {
+                timerLabel.setText("Timer: " + hours + ":" + minutes + ":" + seconds);
+
+            }
+        }, 0, 1, TimeUnit.SECONDS);
+        appendToMainText("L'oscurità di Neo Tokyo nasconde sempre dei segreti. Quella di questa notte è particolarmente minacciosa.\n\n");
+        appendToMainText("Sei un agente della polizia di Neo Tokyo, abituato alle notti insonni e ai vicoli malfamati. " +
+                "Tuttavia, la chiamata di stanotte ha una nota diversa: l'ospedale centrale ha segnalato una morte sospetta.\n\n");
+        appendToMainText("Un paziente, apparentemente in ottima salute, è stato stroncato da un improvviso arresto cardiaco. " +
+                "Il referto parla di malfunzionamento del pacemaker, ma una serie di decessi simili nei giorni scorsi hanno allertato l'ospedale.\n\n");
+        appendToMainText("Una macchia d'ombra si allunga su questi casi, e la tua esperienza ti dice che non si tratta di semplici coincidenze. " +
+                "L'ospedale ha deciso di non tacere e ha chiamato la polizia, sperando di trovare una risposta alla radice di questi eventi.\n\n");
+        appendToMainText("Ti trovi nell'ingresso dell'ospedale di Neo Tokyo, l'odore di disinfettante si mescola con la tensione nell'aria.\n\n");
+        appendToMainText("La tua auto è parcheggiata fuori dall'edificio, pronta a portarti dove l'indagine ti condurrà. " +
+                "Per raggiungerla, ti basterà uscire dall'ospedale e digitare il comando 'usa auto'. (Puoi usare l'auto per spostarti tra i vari edifici, ma solo se ne conosci la posizione).\n\n");
+        appendToMainText("Premi il pulsante 'AIUTO' o digita 'aiuto' per scoprire i comandi disponibili e iniziare a svelare questo mistero.\n\n");
+
+        isInventoryShowing = false;
+        isMapShowing = false;
+
+        updateSidePanel();
+
+
+
+    }
     private void updateSidePanel() {
         sidePanel.removeAll();
         if (!isMapShowing && !isInventoryShowing) {
@@ -322,7 +399,7 @@ public class GUI extends JFrame {
         sidePanel.add(Box.createVerticalStrut(10));
 
 
-        String output = (String) engine.processCommand("inventario");
+        String output = (String) processCommand("inventario");
         if (output != null) {
 
             String[] items = output.split("\n");
@@ -373,7 +450,7 @@ public class GUI extends JFrame {
         titlePanel.add(titleLabel);
         sidePanel.add(titlePanel);
         sidePanel.add(Box.createVerticalStrut(10));
-        String output = (String) engine.processCommand("mappa");
+        String output = (String) processCommand("mappa");
 
         JTextArea textArea = new JTextArea(output);
         textArea.setEditable(false);
@@ -397,5 +474,9 @@ public class GUI extends JFrame {
             e.printStackTrace();
         }
 
+    }
+
+    public Object processCommand(String input) {
+        return gestoreAzioni.esegui(giocatore, parser.parseInput(input));
     }
 }
