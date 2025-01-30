@@ -24,6 +24,6 @@ edificio_id,stanza_id,nome,accessibile
 03,23,hall principale,false
 03,24,corridoio,true
 03,25,server room,true
-03,26,sala di controllo,false
+03,26,sala di controllo,true
 03,27,magazzino,true
 03,28,nascondiglio di Sato,false
