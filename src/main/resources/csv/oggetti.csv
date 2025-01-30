@@ -27,7 +27,7 @@ oggetto_id,nome,raccoglibile,visibile
 26,Orologio,false,true
 27,Cartello pericolo,false,true
 28,Libreria,false,true
-29,Libro,true,true
+29,Libro,false,true
 30,Pannello di controllo,false,true
 31,Guanto di lattice,true,true
 32,Fiala di medicinale,true,true
