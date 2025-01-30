@@ -1,11 +1,12 @@
 package it.uniba.game.util;
 
 import it.uniba.game.Engine;
+import it.uniba.game.action.AzioneGlobale;
+
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionListener;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 
 public class GUI extends JFrame {
     private JTextArea mainTextArea;
@@ -14,10 +15,12 @@ public class GUI extends JFrame {
     private boolean isInventoryShowing = false;
     private boolean isMapShowing = false;
     private Engine engine;
+    private AzioneGlobale azioneGlobale;
 
     public GUI(Engine engine) {
         super("Gioco Avventura Testuale");
         this.engine = engine; // Salva l'istanza di Engine
+        this.azioneGlobale = new AzioneGlobale();
         setupFrame();
         setupComponents();
         initializeGame();
@@ -49,10 +52,10 @@ public class GUI extends JFrame {
         JMenuBar menuBar = new JMenuBar();
         JMenu fileMenu = new JMenu("File");
         JMenuItem saveItem = new JMenuItem("Salva");
-        JMenuItem saveAndExitItem = new JMenuItem("Salva ed Esci");
+        JMenuItem loadItem = new JMenuItem("Carica Partita");
         JMenuItem exitItem = new JMenuItem("Esci");
         fileMenu.add(saveItem);
-        fileMenu.add(saveAndExitItem);
+        fileMenu.add(loadItem);
         fileMenu.addSeparator();
         fileMenu.add(exitItem);
         menuBar.add(fileMenu);
@@ -60,13 +63,18 @@ public class GUI extends JFrame {
 
         // Action listeners per il menu
         saveItem.addActionListener(e -> {
-            // Implementa la logica di salvataggio
+            String output = (String) engine.processCommand("salva");
+            if(output != null){
+                appendToMainText(output);
+            }
+        });
+        loadItem.addActionListener(e -> {
+            String output = (String) engine.processCommand("carica");
+            if(output != null){
+                appendToMainText(output);
+            }
         });
 
-        saveAndExitItem.addActionListener(e -> {
-            // Implementa la logica di salvataggio
-            System.exit(0);
-        });
 
         exitItem.addActionListener(e -> System.exit(0));
 
