@@ -80,32 +80,4 @@ public class EdificioDAO {
         return null;
     }
 
-    // Metodo per aggiornare un edificio
-    public void updateEdificio(String edificioId, String nome, boolean accessibile, String descrizione) {
-        String query = "UPDATE Edifici SET nome = ?, accessibile = ?, descrizione = ? WHERE edificio_id = ?";
-        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
-            pstmt.setString(1, nome);
-            pstmt.setBoolean(2, accessibile);
-            pstmt.setString(3, descrizione);
-            pstmt.setString(4, edificioId);
-            pstmt.executeUpdate();
-            System.out.println("Edificio aggiornato con successo.");
-        } catch (SQLException e) {
-            System.err.println("Errore durante l'aggiornamento dell'edificio.");
-            e.printStackTrace();
-        }
-    }
-
-    // Metodo per eliminare un edificio
-    public void deleteEdificio(String edificioId) {
-        String query = "DELETE FROM Edifici WHERE edificio_id = ?";
-        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
-            pstmt.setString(1, edificioId);
-            pstmt.executeUpdate();
-            System.out.println("Edificio eliminato con successo.");
-        } catch (SQLException e) {
-            System.err.println("Errore durante l'eliminazione dell'edificio.");
-            e.printStackTrace();
-        }
-    }
 }
