@@ -1,5 +1,7 @@
 package it.uniba.game;
 
+import it.uniba.game.database.dao.StanzaDAO;
+import it.uniba.game.database.dao.OggettoDAO;
 import it.uniba.game.action.GestoreAzioni;
 import it.uniba.game.database.DatabaseInitializer;
 import it.uniba.game.entity.Giocatore;
@@ -20,8 +22,13 @@ public class Engine {
             // Inizializzazione del database
             DatabaseInitializer.initializeDatabase();
 
+            StanzaDAO stanzaDAO = new StanzaDAO();
+            OggettoDAO oggettoDAO = new OggettoDAO();
+
             gestoreAzioni = new GestoreAzioni();
             giocatore = new Giocatore();
+            giocatore.setPosizioneAttuale(stanzaDAO.getStanzaById("02"));
+            giocatore.aggiungiOggetto(oggettoDAO.getOggettoById("01"));
             parser = new Parser();
             // Inizializza e avvia la GUI nel costruttore
             SwingUtilities.invokeLater(() -> {
