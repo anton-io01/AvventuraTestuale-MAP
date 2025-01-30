@@ -125,6 +125,23 @@ public class StanzaDAO {
         return null;
     }
 
+    //metodo per ottenere l'edificioId di una stanza tramite stanza_id
+    public String getEdificioIdByStanza(String stanzaId) {
+        String query = "SELECT edificio_id FROM Stanze WHERE stanza_id = ?";
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setString(1, stanzaId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("edificio_id");
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Errore durante l'ottenimento dell'edificio per stanza: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     // Metodo per ottenere l'edificio di una stanza tramite stanza_id
     public Edificio getEdificioByStanza(String stanzaId) {
         Edificio edificio = null;
