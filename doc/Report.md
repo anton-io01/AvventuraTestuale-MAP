@@ -29,9 +29,7 @@
 
 ## Descrizione del caso di studio
 
-## Descrizione del Caso di Studio: Neo Tokyo Cybercrime
-
-L'avventura testuale sviluppata, denominata **Neo Tokyo Cybercrime**, immerge il giocatore nei panni di un agente di polizia incaricato di indagare su una serie di morti sospette a Neo Tokyo, legate a pacemaker difettosi. L'obiettivo del gioco è quello di svelare il mistero dietro questi decessi, scoprire il colpevole e fermare un attacco informatico prima che sia troppo tardi.
+L'avventura testuale sviluppata, denominata **Heartcode: il Virus**, immerge il giocatore nei panni di un agente di polizia incaricato di indagare su una serie di morti sospette a Neo Tokyo, legate a pacemaker difettosi. L'obiettivo del gioco è quello di svelare il mistero dietro questi decessi, scoprire il colpevole e fermare un attacco informatico prima che sia troppo tardi.
 
 L'ambientazione principale è una Neo Tokyo futuristica, con diverse location chiave che si susseguono nel corso dell'indagine: l'ospedale cittadino, la clinica privata del dott. Tanaka e il nascondiglio di un programmatore esperto. Il giocatore dovrà muoversi tra queste location, raccogliere indizi, risolvere enigmi e interagire con vari personaggi per progredire nella storia.
 
@@ -47,7 +45,7 @@ L'avventura si svolge in un arco temporale di circa 60 minuti, questo per render
 
 **Punti chiave della descrizione:**
 
-*   **Titolo:** *Neo Tokyo Cybercrime* – Chiaro e tematicamente rilevante.
+*   **Titolo:** *Heartcode: il Virus*.
 *   **Obiettivo:** Svelare il mistero e fermare un attacco informatico.
 *   **Ambientazione:** Neo Tokyo futuristica con location chiave (ospedale, clinica, nascondiglio).
 *   **Difficoltà:** Medio-alta, basata sull'analisi e il collegamento degli indizi.
@@ -58,10 +56,11 @@ L'avventura si svolge in un arco temporale di circa 60 minuti, questo per render
 *   **Avvio:** Il gioco deve essere avviato eseguendo la classe `Engine`.
 *   **Nota:** Impedimento di avviare il gioco dal terminale dell'IDE.
 
+
+
 ## Diagramma delle classi
 
 ## Specifica algebrica
-
 ### Specifica Algebrica della Classe `Giocatore`
 
 Questa sezione presenta la specifica algebrica della classe `Giocatore`, che gestisce l'inventario, la posizione e le interazioni con gli oggetti nel gioco.
@@ -266,33 +265,6 @@ La tabella `Movimenti` ha vincoli di chiave esterna su:
 
 
 
-## Azioni
-### Movimento
-- Nord
-- Sud
-- Est
-- Ovest
-- Alto
-- Basso
-
-### Generali
-- Esci
-- Salva
-- Inventario
-- Guarda
-- Osserva
-
-### Interazione
-- Esamina
-- Prendi
-- Lascia
-- Usa
-- Apri
-- Chiudi
-- Parla
-
-
-
 ## Trama del gioco
 
 ### **Prologo**: Nuovo Distretto
@@ -304,25 +276,18 @@ La tabella `Movimenti` ha vincoli di chiave esterna su:
    - L'agente si reca in auto presso l'ospedale per raccogliere maggiori informazioni.
    - Alla reception, parla con l'assistente del dottore, che lo indirizza verso la stanza della vittima.
 2. **Indizi nella Stanza della Vittima**:
-   - Trova un biglietto da visita del dott. Tanaka.
-   - Riceve una nuova chiamata dalla centrale: un altro caso di morte sospetta viene segnalato. Anche in questo caso, la vittima portava un pacemaker difettoso.
+   - Trova un biglietto da visita del dott. Tanaka. Questo svela la posizione della clinica privata del dottore.
 3. **Analisi del Pacemaker**:
    - L'agente si reca al laboratorio tecnico dell'ospedale.
    - Scopre che il pacemaker contiene un virus che altera il battito cardiaco inviando impulsi letali al cuore.
-4. **Nuovo Indizio**:
-   - Gli agenti scoprono che la vittima era stata dal dott. Tanaka pochi giorni prima.
-   - L'agente collega questo messaggio al biglietto da visita trovato nella stanza della vittima.
 
 ### **Capitolo 2**: La Clinica del Dott. Tanaka
 1. **Scoperta della Clinica**:
    - L'agente si reca alla clinica del dott. Tanaka, che appare vuota.
-   - All'interno trova un registro degli appuntamenti con una lista di persone che avevano visitato la clinica.
+   - All'interno trova un registro degli appuntamenti con una lista di persone che avevano visitato la clinica. Tra questi c'è il nome di Sato e il suo indirizzo.
 2. **Indizi nella Clinica**:
    - Accede al computer del dottore e scopre un software per controllare da remoto i pacemaker.
    - Trova il corpo del dott. Tanaka, morto, con un mazzo di chiavi al collo.
-3. **Hard Disk e Video**:
-   - Trova un hard disk contenente file criptati.
-   - Decifra i file e scopre filmati delle telecamere che mostrano una persona, identificata come Sato, entrare nella clinica.
 
 ### **Capitolo 3**: La Connessione con Sato
 1. **Ricerca su Sato**:
@@ -333,19 +298,8 @@ La tabella `Movimenti` ha vincoli di chiave esterna su:
    - I pazienti a quegli orari usavano nomi falsi, e le prime lettere dei nomi formano l'indirizzo del nascondiglio di Sato.
 
 ### **Capitolo 4**: Il Nascondiglio di Sato
-1. **Ingresso**:
-   - L'agente si reca al nascondiglio e trova una porta di sicurezza, che riesce ad aprire risolvendo un puzzle.
-2. **Il Piano di Sato**:
+1. **Il Piano di Sato**:
    - Sato sta pianificando un attacco informatico per uccidere persone con pacemaker, in segno di vendetta contro il dott. Tanaka.
-   - Parte un timer: l'agente deve fermare l'attacco risolvendo una serie di minigame al computer.
-
-### **Epilogo**: Finale Ramificato
-1. **Finale Positivo**:
-   - L'agente disattiva l'attacco in tempo, salvando le vittime.
-   - Riesce ad aprire la porta dove si trova Sato e lo arresta, portando prove schiaccianti.
-2. **Finale Negativo**:
-   - Se fallisce nel disattivare l'attacco, molte persone muoiono.
-   - Se non riesce ad aprire la porta in tempo, Sato cancella tutte le prove e, nonostante venga arrestato, viene rilasciato.
 
 
 

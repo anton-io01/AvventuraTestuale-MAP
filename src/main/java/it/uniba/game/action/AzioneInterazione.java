@@ -40,7 +40,7 @@ public class AzioneInterazione {
             case "EM2927":
                 movimentoDAO.updateMovimentiByStanza(stanzaDAO.getEdificioIdByStanza(giocatore.getPosizioneAttualeId()), stanza_id, null,null,null,null,"25","28");
                 stanzaDAO.setStanzaAccessibile(stanza_id, true);
-            case "EM0919":
+            case "EM0518":
                 edificioDAO.setEdificioAccessibilita("03", true);
         }
 
