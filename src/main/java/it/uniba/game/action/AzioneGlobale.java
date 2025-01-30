@@ -3,6 +3,7 @@ package it.uniba.game.action;
 import it.uniba.game.database.dao.MovimentoDAO;
 import it.uniba.game.entity.Giocatore;
 import it.uniba.game.database.dao.StanzaDAO;
+import it.uniba.game.database.dao.OggettoDAO;
 import it.uniba.game.util.SaveManager;
 
 import java.util.List;
@@ -11,7 +12,8 @@ public class AzioneGlobale {
     public StanzaDAO stanzaDAO = new StanzaDAO();
     public MovimentoDAO movimentoDAO = new MovimentoDAO();
 
-    public AzioneGlobale() {}
+    public AzioneGlobale() {
+    }
 
     public String inventario(Giocatore giocatore, List<String> parametri) {
         if (giocatore.getInventario().isEmpty()) {
@@ -32,15 +34,22 @@ public class AzioneGlobale {
     }
 
     public String salva(Giocatore giocatore, List<String> parametri) {
-        if(SaveManager.saveGame()){
+        if (SaveManager.saveGame(giocatore)) {
             return "Salvataggio completato con successo!\n\n";
         } else {
             return "Errore durante il salvataggio.\n\n";
         }
     }
 
-    public String carica(Giocatore giocatore, List<String> parametri){
-        if (SaveManager.loadGame()) {
+    public String carica(Giocatore giocatore, List<String> parametri) {
+        StanzaDAO stanzaDAO = new StanzaDAO();
+        OggettoDAO oggettoDAO = new OggettoDAO();
+        Giocatore giocatoreCaricato = SaveManager.loadGame(stanzaDAO, oggettoDAO);
+        if (giocatoreCaricato != null) {
+            //Aggiorno il giocatore attuale con il giocatore caricato da file
+            giocatore.setPosizioneAttuale(giocatoreCaricato.getPosizioneAttuale());
+            giocatore.getInventario().clear();
+            giocatore.getInventario().addAll(giocatoreCaricato.getInventario());
             return "Caricamento completato con successo!\n\n";
         } else {
             return "Errore durante il caricamento del salvataggio o nessun salvataggio esistente.\n\n";
@@ -51,8 +60,10 @@ public class AzioneGlobale {
         return stanzaDAO.getAllOggettiStanza(giocatore.getPosizioneAttualeId()) + "\n\n";
     }
 
+
     /**
      * Mostra l'elenco dei comandi disponibili.
+     *
      * @param giocatore
      * @param parametri
      * @return
@@ -62,6 +73,7 @@ public class AzioneGlobale {
                 "- mappa (per visualizzare la mappa)\n" +
                 "- inventario (per visualizzare l'inventario)\n" +
                 "- salva (per salvare la partita)\n" +
+                "- carica (per caricare la partita)\n" +
                 "- esci (per uscire dal gioco)\n" +
                 "- nord, sud, est, ovest, alto, basso (per muoverti)\n" +
                 "- osserva (per mostrare gli oggetti all'interno della stanza)\n" +
