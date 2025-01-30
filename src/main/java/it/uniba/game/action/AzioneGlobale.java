@@ -64,7 +64,7 @@ public class AzioneGlobale {
                 "- carica (per caricare la partita)\n" +
                 "- esci (per uscire dal gioco)\n" +
                 "- nord, sud, est, ovest, alto, basso (per muoverti)\n" +
-                "- osserva (per mostrare gli oggetti all'interno della stanza)\n" +
+                "- osserva (per mostrare la descrizione della stanza)\n" +
                 "- esamina [oggetto] (per esaminare un oggetto)\n" +
                 "- prendi [oggetto] (per prendere un oggetto)\n" +
                 "- lascia [oggetto] (per lasciare un oggetto)\n" +
