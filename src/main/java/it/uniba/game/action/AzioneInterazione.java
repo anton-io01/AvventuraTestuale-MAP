@@ -2,9 +2,11 @@ package it.uniba.game.action;
 
 import it.uniba.game.database.dao.AzioneDAO;
 import it.uniba.game.database.dao.EdificioDAO;
-import it.uniba.game.entity.Giocatore;
+import it.uniba.game.database.dao.StanzaDAO;
 import it.uniba.game.database.dao.OggettoDAO;
+import it.uniba.game.entity.Giocatore;
 import it.uniba.game.entity.Oggetto;
+import it.uniba.game.entity.Edificio;
 
 import java.util.List;
 
@@ -12,6 +14,7 @@ public class AzioneInterazione {
     private OggettoDAO oggettoDAO = new OggettoDAO();
     private AzioneDAO azioneDAO = new AzioneDAO();
     private EdificioDAO edificioDAO = new EdificioDAO();
+    private StanzaDAO stanzaDAO = new StanzaDAO();
 
     public AzioneInterazione() {
     }
@@ -31,7 +34,8 @@ public class AzioneInterazione {
         String stanza_id = giocatore.getPosizioneAttualeId();
         switch(azione_id + oggetto_id + stanza_id){
             case "EM0211":
-                edificioDAO.updateEdificioAccessibilita(stanza_id, true);
+                Edificio edificio = stanzaDAO.getEdificioByStanza(stanza_id);
+                edificioDAO.updateEdificioAccessibilita(edificio.getEdificioId(), true);
         }
 
         String descrizioneOggetto = oggettoDAO.getDescrizioneDettagliataOggetto(oggetto_id);
@@ -121,12 +125,7 @@ public class AzioneInterazione {
             case "AP1616":
                 return "Hai inserito la tua impronta. La porta si apre con un click.\n\n";
             default:
-                if (azioneDAO.verificaAzioneInterazione(parametri.get(0), parametri.get(1), giocatore.getPosizioneAttualeId())) {
-                    oggettoDAO.setVisibilitaOggetto(parametri.get(1), true);
-                    return "Hai aperto l'oggetto.\n\n";
-                } else {
                     return "Non puoi aprire questo oggetto.\n\n";
-                }
         }
     }
 
@@ -186,11 +185,7 @@ public class AzioneInterazione {
                 return "Un libro dal titolo illeggibile. Sembra una raccolta di racconti di paura.\n" +
                         "Una pagina sembra essere stata appuntata. Riporta uno strano codice.\n\n";
             default:
-                if (azioneDAO.verificaAzioneInterazione(parametri.get(0), parametri.get(1), giocatore.getPosizioneAttualeId())) {
-                    return oggettoDAO.getDescrizioneDettagliataOggetto(parametri.get(1)) + "\n\n";
-                } else {
-                    return "Non puoi leggere questo oggetto.\n\n";
-                }
+                return "Non puoi leggere questo oggetto.\n\n";
         }
     }
 }
