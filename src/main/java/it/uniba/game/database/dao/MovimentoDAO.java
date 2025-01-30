@@ -25,6 +25,44 @@ public class MovimentoDAO {
     }
 
     /**
+     * Modifica i movimenti possibili per una stanza.
+     *
+     * @param stanzaId L'ID della stanza da modificare.
+     * @param nord     L'ID della stanza a nord.
+     * @param sud      L'ID della stanza a sud.
+     * @param est      L'ID della stanza a est.
+     * @param ovest    L'ID della stanza a ovest.
+     * @param alto     L'ID della stanza in alto.
+     * @param basso    L'ID della stanza in basso.
+     * Se un movimento non è possibile, passare null.
+     */
+    public void updateMovimentiByStanza(String edificioId,String stanzaId, String nord, String sud, String est, String ovest, String alto, String basso) {
+        String query = "UPDATE Movimenti SET nord = ?, sud = ?, est = ?, ovest = ?, alto = ?, basso = ? WHERE edificio_id = ? AND stanza_id = ?";
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setString(1, nord);
+            pstmt.setString(2, sud);
+            pstmt.setString(3, est);
+            pstmt.setString(4, ovest);
+            pstmt.setString(5, alto);
+            pstmt.setString(6, basso);
+            pstmt.setString(7, edificioId);
+            pstmt.setString(8, stanzaId);
+
+
+            int rowsAffected = pstmt.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Movimenti della stanza aggiornati con successo.");
+            }else{
+                System.out.println("Nessuna stanza con l'id specificato, per aggiornare i movimenti, è stata trovata.");
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Errore durante l'aggiornamento dei movimenti della stanza.");
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Ottiene i movimenti disponibili per una determinata stanza e li restituisce come testo formattato.
      *
      * @param stanza La stanza di partenza.
