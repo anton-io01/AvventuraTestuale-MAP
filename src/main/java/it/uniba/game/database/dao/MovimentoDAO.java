@@ -1,6 +1,7 @@
 package it.uniba.game.database.dao;
 
 import it.uniba.game.entity.Stanza;
+import it.uniba.game.entity.Edificio;
 import it.uniba.game.database.DatabaseManager;
 
 import java.sql.Connection;
@@ -10,6 +11,7 @@ import java.sql.SQLException;
 
 public class MovimentoDAO {
     private final Connection connection;
+    StanzaDAO stanzaDAO = new StanzaDAO();
 
     /**
      * Costruttore che accetta una connessione al database.
@@ -42,27 +44,57 @@ public class MovimentoDAO {
                 while (rs.next()) {
                     if (rs.getString("nord") != null) {
                         Stanza stanzaArrivo = new StanzaDAO().getStanzaById(rs.getString("nord"));
-                        descrizioneMovimenti.append("- A nord la stanza ").append(stanzaArrivo.getNome()).append(".\n");
+                        Edificio edificio = stanzaDAO.getEdificioByStanza(stanzaArrivo.getStanzaId());
+                        if(stanzaArrivo.getEdificioId()!=edificioId && edificio.isAccessibile()) {
+                            descrizioneMovimenti.append("- A nord l'edificio ").append(edificio.getNome()).append(".\n");
+                        } else if (stanzaArrivo.getEdificioId().equals(edificioId)) {
+                            descrizioneMovimenti.append("- A nord la stanza ").append(stanzaArrivo.getNome()).append(".\n");
+                        }
                     }
                     if (rs.getString("sud") != null) {
                         Stanza stanzaArrivo = new StanzaDAO().getStanzaById(rs.getString("sud"));
-                        descrizioneMovimenti.append("- A sud la stanza ").append(stanzaArrivo.getNome()).append(".\n");
+                        Edificio edificio = stanzaDAO.getEdificioByStanza(stanzaArrivo.getStanzaId());
+                        if(stanzaArrivo.getEdificioId()!=edificioId && edificio.isAccessibile()) {
+                            descrizioneMovimenti.append("- A sud l'edificio ").append(edificio.getNome()).append(".\n");
+                        } else if (stanzaArrivo.getEdificioId().equals(edificioId)) {
+                            descrizioneMovimenti.append("- A sud la stanza ").append(stanzaArrivo.getNome()).append(".\n");
+                        }
                     }
                     if (rs.getString("est") != null) {
                         Stanza stanzaArrivo = new StanzaDAO().getStanzaById(rs.getString("est"));
-                        descrizioneMovimenti.append("- A est la stanza ").append(stanzaArrivo.getNome()).append(".\n");
+                        Edificio edificio = stanzaDAO.getEdificioByStanza(stanzaArrivo.getStanzaId());
+                        if(stanzaArrivo.getEdificioId()!=edificioId && edificio.isAccessibile()) {
+                            descrizioneMovimenti.append("- A est l'edificio ").append(edificio.getNome()).append(".\n");
+                        } else if (stanzaArrivo.getEdificioId().equals(edificioId)) {
+                            descrizioneMovimenti.append("- A est la stanza ").append(stanzaArrivo.getNome()).append(".\n");
+                        }
                     }
                     if (rs.getString("ovest") != null) {
                         Stanza stanzaArrivo = new StanzaDAO().getStanzaById(rs.getString("ovest"));
-                        descrizioneMovimenti.append("- A ovest la stanza ").append(stanzaArrivo.getNome()).append(".\n");
+                        Edificio edificio = stanzaDAO.getEdificioByStanza(stanzaArrivo.getStanzaId());
+                        if(stanzaArrivo.getEdificioId()!=edificioId && edificio.isAccessibile()) {
+                            descrizioneMovimenti.append("- A ovest l'edificio ").append(edificio.getNome()).append(".\n");
+                        } else if (stanzaArrivo.getEdificioId().equals(edificioId)) {
+                            descrizioneMovimenti.append("- A ovest la stanza ").append(stanzaArrivo.getNome()).append(".\n");
+                        }
                     }
                     if (rs.getString("alto") != null) {
                         Stanza stanzaArrivo = new StanzaDAO().getStanzaById(rs.getString("alto"));
-                        descrizioneMovimenti.append("- In alto la stanza ").append(stanzaArrivo.getNome()).append(".\n");
+                        Edificio edificio = stanzaDAO.getEdificioByStanza(stanzaArrivo.getStanzaId());
+                        if(stanzaArrivo.getEdificioId()!=edificioId && edificio.isAccessibile()) {
+                            descrizioneMovimenti.append("- In alto l'edificio ").append(edificio.getNome()).append(".\n");
+                        } else if (stanzaArrivo.getEdificioId().equals(edificioId)) {
+                            descrizioneMovimenti.append("- In alto la stanza ").append(stanzaArrivo.getNome()).append(".\n");
+                        }
                     }
                     if (rs.getString("basso") != null) {
                         Stanza stanzaArrivo = new StanzaDAO().getStanzaById(rs.getString("basso"));
-                        descrizioneMovimenti.append("- In basso la stanza ").append(stanzaArrivo.getNome()).append(".\n");
+                        Edificio edificio = stanzaDAO.getEdificioByStanza(stanzaArrivo.getStanzaId());
+                        if(stanzaArrivo.getEdificioId()!=edificioId && edificio.isAccessibile()) {
+                            descrizioneMovimenti.append("- In basso l'edificio ").append(edificio.getNome()).append(".\n");
+                        } else if (stanzaArrivo.getEdificioId().equals(edificioId)) {
+                            descrizioneMovimenti.append("- In basso la stanza ").append(stanzaArrivo.getNome()).append(".\n");
+                        }
                     }
                 }
             }
