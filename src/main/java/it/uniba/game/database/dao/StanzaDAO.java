@@ -20,6 +20,52 @@ public class StanzaDAO {
         }
     }
 
+    /**
+     * Metodo per ottenere lo stato di accessibilità di una stanza tramite il suo ID.
+     *
+     * @param stanzaId L'ID della stanza di cui si vuole conoscere l'accessibilità.
+     * @return true se la stanza è accessibile, false altrimenti, o null se la stanza non esiste.
+     */
+    public Boolean isStanzaAccessibile(String stanzaId) {
+        String query = "SELECT accessibile FROM Stanze WHERE stanza_id = ?";
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setString(1, stanzaId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getBoolean("accessibile");
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Errore durante la verifica dell'accessibilità della stanza " + stanzaId + ": " + e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
+        return null; // La stanza non è stata trovata
+    }
+
+    /**
+     * Metodo per impostare lo stato di accessibilità di una stanza tramite il suo ID.
+     *
+     * @param stanzaId L'ID della stanza di cui si vuole modificare l'accessibilità.
+     * @param accessibile Il nuovo stato di accessibilità (true per accessibile, false per non accessibile).
+     */
+    public void setStanzaAccessibile(String stanzaId, boolean accessibile) {
+        String query = "UPDATE Stanze SET accessibile = ? WHERE stanza_id = ?";
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setBoolean(1, accessibile);
+            pstmt.setString(2, stanzaId);
+            int rowsAffected = pstmt.executeUpdate();
+            if(rowsAffected > 0){
+                System.out.println("Accessibilità della stanza " + stanzaId + " aggiornata con successo a " + accessibile + ".");
+            } else {
+                System.out.println("Nessuna stanza trovata con ID " + stanzaId);
+            }
+        } catch (SQLException e) {
+            System.err.println("Errore durante l'aggiornamento dell'accessibilità della stanza " + stanzaId + ": " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
     // Metodo per inserire una nuova stanza nel database
     public void inserisciStanza(String edificioId, String stanzaId, String nome, boolean accessibile) {
         String query = "INSERT INTO Stanze (edificio_id, stanza_id, nome, accessibile) VALUES (?, ?, ?, ?)";
@@ -129,16 +175,16 @@ public class StanzaDAO {
      * Metodo per ottenere la descrizione completa di una stanza dato il suo ID.
      *
      * @param stanzaId L'ID della stanza da cercare.
-     * @return La descrizione completa della stanza o null se non trovata.
+     * @return La descrizione breve della stanza o null se non trovata.
      */
-    public String getDescrizioneCompleta(String stanzaId) {
-        String query = "SELECT descrizione_completa FROM DescrizioniStanze WHERE stanza_id = ?";
+    public String getDescrizioneBreve(String stanzaId) {
+        String query = "SELECT descrizione_breve FROM DescrizioniStanze WHERE stanza_id = ?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, stanzaId); // Imposta il parametro stanza_id
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
-                    return resultSet.getString("descrizione_completa");
+                    return resultSet.getString("descrizione_breve");
                 }
             }
         } catch (SQLException e) {
@@ -152,16 +198,16 @@ public class StanzaDAO {
      * Metodo per ottenere la descrizione completa di una stanza dato il suo ID.
      *
      * @param stanzaId L'ID della stanza da cercare.
-     * @return La descrizione breve della stanza o null se non trovata.
+     * @return La descrizione completa della stanza o null se non trovata.
      */
-    public String getDescrizioneBreve(String stanzaId) {
-        String query = "SELECT descrizione_breve FROM DescrizioniStanze WHERE stanza_id = ?";
+    public String getDescrizioneCompleta(String stanzaId) {
+        String query = "SELECT descrizione_completa FROM DescrizioniStanze WHERE stanza_id = ?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, stanzaId); // Imposta il parametro stanza_id
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
-                    return resultSet.getString("descrizione_breve");
+                    return resultSet.getString("descrizione_completa");
                 }
             }
         } catch (SQLException e) {
