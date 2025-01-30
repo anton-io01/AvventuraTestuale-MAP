@@ -32,6 +32,7 @@ public class AzioneMovimento {
         if (stanzaDiArrivo != null) {
             if(!stanzaAttuale.getEdificioId().equals(stanzaDiArrivo.getEdificioId())) {
                 edificio = stanzaDAO.getEdificioByStanza(stanzaDiArrivo.getStanzaId());
+                giocatore.setPosizioneAttuale(stanzaDiArrivo);
                 return edificio.getDescrizione() + "\n\n" +
                         "Ti sei spostato verso " + direzione + " nella stanza: " + stanzaDiArrivo.getNome() + ".\n" + stanzaDAO.getDescrizioneCompleta(stanzaDiArrivo.getStanzaId()) + "\n\n";
             }
