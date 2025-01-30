@@ -217,7 +217,7 @@ La tabella `Movimenti` ha vincoli di chiave esterna su:
 
 | Codice | Luogo              |Nord|Sud|Est|Ovest|Alto|Basso|
 |--|--------------------|--|-|--|--|--|--|
-|01|Uscita|-|-|-|-|-|-|
+|01|Uscita|-|-|16|-|-|-|
 |02|Ingresso|Reception|Uscita|-|-|-|-|
 |03|Reception|Cappella|Ingresso|Sala d'attesa|-|Corridoio1.1|-|
 |04|Sala d'attesa|-|-|-|Reception|-|-|
@@ -238,7 +238,7 @@ La tabella `Movimenti` ha vincoli di chiave esterna su:
 
 |Codice|Luogo|Nord|Sud|Est|Ovest|Alto|Basso|
 |--|--|--|--|--|--|--|--|
-|15|Uscita|-|-|-|-|-|-|
+|15|Uscita|-|-|23|02|-|-|
 |16|Porta di Sicurezza|Atrio|Uscita|-|-|-|-|
 |17|Atrio|Laboratorio Principale|Porta di Sicurezza|-|-|-|-|
 |18|Laboratorio Principale|Testing Area|Atrio|Ufficio|Server Room|-|-|
@@ -246,13 +246,13 @@ La tabella `Movimenti` ha vincoli di chiave esterna su:
 |20|Server Room|-|-|Laboratorio Principale|-|-|-|
 |21|Testing Area|-|Laboratorio Principale|-|-|-|-|
 
-### Nascondiglio di Sato - 03
+### Magazzino abbandonato (Nascondiglio di Sato) - 03
 
 ![Nascondiglio di Sato](./img/NascondiglioSato.png)
 
 |Codice|Luogo|Nord|Sud|Est|Ovest|Alto|Basso|
 |--|--|--|--|--|--|--|--|
-|22|Uscita|-|-|-|-|-|-|
+|22|Uscita|-|-|-|16|-|-|
 |23|Hall Principale|Corridoio|Uscita|-|-|-|-|
 |24|Corridoio|-|Hall Principale|-|-|-|Server Room|
 |25|Server Room|-|-|Sala di Controllo|-|Corridoio|Magazzino|
