@@ -76,6 +76,6 @@ public class AzioneGlobale {
      * @return
      */
     public String mappa(Giocatore giocatore, List<String> parametri) {
-        return movimentoDAO.getMovimentiByStanza(giocatore.getPosizioneAttuale()) + "\n\n";
+        return "Sei nella stanza: " + giocatore.getPosizioneAttuale().getNome() + ".\n" + movimentoDAO.getMovimentiByStanza(giocatore.getPosizioneAttuale()) + "\n\n";
     }
 }
