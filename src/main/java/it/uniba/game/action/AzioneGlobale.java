@@ -43,10 +43,6 @@ public class AzioneGlobale {
         return stanzaDAO.getAllOggettiStanza(giocatore.getPosizioneAttualeId()) + "\n\n";
     }
 
-    public String entra(Giocatore giocatore, List<String> parametri) {
-        return null;
-    }
-
     /**
      * Mostra l'elenco dei comandi disponibili.
      * @param giocatore
