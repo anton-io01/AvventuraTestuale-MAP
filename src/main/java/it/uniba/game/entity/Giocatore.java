@@ -34,6 +34,21 @@ public class Giocatore{
         return inventario;
     }
 
+    public String getOggettiInventarioIds() {
+        if (inventario == null || inventario.isEmpty()) {
+            return "";
+        }
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < inventario.size(); i++) {
+            Oggetto oggetto = inventario.get(i);
+            sb.append(oggetto.getOggettoId());
+            if (i < inventario.size() - 1) {
+                sb.append(",");
+            }
+        }
+        return sb.toString(); // Restituisce una stringa vuota se l'inventario è vuoto
+    }
+
     /**
      * Controlla se il giocatore possiede un oggetto.
      * @param oggettoId
