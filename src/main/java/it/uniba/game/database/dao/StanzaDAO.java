@@ -125,35 +125,6 @@ public class StanzaDAO {
         return stanze;
     }
 
-    // Metodo per aggiornare una stanza
-    public void updateStanza(String edificioId, String stanzaId, String nome, boolean accessibile) {
-        String query = "UPDATE Stanze SET nome = ?, accessibile = ? WHERE edificio_id = ? AND stanza_id = ?";
-        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
-            pstmt.setString(1, nome);
-            pstmt.setBoolean(2, accessibile);
-            pstmt.setString(3, edificioId);
-            pstmt.setString(4, stanzaId);
-            pstmt.executeUpdate();
-            System.out.println("Stanza aggiornata con successo.");
-        } catch (SQLException e) {
-            System.err.println("Errore durante l'aggiornamento della stanza.");
-            e.printStackTrace();
-        }
-    }
-
-    // Metodo per eliminare una stanza
-    public void deleteStanza(String stanzaId) {
-        String query = "DELETE FROM Stanze WHERE stanza_id = ?";
-        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
-            pstmt.setString(1, stanzaId);
-            pstmt.executeUpdate();
-            System.out.println("Stanza eliminata con successo.");
-        } catch (SQLException e) {
-            System.err.println("Errore durante l'eliminazione della stanza.");
-            e.printStackTrace();
-        }
-    }
-
     /**
      * Metodo per ottenere la descrizione completa di una stanza dato il suo ID.
      *
