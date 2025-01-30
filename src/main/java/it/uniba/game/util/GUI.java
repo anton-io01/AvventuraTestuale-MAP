@@ -260,28 +260,33 @@ public class GUI extends JFrame {
         inputField.addActionListener(sendAction);
     }
     private void handleCommandOutput(String text, Object output) {
-        if (text.startsWith("inventario")) {
+        inputField.setText(""); // Pulisci il campo di input
+
+        if (output == null && !text.equals("salva")) {
+            // Se l'output è null e il comando non è "salva", mostra un messaggio di errore
+            appendToMainText("Hai inserito un comando non valido. Digita \"aiuto\" per avere la lista dei comandi disponibili.\n\n");
+        } else if (output instanceof String && ((String) output).isEmpty()) {
+            // Se l'output è una stringa vuota, il comando non è valido
+            appendToMainText("Comando non valido. Digita \"aiuto\" per avere la lista dei comandi disponibili.\n\n");
+        } else if (text.startsWith("inventario")) {
+            // Gestisci il comando "inventario"
             isInventoryShowing = true;
             isMapShowing = false;
             updateSidePanel();
-        }else if (text.startsWith("mappa")) {
+        } else if (text.startsWith("mappa")) {
+            // Gestisci il comando "mappa"
             if (output instanceof String) {
                 appendToMainText((String) output);
                 isMapShowing = false;
                 isInventoryShowing = false;
                 updateSidePanel();
             }
-        }
-        else if(output instanceof String){
+        } else if (output instanceof String) {
+            // Gestisci l'output di tipo stringa
             appendToMainText((String) output);
             isMapShowing = false;
             isInventoryShowing = false;
             updateSidePanel();
-        } else{
-            isInventoryShowing = false;
-            isMapShowing = false;
-            updateSidePanel();
-
         }
     }
     private void initializeGame(){
@@ -597,16 +602,22 @@ public class GUI extends JFrame {
                 "Per raggiungerla, ti basterà uscire dall'ospedale e digitare il comando 'usa auto'. (Puoi usare l'auto per spostarti tra i vari edifici, ma solo se ne conosci la posizione).\n\n" +
                 "Premi il pulsante 'AIUTO' o digita 'aiuto' per scoprire i comandi disponibili e iniziare a svelare questo mistero.\n\n";
     }
-    public Object processCommand(String input,List<String> params) {
-
-        if(input.equals("salva")){
-
-            return azioneGlobale.salva(giocatore,params); //richiama salva, settato nella fase precedente da text main
+    public Object processCommand(String input, List<String> params) {
+        if (input.equals("salva")) {
+            return azioneGlobale.salva(giocatore, params); // Richiama salva, settato nella fase precedente da text main
         }
-        return  processCommand(input); //altrimenti tutti i commando per action globale e ui
-
+        return processCommand(input); // Altrimenti, gestisci tutti i comandi per action globale e UI
     }
+
     public Object processCommand(String input) {
-        return gestoreAzioni.esegui(giocatore, parser.parseInput(input));
+        List<String> parametri = parser.parseInput(input);
+
+        // Se il parser restituisce una lista vuota, il comando non è valido
+        if (parametri.isEmpty()) {
+            return ""; // Restituisci una stringa vuota per indicare un comando non valido
+        }
+
+        // Altrimenti, esegui il comando
+        return gestoreAzioni.esegui(giocatore, parametri);
     }
 }
