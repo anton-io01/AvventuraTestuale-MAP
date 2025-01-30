@@ -136,7 +136,7 @@ public class AzioneGlobale {
                     }
                 }
 
-                return "Partita salvata correttamente! Percorso file: " + filePath;
+                return "Partita salvata correttamente! Percorso file: " + filePath + "\n\n";
             }
         } catch (IOException e) {
             System.err.println("Errore nel salvataggio della partita");

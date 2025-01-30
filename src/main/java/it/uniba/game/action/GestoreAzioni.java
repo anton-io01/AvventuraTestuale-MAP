@@ -32,7 +32,6 @@ public class GestoreAzioni implements Azione{
         // Azioni globali
         azioniMap.put("IN", azioneGlobale::inventario);
         azioniMap.put("EX", azioneGlobale::esci);
-        azioniMap.put("SA", azioneGlobale::salva);
         azioniMap.put("OS", azioneGlobale::osserva);
         azioniMap.put("AI", azioneGlobale::aiuto);
         azioniMap.put("MA", azioneGlobale::mappa);
