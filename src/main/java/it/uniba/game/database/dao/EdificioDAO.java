@@ -80,7 +80,33 @@ public class EdificioDAO {
         return null;
     }
 
-    public void updateEdificioAccessibilita(String edificioId, boolean accessibile) {
+    /**
+     * Controlla se un edificio è accessibile.
+     * @param edificioId
+     * @return
+     */
+    public Boolean isEdificioAccessibile(String edificioId) {
+        String query = "SELECT accessibile FROM Edifici WHERE edificio_id = ?";
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setString(1, edificioId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getBoolean("accessibile");
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Errore durante il controllo dell'accessibilità dell'edificio.");
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    /**
+     * Imposta l'accessibilità di un edificio.
+     * @param edificioId
+     * @param accessibile
+     */
+    public void setEdificioAccessibilita(String edificioId, boolean accessibile) {
         String query = "UPDATE Edifici SET accessibile = ? WHERE edificio_id = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
             pstmt.setBoolean(1, accessibile);
