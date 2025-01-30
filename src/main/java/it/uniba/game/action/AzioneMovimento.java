@@ -1,5 +1,6 @@
 package it.uniba.game.action;
 
+import it.uniba.game.database.dao.EdificioDAO;
 import it.uniba.game.entity.Giocatore;
 import it.uniba.game.entity.Stanza;
 import it.uniba.game.entity.Edificio;
@@ -13,6 +14,7 @@ public class AzioneMovimento {
     public MovimentoDAO movimentoDAO = new MovimentoDAO(); // DAO per i movimenti
     public AzioneDAO azioneDAO = new AzioneDAO(); // DAO per le azioni
     public StanzaDAO stanzaDAO = new StanzaDAO(); // DAO per le stanze
+    public EdificioDAO edificioDAO = new EdificioDAO(); // DAO per gli edifici
 
     public AzioneMovimento() {}
 
@@ -31,10 +33,15 @@ public class AzioneMovimento {
 
         if (stanzaDiArrivo != null) {
             if(!stanzaAttuale.getEdificioId().equals(stanzaDiArrivo.getEdificioId())) {
-                edificio = stanzaDAO.getEdificioByStanza(stanzaDiArrivo.getStanzaId());
-                giocatore.setPosizioneAttuale(stanzaDiArrivo);
-                return edificio.getDescrizione() + "\n\n" +
-                        "Ti sei spostato verso " + direzione + " nella stanza: " + stanzaDiArrivo.getNome() + ".\n" + stanzaDAO.getDescrizioneCompleta(stanzaDiArrivo.getStanzaId()) + "\n\n";
+                if (edificioDAO.isEdificioAccessibile(stanzaDiArrivo.getEdificioId())) {
+                    edificio = stanzaDAO.getEdificioByStanza(stanzaDiArrivo.getStanzaId());
+                    giocatore.setPosizioneAttuale(stanzaDiArrivo);
+                    return edificio.getDescrizione() + "\n\n" +
+                            "Ti sei spostato verso " + direzione + " nella stanza: " + stanzaDiArrivo.getNome() + ".\n" + stanzaDAO.getDescrizioneCompleta(stanzaDiArrivo.getStanzaId()) + "\n\n";
+                }
+                else {
+                    return "Non puoi andare in questa direzione.\n\n";
+                }
             }
             // Aggiorna la posizione del giocatore
             giocatore.setPosizioneAttuale(stanzaDiArrivo);
