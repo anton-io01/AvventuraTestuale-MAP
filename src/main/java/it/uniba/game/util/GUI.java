@@ -1,3 +1,4 @@
+// it/uniba/game/util/GUI.java
 package it.uniba.game.util;
 
 import it.uniba.game.action.AzioneGlobale;
@@ -38,10 +39,6 @@ public class GUI extends JFrame {
         setupComponents();
         initializeGame();
 
-
-        this.parser = new Parser();
-
-        this.azioneGlobale = new AzioneGlobale();
 
 
 
@@ -269,12 +266,12 @@ public class GUI extends JFrame {
     private void initializeGame(){
         // Inizializzazione del database
         try{
-            DatabaseInitializer.initializeDatabase();
-
+            DatabaseInitializer.initializeDatabase(false);
             //istanzio i DAO
             stanzaDAO = new StanzaDAO();
             oggettoDAO = new OggettoDAO();
             gestoreAzioni = new GestoreAzioni();
+            this.parser = new Parser();
 
 
             //Creazione del giocatore di default all'avvio del game.
@@ -320,17 +317,35 @@ public class GUI extends JFrame {
                 "Per raggiungerla, ti basterà uscire dall'ospedale e digitare il comando 'usa auto'. (Puoi usare l'auto per spostarti tra i vari edifici, ma solo se ne conosci la posizione).\n\n");
         appendToMainText("Premi il pulsante 'AIUTO' o digita 'aiuto' per scoprire i comandi disponibili e iniziare a svelare questo mistero.\n\n");
 
+
         setLocationRelativeTo(null);
         this.setVisible(true); //imposto il frame come visibile solo al termine dell'inizializzazione.
 
     }
     private void resetGame() {
+        DatabaseInitializer.initializeDatabase(true);
+
+        try {
+            //istanzio i DAO
+            stanzaDAO = new StanzaDAO();
+            oggettoDAO = new OggettoDAO();
+            gestoreAzioni = new GestoreAzioni();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        this.parser = new Parser();//istanza parser qui in modo tale che il metodo processCommand non dia eccezione dopo il click
         timeRemaining = 7200;  // Reset del timer a 2 ore in secondi
         mainTextArea.setText("");    // Pulisci l'area di testo principale
         this.giocatore = new Giocatore();    // Crea un nuovo giocatore
         if(giocatore.getPosizioneAttuale()==null) { // set posizione default / lista oggetti
-            giocatore.setPosizioneAttuale(stanzaDAO.getStanzaById("02"));
-            giocatore.aggiungiOggetto(oggettoDAO.getOggettoById("01"));
+            try {
+                giocatore.setPosizioneAttuale(stanzaDAO.getStanzaById("02"));
+                giocatore.aggiungiOggetto(oggettoDAO.getOggettoById("01"));
+            }
+            catch(Exception e) {
+                e.printStackTrace();
+            }
         }
         //riavvio il timer con gli stessi dati
         executor = Executors.newSingleThreadScheduledExecutor();
