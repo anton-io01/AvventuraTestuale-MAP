@@ -99,14 +99,11 @@ public class AzioneGlobale {
      * @return feedback per l'utente
      */
     public String salva(Giocatore giocatore, List<String> params) {
-        String filePath = "./src/main/resources/saves/save.txt"; // percorso dove salvare la partita
-        if(params.size() < 2) {
-            System.err.println("Parametri non sufficienti per il save");
-            return "Errore nel salvataggio della partita";
-        }
+        String filePath = "./src/main/resources/saves/save.txt";
+
         try {
-            String playerParams = giocatore.getPlayerParams(); // recupero lo stato del player
-            if(playerParams.equals("")){
+            String playerParams = giocatore.getPlayerParams(); // Metodo modificato
+            if (playerParams.equals("")) {
                 return "Errore: Non sei ancora in una posizione nel mondo di gioco!";
             }
             // crea la cartella se non esiste
@@ -114,38 +111,37 @@ public class AzioneGlobale {
             if(!Files.exists(dirPath)) {
                 Files.createDirectories(dirPath);
             }
-            try(BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
 
-                if (params != null && !params.isEmpty()) { //recupero il time restante
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+                if (params != null && params.size() > 0) {
                     try {
-                        int timeRemaining = Integer.parseInt(params.get(0)); //prendo l'info da string
-                        writer.write(timeRemaining + "\n");
-                    } catch (NumberFormatException e) {
-                        writer.write(7200+"\n"); //time default
-                    }
-                }else{
-                    writer.write(7200+"\n"); //default timer
-                }
 
+                        int timeRemaining = Integer.parseInt(params.get(0));
+
+                        writer.write(timeRemaining + "\n");
+
+                    } catch (NumberFormatException e) {
+                        writer.write(7200 + "\n");
+
+                    }
+                } else {
+                    writer.write(7200 + "\n");
+                }
 
                 writer.write(playerParams + "\n");
-                String encodedTextContent = params.get(1);
-                if (encodedTextContent!=null) {
-
-                    writer.write(new String(Base64.getDecoder().decode(encodedTextContent), StandardCharsets.UTF_8));// scrive la textarea decoded.
-
+                if (params != null && params.size() > 1) {
+                    String encodedTextContent = params.get(1);
+                    if(encodedTextContent != null){
+                        writer.write(new String(Base64.getDecoder().decode(encodedTextContent), StandardCharsets.UTF_8));
+                    }
                 }
+
                 return "Partita salvata correttamente! Percorso file: " + filePath;
-
             }
-
-
         } catch (IOException e) {
             System.err.println("Errore nel salvataggio della partita");
             e.printStackTrace();
             return "Errore nel salvataggio della partita" + e;
-
-
         }
     }
 }
