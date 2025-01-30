@@ -80,4 +80,16 @@ public class EdificioDAO {
         return null;
     }
 
+    public void updateEdificioAccessibilita(String edificioId, boolean accessibile) {
+        String query = "UPDATE Edifici SET accessibile = ? WHERE edificio_id = ?";
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setBoolean(1, accessibile);
+            pstmt.setString(2, edificioId);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("Errore durante l'aggiornamento dell'accessibilità dell'edificio.");
+            e.printStackTrace();
+        }
+    }
+
 }
