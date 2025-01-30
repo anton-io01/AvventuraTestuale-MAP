@@ -32,10 +32,10 @@ public class AzioneInterazione {
         String azione_id = parametri.get(0);
         String oggetto_id = parametri.get(1);
         String stanza_id = giocatore.getPosizioneAttualeId();
+
         switch(azione_id + oggetto_id + stanza_id){
             case "EM0211":
-                Edificio edificio = stanzaDAO.getEdificioByStanza(stanza_id);
-                edificioDAO.updateEdificioAccessibilita(edificio.getEdificioId(), true);
+                edificioDAO.setEdificioAccessibilita("02", true);
         }
 
         String descrizioneOggetto = oggettoDAO.getDescrizioneDettagliataOggetto(oggetto_id);
