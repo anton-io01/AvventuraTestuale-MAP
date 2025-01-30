@@ -1,4 +1,4 @@
-# Report - Heartcode: il Virus
+# Heartcode: il Virus
 
 ## Indice
 - [Componenti del gruppo](#Componenti-del-gruppo)
@@ -23,16 +23,156 @@
 
 
 ## Componenti del gruppo
+* Antonio Modugno
+
+
 
 ## Descrizione del caso di studio
+
+## Descrizione del Caso di Studio: Neo Tokyo Cybercrime
+
+L'avventura testuale sviluppata, denominata **Neo Tokyo Cybercrime**, immerge il giocatore nei panni di un agente di polizia incaricato di indagare su una serie di morti sospette a Neo Tokyo, legate a pacemaker difettosi. L'obiettivo del gioco è quello di svelare il mistero dietro questi decessi, scoprire il colpevole e fermare un attacco informatico prima che sia troppo tardi.
+
+L'ambientazione principale è una Neo Tokyo futuristica, con diverse location chiave che si susseguono nel corso dell'indagine: l'ospedale cittadino, la clinica privata del dott. Tanaka e il nascondiglio di un programmatore esperto. Il giocatore dovrà muoversi tra queste location, raccogliere indizi, risolvere enigmi e interagire con vari personaggi per progredire nella storia.
+
+La difficoltà del gioco è medio-alta, in quanto la risoluzione degli enigmi richiede un'attenta analisi delle descrizioni e una buona capacità di collegamento tra i vari indizi raccolti nel corso dell'indagine. Il Flipper Zero può essere un untile compagno durante l'avventura.
+
+È stata prevista un'introduzione che presenta al giocatore il contesto di Neo Tokyo e il suo ruolo come agente di polizia, per chi non volesse approfondire la trama prima di iniziare la partita.
+
+La partita può essere salvata, permettendo al giocatore di riprendere l'indagine dal punto in cui si era interrotto, semplicemente caricando la partita dal menu principale.
+
+L'avventura si svolge in un arco temporale di circa 60 minuti, questo per rendere il gameplay dinamico e incalzante, con il culmine nella disattivazione dell'attacco.
+
+(NB. Non è possibile avviare il gioco dal terminale del proprio IDE. Il gioco deve essere avviato eseguendo la classe `Engine`.)
+
+**Punti chiave della descrizione:**
+
+*   **Titolo:** *Neo Tokyo Cybercrime* – Chiaro e tematicamente rilevante.
+*   **Obiettivo:** Svelare il mistero e fermare un attacco informatico.
+*   **Ambientazione:** Neo Tokyo futuristica con location chiave (ospedale, clinica, nascondiglio).
+*   **Difficoltà:** Medio-alta, basata sull'analisi e il collegamento degli indizi.
+*   **Aiuti:** Il Flipper Zero può essere un utile compagno durante l'avventura.
+*   **Intro:** Introduzione iniziale al contesto di gioco e ruolo del giocatore.
+*   **Salvataggio:** Possibilità di salvare la partita e riprenderla dal menu principale.
+*   **Tempo:** Durata stimata di 60 minuti per un'esperienza dinamica.
+*   **Avvio:** Il gioco deve essere avviato eseguendo la classe `Engine`.
+*   **Nota:** Impedimento di avviare il gioco dal terminale dell'IDE.
 
 ## Diagramma delle classi
 
 ## Specifica algebrica
 
+### Specifica Algebrica della Classe `Giocatore`
+
+Questa sezione presenta la specifica algebrica della classe `Giocatore`, che gestisce l'inventario, la posizione e le interazioni con gli oggetti nel gioco.
+
+#### 1. Sintassi
+
+*   **Tipo:** `Giocatore`
+*   **Operazioni:**
+    *   `creaGiocatore` : `--> Giocatore` (Crea un giocatore con un inventario vuoto e senza posizione iniziale)
+    *   `aggiungiOggetto` : `Giocatore, Oggetto --> Giocatore` (Aggiunge un oggetto all'inventario del giocatore)
+    *   `rimuoviOggetto` : `Giocatore, Oggetto --> Giocatore` (Rimuove un oggetto dall'inventario del giocatore)
+    *   `getPosizioneAttuale` : `Giocatore --> Stanza` (Restituisce la stanza attuale del giocatore)
+    *   `setPosizioneAttuale` : `Giocatore, Stanza --> Giocatore` (Imposta la stanza attuale del giocatore)
+    *   `getInventario` : `Giocatore --> List<Oggetto>` (Restituisce l'inventario del giocatore come una lista di oggetti)
+    *   `isOggettoInInventario` : `Giocatore, String --> Boolean` (Verifica se l'inventario del giocatore contiene un oggetto con l'id specificato)
+    *   `getOggettiInventarioIds` : `Giocatore --> String` (Restituisce una stringa formattata con gli id degli oggetti nell'inventario)
+    *  `getPlayerParams` : `Giocatore --> String` (Restituisce una stringa formattata con l'id della stanza corrente e gli id degli oggetti dell'inventario)
+*   **Tipi di supporto:**
+    *   `Oggetto`: Un tipo astratto che rappresenta un oggetto di gioco.
+    *   `Stanza`: Un tipo astratto che rappresenta una stanza del gioco.
+    *   `List<Oggetto>`: Lista di oggetti.
+    *   `String`: Stringhe per rappresentare ID di oggetti e stanza e parametri del giocatore.
+    *   `Boolean`: Tipo booleano (vero o falso).
+
+#### 2. Semantica (Equazioni Algebriche)
+
+1.  `rimuoviOggetto(creaGiocatore(), o) = creaGiocatore()`
+    *   Rimuovere un oggetto da un giocatore appena creato non lo cambia (l'inventario rimane vuoto).
+2.  `aggiungiOggetto(rimuoviOggetto(g, o), o) = g`
+    *   Se aggiungo un oggetto che avevo precedentemente rimosso, l'inventario del giocatore torna allo stato originale
+3. `aggiungiOggetto(aggiungiOggetto(g,o1), o2) = aggiungiOggetto(aggiungiOggetto(g,o2),o1)`
+    * L'ordine in cui aggiungo gli oggetti non cambia lo stato dell'inventario del giocatore
+4.  `getPosizioneAttuale(creaGiocatore()) = null`
+    *   Un giocatore appena creato non ha una posizione di partenza
+5.  `getPosizioneAttuale(setPosizioneAttuale(g, s)) = s`
+    *   La posizione corrente di un giocatore è quella impostata con `setPosizioneAttuale`.
+6. `setPosizioneAttuale(setPosizioneAttuale(g, s1), s2) = setPosizioneAttuale(g, s2)`
+    *   La posizione attuale del giocatore viene sempre aggiornata con l'ultimo `setPosizioneAttuale` eseguito.
+7.  `getInventario(creaGiocatore()) = {}`
+    *   L'inventario di un giocatore appena creato è vuoto.
+8.  `getInventario(aggiungiOggetto(g, o)) = getInventario(g) U {o}`
+    *   L'inventario di un giocatore risulta dall'unione degli oggetti precedenti e quello appena aggiunto.
+9.  `isOggettoInInventario(creaGiocatore(), id) = false`
+    *   Un giocatore appena creato non ha oggetti.
+10. `isOggettoInInventario(aggiungiOggetto(g,o), id) = if (o.getOggettoId() == id) then true else isOggettoInInventario(g,id)`
+    *   Un oggetto è nell'inventario del giocatore se è quello aggiunto o se era già presente.
+11. `getOggettiInventarioIds(creaGiocatore()) = "" `
+    * La stringa formattata con gli id degli oggetti nell'inventario del giocatore è vuota se l'inventario è vuoto.
+12.  `getOggettiInventarioIds(aggiungiOggetto(g,o)) = if getOggettiInventarioIds(g) == "" then o.getOggettoId() else getOggettiInventarioIds(g) + "," + o.getOggettoId()`
+     *  La stringa formattata con gli id degli oggetti nell'inventario del giocatore risulta dalla concatenazione dei precedenti e quello appena aggiunto.
+13.  `getPlayerParams(creaGiocatore()) = "" ` 
+    * La stringa formattata con la posizione e gli oggetti del giocatore è vuota se il giocatore è appena creato e non ha quindi una posizione.
+14. `getPlayerParams(setPosizioneAttuale(g,s)) = if getOggettiInventarioIds(g) == "" then s.getStanzaId() + ";" else s.getStanzaId() + ";" + getOggettiInventarioIds(g)`
+    * La stringa formattata con la posizione e gli oggetti del giocatore risulta dalla concatenazione della posizione e degli oggetti.
+
+*Dove:*
+
+*   `g` rappresenta un generico `Giocatore`.
+*   `o`, `o1`, `o2` rappresentano generici `Oggetti`.
+*   `s`, `s1`, `s2` rappresentano generiche `Stanze`.
+*   `id` rappresenta un generico id di un oggetto (`String`).
+*   `{}` indica una lista vuota.
+*   `U` indica l'operazione di unione tra insiemi.
+
+#### 3. Restrizioni
+
+1.  **`aggiungiOggetto(g, o)`:**
+    *   Precondizione: Nessuna.
+    *   Postcondizione: L'oggetto `o` sarà presente nell'inventario del giocatore `g`. Se l'oggetto era presente non viene duplicato se il tipo `List` non lo consente.
+
+2.  **`rimuoviOggetto(g, o)`:**
+    *   Precondizione: Nessuna.
+    *   Postcondizione: Se l'oggetto `o` era presente nell'inventario di `g` prima dell'operazione, non sarà presente nell'inventario del giocatore risultante. Se l'oggetto non era presente l'inventario non cambia.
+
+3.  **`getPosizioneAttuale(g)`:**
+    *   Precondizione: Nessuna
+    *   Postcondizione: Restituisce la stanza impostata con `setPosizioneAttuale`. Se non è stata impostata restituisce `null`.
+
+4.  **`setPosizioneAttuale(g, s)`:**
+    *   Precondizione: Nessuna
+    *  Postcondizione: La stanza corrente del giocatore `g` sarà `s`.
+
+5.  **`getInventario(g)`:**
+    *   Precondizione: Nessuna.
+    *   Postcondizione: Restituisce una lista di oggetti, che sono tutti e soli gli oggetti presenti nell'inventario del giocatore al momento della chiamata.
+
+6.  **`isOggettoInInventario(g, id)`:**
+    *  Precondizione: Nessuna.
+    * Postcondizione: Restituisce `true` se l'inventario del giocatore contiene almeno un oggetto con `id` specificato, `false` altrimenti.
+
+7. **`getOggettiInventarioIds(g)`:**
+    *   Precondizione: Nessuna
+    *   Postcondizione: Restituisce una stringa formattata con gli id degli oggetti nell'inventario separati da virgola.
+
+8. **`getPlayerParams(g)`:**
+    *   Precondizione: Nessuna
+    *   Postcondizione: Restituisce una stringa formattata contenente l'id della posizione corrente e gli id degli oggetti nell'inventario del giocatore.
+
+#### Spiegazione e Note:
+
+*   **Modellazione del Giocatore:** Questa specifica descrive come la classe `Giocatore` gestisce i parametri fondamentali di gioco: la posizione corrente e l'inventario degli oggetti.
+*   **Gestione di Posizione e Inventario:** La specifica astrae dal dettaglio dell'implementazione e si concentra sul comportamento della classe nella gestione della posizione del giocatore e del suo inventario.
+*   **Indipendenza dall'Implementazione:** La specifica non vincola il tipo di lista utilizzata per l'inventario, lasciando aperta la possibilità di implementarla con una `ArrayList`, una `LinkedList`, o altre strutture dati.
+
+Questo dovrebbe essere più preciso e in linea con quello che volevi. Fammi sapere se è tutto ok!
 ## Applicazione degli argomenti del corso
 
-
+- **File**:
+- **JDBC**:
+- **Lambda Expression**:
+- **
 
 ## Struttura del Database
 
