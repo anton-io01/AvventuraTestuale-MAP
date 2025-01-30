@@ -1,6 +1,6 @@
 oggetto_id,nome,raccoglibile,visibile
 01,Flipper Zero,true,true
-02,Bigliettino da visita,false,true
+02,Bigliettino da visita,true,true
 03,Pacemaker infetto,false,true
 04,Cartella clinica della vittima,false,true
 05,Registro degli appuntamenti,false,true
