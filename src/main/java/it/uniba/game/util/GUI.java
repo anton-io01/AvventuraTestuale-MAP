@@ -7,11 +7,22 @@ import it.uniba.game.database.DatabaseInitializer;
 import it.uniba.game.database.dao.OggettoDAO;
 import it.uniba.game.database.dao.StanzaDAO;
 import it.uniba.game.entity.Giocatore;
+import it.uniba.game.entity.Oggetto;
+import it.uniba.game.entity.Stanza;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -40,6 +51,9 @@ public class GUI extends JFrame {
         initializeGame();
 
 
+        this.parser = new Parser();
+
+        this.azioneGlobale = new AzioneGlobale();
 
 
     }
@@ -86,12 +100,19 @@ public class GUI extends JFrame {
             resetGame();
         });
         saveItem.addActionListener(e -> {
-            String output = (String) processCommand("salva");
-            if(output !=null){
-                appendToMainText(output);
+            List<String> params = new ArrayList<>();
+            params.add(String.valueOf(timeRemaining));
+            String textAreaContent = mainTextArea.getText();
+            String encodedTextContent = Base64.getEncoder().encodeToString(textAreaContent.getBytes(StandardCharsets.UTF_8));
+            params.add(encodedTextContent); // Aggiunto sempre l'encodedTextContent, anche se vuoto
 
+            String output = (String) processCommand("salva", params);
+
+            if (output != null) {
+                appendToMainText(output);
             }
         });
+
 
 
         exitItem.addActionListener(e -> System.exit(0));
@@ -264,24 +285,37 @@ public class GUI extends JFrame {
         }
     }
     private void initializeGame(){
-        // Inizializzazione del database
+        String filePath = "./src/main/resources/saves/save.txt"; // percorso del salvataggio
+        Path path = Paths.get(filePath);
+
+
         try{
+            //inizializzo il database (il database verrà creato o no, se esiste gia e a seguito dell'apposito boolean)
             DatabaseInitializer.initializeDatabase(false);
+
             //istanzio i DAO
             stanzaDAO = new StanzaDAO();
             oggettoDAO = new OggettoDAO();
             gestoreAzioni = new GestoreAzioni();
             this.parser = new Parser();
+            this.azioneGlobale = new AzioneGlobale();
 
-
-            //Creazione del giocatore di default all'avvio del game.
             giocatore = new Giocatore();
-            //Imposto posizione iniziale
-            if(giocatore.getPosizioneAttuale()==null) { // set posizione default / lista oggetti
-                giocatore.setPosizioneAttuale(stanzaDAO.getStanzaById("02"));
-                giocatore.aggiungiOggetto(oggettoDAO.getOggettoById("01"));
+
+            if(Files.exists(path)) { // controllo se c'è un save
+                loadGameFromFile(filePath); // funzione di ripristino
+                System.out.println("Save esistente trovato!");
+            }   else{
+
+                System.out.println("Nessun file di salvataggio trovato"); // procedura normale
+                //Imposto posizione iniziale se non ce il save
+                if (giocatore.getPosizioneAttuale() == null) {
+                    giocatore.setPosizioneAttuale(stanzaDAO.getStanzaById("02"));
+                    giocatore.aggiungiOggetto(oggettoDAO.getOggettoById("01"));
+                }
             }
-        }catch (Exception e){
+
+        }    catch (Exception e) {
             System.err.println("Errore durante l'inizializzazione del gioco:");
             e.printStackTrace();
         }
@@ -294,47 +328,103 @@ public class GUI extends JFrame {
             String seconds = String.format("%02d", timeRemaining % 60);
 
 
-
             if(timeRemaining <=0) {
                 timerLabel.setText("Tempo scaduto. GAME OVER");
                 executor.shutdown();
-
-            }   else{
-
+            }   else {
                 timerLabel.setText("Timer: " + hours + ":" + minutes + ":" + seconds);
-
             }
         }, 0, 1, TimeUnit.SECONDS);
-        appendToMainText("L'oscurità di Neo Tokyo nasconde sempre dei segreti. Quella di questa notte è particolarmente minacciosa.\n\n");
-        appendToMainText("Sei un agente della polizia di Neo Tokyo, abituato alle notti insonni e ai vicoli malfamati. " +
-                "Tuttavia, la chiamata di stanotte ha una nota diversa: l'ospedale centrale ha segnalato una morte sospetta.\n\n");
-        appendToMainText("Un paziente, apparentemente in ottima salute, è stato stroncato da un improvviso arresto cardiaco. " +
-                "Il referto parla di malfunzionamento del pacemaker, ma una serie di decessi simili nei giorni scorsi hanno allertato l'ospedale.\n\n");
-        appendToMainText("Una macchia d'ombra si allunga su questi casi, e la tua esperienza ti dice che non si tratta di semplici coincidenze. " +
-                "L'ospedale ha deciso di non tacere e ha chiamato la polizia, sperando di trovare una risposta alla radice di questi eventi.\n\n");
-        appendToMainText("Ti trovi nell'ingresso dell'ospedale di Neo Tokyo, l'odore di disinfettante si mescola con la tensione nell'aria.\n\n");
-        appendToMainText("La tua auto è parcheggiata fuori dall'edificio, pronta a portarti dove l'indagine ti condurrà. " +
-                "Per raggiungerla, ti basterà uscire dall'ospedale e digitare il comando 'usa auto'. (Puoi usare l'auto per spostarti tra i vari edifici, ma solo se ne conosci la posizione).\n\n");
-        appendToMainText("Premi il pulsante 'AIUTO' o digita 'aiuto' per scoprire i comandi disponibili e iniziare a svelare questo mistero.\n\n");
-
-
+        if(!Files.exists(path)){
+            appendToMainText(getStringIntroGame());
+        } // richiamo all introduzione qualora NON sia presente (controllo)  e (per pulizia della action) subito prima della view.
         setLocationRelativeTo(null);
         this.setVisible(true); //imposto il frame come visibile solo al termine dell'inizializzazione.
 
+
     }
+    private void loadGameFromFile(String filePath) throws IOException {
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String timeLine = reader.readLine();  // prima linea : timer
+            String paramsLine = reader.readLine(); // seconda linea stato del player
+            StringBuilder textContent = new StringBuilder();
+
+            String line;
+            while ((line = reader.readLine()) != null) {
+                textContent.append(line).append("\n");
+            }
+
+            try {
+                timeRemaining = Integer.parseInt(timeLine); // recupera il time remaining
+
+            }    catch (NumberFormatException e) {
+                System.err.println("Errore durante la lettura del tempo, imposto default");
+                timeRemaining = 7200; // imposta time default se non legge.
+            }
+
+            if (paramsLine != null && !paramsLine.isEmpty()) {
+                String[] parts = paramsLine.split(";");
+                if (parts.length == 2) { // se la split ha 2 valori continua
+                    String stanzaId = parts[0]; // valore 1 stanza attuale
+                    String inventario = parts[1];   // valore 2 inventario
+
+                    if (stanzaId != null && !stanzaId.isEmpty()){
+                        try{ //imposta posizione del player da stanzaId.
+                            Stanza stanza =  stanzaDAO.getStanzaById(stanzaId);
+                            giocatore.setPosizioneAttuale(stanza);
+
+
+                        } catch(Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    if(inventario!= null && !inventario.isEmpty()) {
+                        String[] oggettiIds = inventario.split(","); // array di oggetti.
+                        for(String oggettoId : oggettiIds) { // itera sull'array
+                            try {
+                                Oggetto oggetto = oggettoDAO.getOggettoById(oggettoId); //per ogni oggettoID ottiene l'oggetto dal DAO
+                                if(oggetto!= null) giocatore.aggiungiOggetto(oggetto); //aggiunge oggetto al player
+
+                            } catch(Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                }   else{
+                    System.out.println("il formato del save file non è corretto!");
+                }
+            }     else {
+                System.out.println("il formato del save file non è corretto!");
+            }
+
+
+            if (textContent.length() > 0) { // ora viene controllato e mandato all text
+                mainTextArea.setText(textContent.toString());
+                mainTextArea.setCaretPosition(0);
+            }
+        }     catch (IOException e){
+            System.err.println("Errore nel caricamento del file!");
+            e.printStackTrace();
+        }
+    }
+
+
+
     private void resetGame() {
         DatabaseInitializer.initializeDatabase(true);
-
-        try {
+        try{
             //istanzio i DAO
             stanzaDAO = new StanzaDAO();
             oggettoDAO = new OggettoDAO();
             gestoreAzioni = new GestoreAzioni();
 
+
         } catch (Exception e) {
             e.printStackTrace();
         }
-        this.parser = new Parser();//istanza parser qui in modo tale che il metodo processCommand non dia eccezione dopo il click
+        this.parser = new Parser();
+        this.azioneGlobale = new AzioneGlobale();
+
         timeRemaining = 7200;  // Reset del timer a 2 ore in secondi
         mainTextArea.setText("");    // Pulisci l'area di testo principale
         this.giocatore = new Giocatore();    // Crea un nuovo giocatore
@@ -342,11 +432,26 @@ public class GUI extends JFrame {
             try {
                 giocatore.setPosizioneAttuale(stanzaDAO.getStanzaById("02"));
                 giocatore.aggiungiOggetto(oggettoDAO.getOggettoById("01"));
-            }
-            catch(Exception e) {
+
+            }    catch(Exception e) {
                 e.printStackTrace();
             }
+
         }
+        String filePath = "./src/main/resources/saves/save.txt"; // percorso del salvataggio
+        Path path = Paths.get(filePath);
+
+        try {
+
+            if(Files.exists(path)) {
+                Files.delete(path); //cancella file in reset.
+                System.out.println("File save precedente eliminato con successo");
+            }
+        }  catch(IOException e) {
+            e.printStackTrace();
+
+        }
+        appendToMainText(getStringIntroGame());
         //riavvio il timer con gli stessi dati
         executor = Executors.newSingleThreadScheduledExecutor();
         executor.scheduleAtFixedRate(() -> {
@@ -361,26 +466,14 @@ public class GUI extends JFrame {
                 timerLabel.setText("Tempo scaduto. GAME OVER");
                 executor.shutdown();
 
-            } else {
+            }  else{
                 timerLabel.setText("Timer: " + hours + ":" + minutes + ":" + seconds);
 
             }
         }, 0, 1, TimeUnit.SECONDS);
-        appendToMainText("L'oscurità di Neo Tokyo nasconde sempre dei segreti. Quella di questa notte è particolarmente minacciosa.\n\n");
-        appendToMainText("Sei un agente della polizia di Neo Tokyo, abituato alle notti insonni e ai vicoli malfamati. " +
-                "Tuttavia, la chiamata di stanotte ha una nota diversa: l'ospedale centrale ha segnalato una morte sospetta.\n\n");
-        appendToMainText("Un paziente, apparentemente in ottima salute, è stato stroncato da un improvviso arresto cardiaco. " +
-                "Il referto parla di malfunzionamento del pacemaker, ma una serie di decessi simili nei giorni scorsi hanno allertato l'ospedale.\n\n");
-        appendToMainText("Una macchia d'ombra si allunga su questi casi, e la tua esperienza ti dice che non si tratta di semplici coincidenze. " +
-                "L'ospedale ha deciso di non tacere e ha chiamato la polizia, sperando di trovare una risposta alla radice di questi eventi.\n\n");
-        appendToMainText("Ti trovi nell'ingresso dell'ospedale di Neo Tokyo, l'odore di disinfettante si mescola con la tensione nell'aria.\n\n");
-        appendToMainText("La tua auto è parcheggiata fuori dall'edificio, pronta a portarti dove l'indagine ti condurrà. " +
-                "Per raggiungerla, ti basterà uscire dall'ospedale e digitare il comando 'usa auto'. (Puoi usare l'auto per spostarti tra i vari edifici, ma solo se ne conosci la posizione).\n\n");
-        appendToMainText("Premi il pulsante 'AIUTO' o digita 'aiuto' per scoprire i comandi disponibili e iniziare a svelare questo mistero.\n\n");
 
         isInventoryShowing = false;
         isMapShowing = false;
-
         updateSidePanel();
 
 
@@ -491,6 +584,28 @@ public class GUI extends JFrame {
 
     }
 
+    private String getStringIntroGame(){
+        return  "L'oscurità di Neo Tokyo nasconde sempre dei segreti. Quella di questa notte è particolarmente minacciosa.\n\n" +
+                "Sei un agente della polizia di Neo Tokyo, abituato alle notti insonni e ai vicoli malfamati. " +
+                "Tuttavia, la chiamata di stanotte ha una nota diversa: l'ospedale centrale ha segnalato una morte sospetta.\n\n" +
+                "Un paziente, apparentemente in ottima salute, è stato stroncato da un improvviso arresto cardiaco. " +
+                "Il referto parla di malfunzionamento del pacemaker, ma una serie di decessi simili nei giorni scorsi hanno allertato l'ospedale.\n\n" +
+                "Una macchia d'ombra si allunga su questi casi, e la tua esperienza ti dice che non si tratta di semplici coincidenze. " +
+                "L'ospedale ha deciso di non tacere e ha chiamato la polizia, sperando di trovare una risposta alla radice di questi eventi.\n\n" +
+                "Ti trovi nell'ingresso dell'ospedale di Neo Tokyo, l'odore di disinfettante si mescola con la tensione nell'aria.\n\n" +
+                "La tua auto è parcheggiata fuori dall'edificio, pronta a portarti dove l'indagine ti condurrà. " +
+                "Per raggiungerla, ti basterà uscire dall'ospedale e digitare il comando 'usa auto'. (Puoi usare l'auto per spostarti tra i vari edifici, ma solo se ne conosci la posizione).\n\n" +
+                "Premi il pulsante 'AIUTO' o digita 'aiuto' per scoprire i comandi disponibili e iniziare a svelare questo mistero.\n\n";
+    }
+    public Object processCommand(String input,List<String> params) {
+
+        if(input.equals("salva")){
+
+            return azioneGlobale.salva(giocatore,params); //richiama salva, settato nella fase precedente da text main
+        }
+        return  processCommand(input); //altrimenti tutti i commando per action globale e ui
+
+    }
     public Object processCommand(String input) {
         return gestoreAzioni.esegui(giocatore, parser.parseInput(input));
     }
