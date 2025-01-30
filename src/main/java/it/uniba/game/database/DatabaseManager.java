@@ -33,6 +33,22 @@ public class DatabaseManager {
     }
 
     /**
+     * Metodo per ottenere il percorso del database.
+     *
+     * @return il percorso del database come stringa.
+     */
+    public static String getDatabasePath() {
+        // Estrai il percorso effettivo dalla stringa JDBC (rimuove il prefisso "jdbc:h2:")
+        String path = DB_URL.substring(DB_URL.indexOf(":") + 1);
+        //Se si usa H2 in memoria l'estensione non esiste.
+        if(path.contains("mem:")){
+            return null;
+        }
+
+        return path + ".mv.db"; // Aggiunge l'estensione standard per i file H2
+    }
+
+    /**
      * Metodo per chiudere la connessione al database.
      */
     public static void closeConnection() {
