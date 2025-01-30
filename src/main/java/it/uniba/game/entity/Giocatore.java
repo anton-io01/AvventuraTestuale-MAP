@@ -24,7 +24,8 @@ public class Giocatore{
         return posizioneAttuale;
     }
 
-    public String getPosizioneAttualeId(){ return this.posizioneAttuale.getStanzaId();};
+    public String getPosizioneAttualeId(){ return this.posizioneAttuale.getStanzaId();}
+
     public void setPosizioneAttuale(Stanza posizioneAttuale) {
         this.posizioneAttuale = posizioneAttuale;
     }
