@@ -98,10 +98,19 @@ public class AzioneInterazione {
      * @param parametri
      */
     public String usa(Giocatore giocatore, List<String> parametri) {
-        if(parametri.size() < 2){
+        if (parametri.size() < 2) {
             return "Devi specificare un oggetto da usare\n\n";
         }
-        return null;
+
+        String azione_id = parametri.get(0);
+        String oggetto_id = parametri.get(1);
+
+        switch (azione_id + oggetto_id) {
+            case "US01":
+                return stanzaDAO.getAllOggettiStanza(giocatore.getPosizioneAttualeId()) + "\n\n";
+            default:
+                return "Non puoi usare questo oggetto.\n\n";
+        }
     }
 
     /**
