@@ -9,7 +9,6 @@ EX,esci,globali
 SA,salva,globali
 IN,inventario,globali
 OS,osserva,globali
-CA,carica,globale
 AI,aiuto,globale
 MA,mappa,globale
 EM,esamina,interazione
