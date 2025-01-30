@@ -1,6 +1,8 @@
 package it.uniba.game.action;
 
+import it.uniba.game.database.dao.EdificioDAO;
 import it.uniba.game.database.dao.MovimentoDAO;
+import it.uniba.game.entity.Edificio;
 import it.uniba.game.entity.Giocatore;
 import it.uniba.game.database.dao.StanzaDAO;
 
@@ -10,6 +12,7 @@ import java.util.List;
 public class AzioneGlobale {
     private final StanzaDAO stanzaDAO = new StanzaDAO();
     private final MovimentoDAO movimentoDAO = new MovimentoDAO();
+    private final EdificioDAO edificioDAO = new EdificioDAO();
 
 
     public AzioneGlobale() {
@@ -35,7 +38,7 @@ public class AzioneGlobale {
 
 
     public String osserva(Giocatore giocatore, List<String> parametri) {
-        return stanzaDAO.getAllOggettiStanza(giocatore.getPosizioneAttualeId()) + "\n\n";
+        return stanzaDAO.getDescrizioneCompleta(giocatore.getPosizioneAttualeId()) + "\n\n";
     }
 
     /**
@@ -74,7 +77,8 @@ public class AzioneGlobale {
      */
     public String mappa(Giocatore giocatore, List<String> parametri) {
         if (stanzaDAO.isStanzaAccessibile(giocatore.getPosizioneAttuale().getStanzaId())) {
-            return "Sei nella stanza: " + giocatore.getPosizioneAttuale().getNome() + ".\n" + movimentoDAO.getMovimentiByStanza(giocatore.getPosizioneAttuale()) + "\n\n";
+            Edificio edificio = stanzaDAO.getEdificioByStanza(giocatore.getPosizioneAttualeId());
+            return "Edificio: " + edificio.getNome() + "\nSei nella stanza: " + giocatore.getPosizioneAttuale().getNome() + ".\n" + movimentoDAO.getMovimentiByStanza(giocatore.getPosizioneAttuale()) + "\n\n";
         } else {
             return "Il passaggio è bloccato... Da qui puoi solo tornare indietro.\n\n";
         }
