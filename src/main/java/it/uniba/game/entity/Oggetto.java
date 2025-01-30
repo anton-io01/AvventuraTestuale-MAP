@@ -9,6 +9,8 @@ public class Oggetto {
         this.nome = nome;
     }
 
+    public Oggetto() {}
+
     public String getOggettoId() {
         return oggettoId;
     }
