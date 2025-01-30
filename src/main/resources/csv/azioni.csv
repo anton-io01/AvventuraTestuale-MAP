@@ -9,7 +9,7 @@ EX,esci,globali
 SA,salva,globali
 IN,inventario,globali
 OS,osserva,globali
-EN,entra,globale
+CA,carica,globale
 AI,aiuto,globale
 MA,mappa,globale
 EM,esamina,interazione
