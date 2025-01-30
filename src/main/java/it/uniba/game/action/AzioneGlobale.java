@@ -76,6 +76,10 @@ public class AzioneGlobale {
      * @return
      */
     public String mappa(Giocatore giocatore, List<String> parametri) {
-        return "Sei nella stanza: " + giocatore.getPosizioneAttuale().getNome() + ".\n" + movimentoDAO.getMovimentiByStanza(giocatore.getPosizioneAttuale()) + "\n\n";
+        if (stanzaDAO.isStanzaAccessibile(giocatore.getPosizioneAttuale().getStanzaId())) {
+            return "Sei nella stanza: " + giocatore.getPosizioneAttuale().getNome() + ".\n" + movimentoDAO.getMovimentiByStanza(giocatore.getPosizioneAttuale()) + "\n\n";
+        } else {
+            return "Il passaggio è bloccato... Da qui puoi solo tornare indietro.\n\n";
+        }
     }
 }
