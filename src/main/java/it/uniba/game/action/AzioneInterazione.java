@@ -4,9 +4,9 @@ import it.uniba.game.database.dao.AzioneDAO;
 import it.uniba.game.database.dao.EdificioDAO;
 import it.uniba.game.database.dao.StanzaDAO;
 import it.uniba.game.database.dao.OggettoDAO;
+import it.uniba.game.database.dao.MovimentoDAO;
 import it.uniba.game.entity.Giocatore;
 import it.uniba.game.entity.Oggetto;
-import it.uniba.game.entity.Edificio;
 
 import java.util.List;
 
@@ -15,6 +15,7 @@ public class AzioneInterazione {
     private AzioneDAO azioneDAO = new AzioneDAO();
     private EdificioDAO edificioDAO = new EdificioDAO();
     private StanzaDAO stanzaDAO = new StanzaDAO();
+    private MovimentoDAO movimentoDAO = new MovimentoDAO();
 
     public AzioneInterazione() {
     }
@@ -36,6 +37,11 @@ public class AzioneInterazione {
         switch(azione_id + oggetto_id + stanza_id){
             case "EM0211":
                 edificioDAO.setEdificioAccessibilita("02", true);
+            case "EM2927":
+                movimentoDAO.updateMovimentiByStanza(stanzaDAO.getEdificioIdByStanza(giocatore.getPosizioneAttualeId()), stanza_id, null,null,null,null,"25","28");
+                stanzaDAO.setStanzaAccessibile(stanza_id, true);
+            case "EM0919":
+                edificioDAO.setEdificioAccessibilita("03", true);
         }
 
         String descrizioneOggetto = oggettoDAO.getDescrizioneDettagliataOggetto(oggetto_id);
@@ -105,10 +111,28 @@ public class AzioneInterazione {
         String azione_id = parametri.get(0);
         String oggetto_id = parametri.get(1);
 
-        switch (azione_id + oggetto_id) {
-            case "US01":
-                return stanzaDAO.getAllOggettiStanza(giocatore.getPosizioneAttualeId()) + "\n\n";
+
+        if(!giocatore.isOggettoInInventario(oggetto_id)) {
+            return "Non puoi usare questo oggetto. Non è presente nel tuo inventario.\n\n";
+        }
+
+        String stanza_id = giocatore.getPosizioneAttualeId();
+        String chiaveAzione = azione_id + oggetto_id;
+        String chiaveAzioneStanza = azione_id + oggetto_id + stanza_id;
+
+        switch (chiaveAzioneStanza) {
+            case "US0116":
+                movimentoDAO.updateMovimentiByStanza(stanzaDAO.getEdificioIdByStanza(giocatore.getPosizioneAttualeId()), stanza_id, "17","15",null,null,null,null);
+                stanzaDAO.setStanzaAccessibile(stanza_id, true);
+                return  "Hai sbloccato la porta di sicurezza... Prosegui.\n\n";
+            case "US0723":
+                movimentoDAO.updateMovimentiByStanza(stanzaDAO.getEdificioIdByStanza(giocatore.getPosizioneAttualeId()), stanza_id, "24","22",null,null,null,null);
+                stanzaDAO.setStanzaAccessibile(stanza_id, true);
+                return "Hai sbloccato l'accesso al corridoio... Prosegui.\n\n";
             default:
+                if (chiaveAzione.equals("US01")) {
+                    return stanzaDAO.getAllOggettiStanza(giocatore.getPosizioneAttualeId()) + "\n\n";
+                }
                 return "Non puoi usare questo oggetto.\n\n";
         }
     }
@@ -128,11 +152,9 @@ public class AzioneInterazione {
 
         switch (azioneKey) {
             case "AP1311":
-                return "Hai aperto l'armadio e trovi una strana combinazione.\n\n";
+                return "Hai aperto l'armadio... Qui dentro non c'è niente di interessante.\n\n";
             case "AP1515":
                 return "Hai aperto la porta. Un forte sibilo fa capolino.\n\n";
-            case "AP1616":
-                return "Hai inserito la tua impronta. La porta si apre con un click.\n\n";
             default:
                     return "Non puoi aprire questo oggetto.\n\n";
         }
