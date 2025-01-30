@@ -33,6 +33,21 @@ public class Giocatore{
     public List<Oggetto> getInventario() {
         return inventario;
     }
+
+    /**
+     * Controlla se il giocatore possiede un oggetto.
+     * @param oggettoId
+     * @return
+     */
+    public boolean isOggettoInInventario(String oggettoId) {
+        for (Oggetto oggetto : inventario) {
+            if (oggetto.getOggettoId().equals(oggettoId)) {
+                return true; // Oggetto trovato
+            }
+        }
+        return false; // Oggetto non trovato
+    }
+
     public String getPlayerParams() {
         StringBuilder inventarioString = new StringBuilder();
         for (int i = 0; i < inventario.size(); i++) {
