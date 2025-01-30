@@ -1,7 +1,7 @@
+// it/uniba/game/database/DatabaseInitializer.java
 package it.uniba.game.database;
 
 import it.uniba.game.util.CSVLoader;
-
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -21,30 +21,59 @@ public class DatabaseInitializer {
 
     /**
      * Metodo principale per inizializzare il database.
-     * - Crea il database e le tabelle se non esistono.
+     * - Crea il database e le tabelle se non esistono, o se force è true
      * - Carica i dati iniziali dai file CSV.
+     * @param force boolean, se true il database viene reinizializzato, se false solo se non esiste
      */
-    public static void initializeDatabase() {
-        if (isDatabaseCreated()) {
+    public static void initializeDatabase(boolean force) {
+
+        Connection connection = null; //inizializzo una connection per lo scope della funzione
+        Statement stmt = null;
+
+
+        if (!force && isDatabaseCreated()) {
             System.out.println("Il database esiste già. Nessuna operazione necessaria.");
             return;
         }
+        try {
+            connection = DatabaseManager.getConnection();
+            stmt = connection.createStatement();
 
-        try (Connection connection = DatabaseManager.getConnection();
-             Statement stmt = connection.createStatement()) {
-
+            //Se il database è gia stato creato viene prima distrutto, successivamente si creano nuove tabelle
+            if(force){
+                dropTables(stmt);
+            }
             // Creazione delle tabelle
-            createTables(stmt);
-
+            createTables(stmt,force); //passaggio variabile force
             // Caricamento dei dati iniziali
             loadInitialData();
 
-            System.out.println("Database creato e inizializzato con successo!");
-
-        } catch (Exception e) {
-            e.printStackTrace();
+            if (force) {
+                System.out.println("Database reinizializzato con successo!");
+            } else {
+                System.out.println("Database creato e inizializzato con successo!");
+            }
         }
+        catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            // Chiude le risorse nel blocco finally
+            try {
+                if (stmt != null) {
+                    stmt.close();
+                }
+                if (connection != null && !connection.isClosed()) {
+                    connection.close();
+                }
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+
+
+        }
+
     }
+
 
     /**
      * Controlla se il database è già stato creato.
@@ -52,25 +81,67 @@ public class DatabaseInitializer {
      * @return true se il database esiste, false altrimenti.
      */
     private static boolean isDatabaseCreated() {
-        try (Connection connection = DatabaseManager.getConnection();
-             Statement stmt = connection.createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'EDIFICI'")) {
 
+        Connection connection = null;
+        Statement stmt = null;
+        ResultSet rs = null;
+
+
+        try {
+            connection = DatabaseManager.getConnection();
+            stmt = connection.createStatement();
+            rs = stmt.executeQuery("SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'EDIFICI'");
             return rs.next(); // Ritorna true se la tabella "Edifici" esiste
 
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             e.printStackTrace();
             return false;
+        }  finally {
+            try {
+                if(rs!= null) rs.close();
+                if(stmt!= null) stmt.close();
+                if (connection != null && !connection.isClosed()) {
+                    connection.close();
+                }
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+
+
         }
     }
 
+
+    private static void dropTables(Statement stmt) {
+
+        try{
+            String[] tables = {"AzioniInterazione","Azioni","Movimenti",
+                    "DescrizioniOggetti",
+                    "OggettiStanze","OggettiAlias","Oggetti",
+                    "DescrizioniStanze","Stanze", "Edifici"};
+
+
+            for(String table: tables){
+                String dropTable = "DROP TABLE IF EXISTS " + table;
+                stmt.execute(dropTable);
+
+            }
+            System.out.println("Tabelle eliminate con successo");
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
     /**
      * Crea le tabelle nel database.
      *
      * @param stmt Statement da usare per le query SQL.
+     * @param force variabile che indica se siamo in una nuova partita o no
      * @throws Exception se si verifica un errore nella creazione delle tabelle.
      */
-    private static void createTables(Statement stmt) throws Exception {
+    private static void createTables(Statement stmt, boolean force) throws Exception {
         // Crea tabelle nel database (copiando la logica dal file init_database.sql)
         String edificiTable = """
                 CREATE TABLE IF NOT EXISTS Edifici (
@@ -164,7 +235,7 @@ public class DatabaseInitializer {
                 """;
 
         String azioniTable = """
-                CREATE TABLE IF NOT EXISTS Azioni (                
+                CREATE TABLE IF NOT EXISTS Azioni (
                     azione_id VARCHAR(2) PRIMARY KEY,
                     nome VARCHAR(100) NOT NULL,
                     categoria VARCHAR(20) NOT NULL
@@ -175,7 +246,7 @@ public class DatabaseInitializer {
                 CREATE TABLE IF NOT EXISTS AzioniInterazione (
                     azione_id VARCHAR(2) NOT NULL,
                     oggetto_id VARCHAR(2) NOT NULL,
-                    stanza_id VARCHAR(2),                
+                    stanza_id VARCHAR(2),
                     FOREIGN KEY (azione_id) REFERENCES Azioni(azione_id),
                     FOREIGN KEY (oggetto_id) REFERENCES Oggetti(oggetto_id)
                 );
@@ -192,7 +263,14 @@ public class DatabaseInitializer {
         stmt.execute(azioniTable);
         stmt.execute(azioniInterazioneTable);
 
-        System.out.println("Tabelle create con successo.");
+        if (force) {
+            System.out.println("Tabelle ricreate con successo.");
+
+        } else {
+            System.out.println("Tabelle create con successo.");
+        }
+
+
     }
 
     /**
