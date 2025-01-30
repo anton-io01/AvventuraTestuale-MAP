@@ -7,6 +7,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.nio.charset.StandardCharsets;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class GUI extends JFrame {
     private JTextArea mainTextArea;
@@ -16,11 +19,16 @@ public class GUI extends JFrame {
     private boolean isMapShowing = false;
     private Engine engine;
     private AzioneGlobale azioneGlobale;
+    private JLabel timerLabel;    // Label per il timer
+    private ScheduledExecutorService executor; //Gestione delle chiamate thread periodiche
+    private int timeRemaining = 7200;  // 2 ore in seconds
 
     public GUI(Engine engine) {
         super("Gioco Avventura Testuale");
-        this.engine = engine; // Salva l'istanza di Engine
+        this.engine = engine;
         this.azioneGlobale = new AzioneGlobale();
+
+
         setupFrame();
         setupComponents();
         initializeGame();
@@ -31,16 +39,15 @@ public class GUI extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1024, 768);
         setLayout(new BorderLayout());
-        // Imposta look and feel
+
+
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
     private void setupComponents() {
-
         Color darkBg = new Color(15, 23, 42);
         Color panelBg = new Color(30, 41, 59);
         Color textColor = new Color(203, 213, 225);
@@ -48,40 +55,60 @@ public class GUI extends JFrame {
         Color accentOrange = new Color(251, 146, 60);
         Color accentGreen = new Color(74, 222, 128);
         Color accentPurple = new Color(192, 132, 252);
+
+
+
         // Menu bar
         JMenuBar menuBar = new JMenuBar();
         JMenu fileMenu = new JMenu("File");
         JMenuItem saveItem = new JMenuItem("Salva");
         JMenuItem loadItem = new JMenuItem("Carica Partita");
         JMenuItem exitItem = new JMenuItem("Esci");
+
         fileMenu.add(saveItem);
         fileMenu.add(loadItem);
         fileMenu.addSeparator();
         fileMenu.add(exitItem);
         menuBar.add(fileMenu);
         setJMenuBar(menuBar);
-
-        // Action listeners per il menu
         saveItem.addActionListener(e -> {
             String output = (String) engine.processCommand("salva");
-            if(output != null){
+            if(output !=null){
                 appendToMainText(output);
+
             }
         });
         loadItem.addActionListener(e -> {
             String output = (String) engine.processCommand("carica");
-            if(output != null){
+            if(output !=null){
                 appendToMainText(output);
             }
+
         });
 
 
         exitItem.addActionListener(e -> System.exit(0));
 
-        // Top panel
-        JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 20, 10));
+
+        // Top panel with BorderLayout
+        JPanel topPanel = new JPanel(new BorderLayout());
         topPanel.setBackground(panelBg);
         topPanel.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.GRAY));
+
+
+        // Timer panel for left side (Center Alignment VERTICAL)
+        JPanel timerPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 10));
+        timerPanel.setBackground(panelBg);
+        timerLabel = new JLabel(" ");
+        timerLabel.setForeground(Color.WHITE);
+        timerLabel.setFont(new Font("Consolas", Font.BOLD, 14));
+        timerPanel.add(timerLabel);
+
+
+        // Buttons panel for right side
+        JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 20, 10));
+        buttonsPanel.setBackground(panelBg);
+
 
         JButton helpButton = new JButton("AIUTO");
         helpButton.setForeground(accentRed);
@@ -89,15 +116,22 @@ public class GUI extends JFrame {
         JButton mapButton = new JButton("MAPPA");
         mapButton.setForeground(accentOrange);
         mapButton.setFont(new Font("Consolas", Font.BOLD, 14));
+
         JButton invButton = new JButton("INVENTARIO");
         invButton.setForeground(accentGreen);
         invButton.setFont(new Font("Consolas", Font.BOLD, 14));
+        buttonsPanel.add(helpButton);
+        buttonsPanel.add(mapButton);
+        buttonsPanel.add(invButton);
 
-        topPanel.add(helpButton);
-        topPanel.add(mapButton);
-        topPanel.add(invButton);
+
+
+        // Add panels to topPanel
+        topPanel.add(timerPanel, BorderLayout.WEST);
+        topPanel.add(buttonsPanel, BorderLayout.EAST);
+
+
         add(topPanel, BorderLayout.NORTH);
-
         // Main text area
         mainTextArea = new JTextArea();
         mainTextArea.setBackground(darkBg);
@@ -107,10 +141,10 @@ public class GUI extends JFrame {
         mainTextArea.setWrapStyleWord(true);
         mainTextArea.setEditable(false);
         mainTextArea.setMargin(new Insets(10, 10, 10, 10));
-
         JScrollPane scrollPane = new JScrollPane(mainTextArea);
         scrollPane.setBackground(darkBg);
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
+
 
         // Side panel
         sidePanel = new JPanel();
@@ -121,7 +155,6 @@ public class GUI extends JFrame {
                 BorderFactory.createEmptyBorder(10, 10, 10, 10)
         ));
         sidePanel.setPreferredSize(new Dimension(0, 0));
-
         // Content Panel
         JPanel contentPanel = new JPanel(new BorderLayout());
         contentPanel.setBackground(darkBg);
@@ -133,11 +166,11 @@ public class GUI extends JFrame {
         JPanel bottomPanel = new JPanel(new BorderLayout());
         bottomPanel.setBackground(panelBg);
         bottomPanel.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Color.GRAY));
-
         // Input Panel
         JPanel inputPanel = new JPanel(new BorderLayout(10, 0));
         inputPanel.setBackground(panelBg);
         inputPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
 
         inputField = new JTextField();
         inputField.setFont(new Font("Consolas", Font.PLAIN, 14));
@@ -153,27 +186,27 @@ public class GUI extends JFrame {
         sendButton.setFont(new Font("Consolas", Font.BOLD, 14));
         sendButton.setForeground(accentPurple);
 
+
         inputPanel.add(inputField, BorderLayout.CENTER);
         inputPanel.add(sendButton, BorderLayout.EAST);
-
         bottomPanel.add(inputPanel, BorderLayout.SOUTH);
         add(bottomPanel, BorderLayout.SOUTH);
-
-        // Action Listeners
         mapButton.addActionListener(e -> {
             String output = (String) engine.processCommand("mappa");
-            if (output != null) {
+            if(output!= null){
                 appendToMainText(output);
                 isMapShowing = false;
                 isInventoryShowing = false;
                 updateSidePanel();
             }
         });
+
         invButton.addActionListener(e -> {
             isInventoryShowing = !isInventoryShowing;
             isMapShowing = false;
             updateSidePanel();
         });
+
         helpButton.addActionListener(e -> {
             String output = (String) engine.processCommand("aiuto");
             if (output != null) {
@@ -181,6 +214,7 @@ public class GUI extends JFrame {
                 isMapShowing = false;
                 isInventoryShowing = false;
                 updateSidePanel();
+
             }
         });
 
@@ -189,41 +223,62 @@ public class GUI extends JFrame {
             if (!text.isEmpty()) {
                 appendToMainText("> " + text + "\n\n");
                 Object output = engine.processCommand(text);
-                handleCommandOutput(text,output);
+                handleCommandOutput(text, output);
                 inputField.setText("");
+
             }
         };
-
         sendButton.addActionListener(sendAction);
         inputField.addActionListener(sendAction);
     }
-
     private void handleCommandOutput(String text, Object output) {
         if (text.startsWith("inventario")) {
             isInventoryShowing = true;
             isMapShowing = false;
             updateSidePanel();
-        } else if (text.startsWith("mappa")) {
+        }else if (text.startsWith("mappa")) {
             if (output instanceof String) {
                 appendToMainText((String) output);
                 isMapShowing = false;
                 isInventoryShowing = false;
                 updateSidePanel();
             }
-        } else if (output instanceof String) {
+        }
+        else if(output instanceof String){
             appendToMainText((String) output);
             isMapShowing = false;
             isInventoryShowing = false;
             updateSidePanel();
-        } else {
+        } else{
             isInventoryShowing = false;
             isMapShowing = false;
             updateSidePanel();
+
         }
     }
 
-
     private void initializeGame() {
+
+        executor = Executors.newSingleThreadScheduledExecutor();
+        executor.scheduleAtFixedRate(() -> {
+            timeRemaining--;
+
+            String hours = String.format("%02d", timeRemaining / 3600);
+            String minutes = String.format("%02d", (timeRemaining % 3600) / 60);
+            String seconds = String.format("%02d", timeRemaining % 60);
+
+
+
+            if(timeRemaining <=0) {
+                timerLabel.setText("Tempo scaduto. GAME OVER");
+                executor.shutdown();
+
+            }   else{
+
+                timerLabel.setText("Timer: " + hours + ":" + minutes + ":" + seconds);
+
+            }
+        }, 0, 1, TimeUnit.SECONDS);
         appendToMainText("L'oscurità di Neo Tokyo nasconde sempre dei segreti. Quella di questa notte è particolarmente minacciosa.\n\n");
         appendToMainText("Sei un agente della polizia di Neo Tokyo, abituato alle notti insonni e ai vicoli malfamati. " +
                 "Tuttavia, la chiamata di stanotte ha una nota diversa: l'ospedale centrale ha segnalato una morte sospetta.\n\n");
@@ -243,11 +298,13 @@ public class GUI extends JFrame {
         sidePanel.removeAll();
         if (!isMapShowing && !isInventoryShowing) {
             sidePanel.setPreferredSize(new Dimension(0, 0));
-        } else {
+
+        }   else {
             sidePanel.setPreferredSize(new Dimension(250, 0));
+
             if (isInventoryShowing) {
                 showInventory();
-            } else if (isMapShowing) {
+            }else if (isMapShowing) {
                 showMap();
             }
         }
@@ -264,9 +321,10 @@ public class GUI extends JFrame {
         sidePanel.add(titleLabel);
         sidePanel.add(Box.createVerticalStrut(10));
 
-        String output = (String) engine.processCommand("inventario");
 
+        String output = (String) engine.processCommand("inventario");
         if (output != null) {
+
             String[] items = output.split("\n");
             for (String item : items) {
                 if (!item.trim().isEmpty()) {
@@ -283,41 +341,40 @@ public class GUI extends JFrame {
 
                     itemLabel.setForeground(Color.WHITE);
                     itemLabel.setFont(newFont);
-
-
                     GridBagConstraints gbc = new GridBagConstraints();
                     gbc.gridx = 0;
                     gbc.gridy = 0;
-                    gbc.weightx = 1.0; // Utilizzare lo spazio orizzontale disponibile
-                    gbc.anchor = GridBagConstraints.WEST; // Allineamento a sinistra
-                    gbc.fill = GridBagConstraints.HORIZONTAL;  // espandi orizzontalmente per allineamento altezza
-                    itemPanel.add(itemLabel, gbc);
+                    gbc.weightx = 1.0;
+                    gbc.anchor = GridBagConstraints.WEST;
+                    gbc.fill = GridBagConstraints.HORIZONTAL;
 
+                    itemPanel.add(itemLabel, gbc);
                     sidePanel.add(itemPanel);
                     sidePanel.add(Box.createVerticalStrut(5));
+
                 }
+
             }
+
         }
     }
-
 
     private void showMap() {
         JLabel titleLabel = new JLabel("Mappa");
         titleLabel.setForeground(Color.ORANGE);
         titleLabel.setFont(new Font("Consolas", Font.BOLD, 16));
         titleLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-
         JPanel titlePanel = new JPanel();
         titlePanel.setLayout(new BoxLayout(titlePanel, BoxLayout.Y_AXIS));
         titlePanel.setBackground(new Color(30, 41, 59));
         titlePanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         titlePanel.setAlignmentX(Component.LEFT_ALIGNMENT);
-        titlePanel.add(titleLabel);
 
+        titlePanel.add(titleLabel);
         sidePanel.add(titlePanel);
         sidePanel.add(Box.createVerticalStrut(10));
-
         String output = (String) engine.processCommand("mappa");
+
         JTextArea textArea = new JTextArea(output);
         textArea.setEditable(false);
         textArea.setForeground(Color.WHITE);
@@ -325,8 +382,8 @@ public class GUI extends JFrame {
         textArea.setFont(new Font("Consolas", Font.PLAIN, 14));
         textArea.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         textArea.setAlignmentX(Component.LEFT_ALIGNMENT);
-
         sidePanel.add(textArea);
+
     }
 
 
@@ -335,9 +392,10 @@ public class GUI extends JFrame {
             String utf8Text = new String(text.getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8);
             mainTextArea.append(utf8Text);
             mainTextArea.setCaretPosition(mainTextArea.getDocument().getLength());
-        } catch (Exception e) {
+
+        }  catch (Exception e) {
             e.printStackTrace();
         }
-    }
 
+    }
 }
