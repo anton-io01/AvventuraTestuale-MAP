@@ -59,6 +59,9 @@ L'avventura si svolge in un arco temporale di circa 60 minuti, questo per render
 
 
 ## Diagramma delle classi
+![DiagrammaDelleClassi](./img/DiagrammaDelleClassi.png)
+
+
 
 ## Specifica algebrica
 ### Specifica Algebrica della Classe `Giocatore`
@@ -168,10 +171,47 @@ Questa sezione presenta la specifica algebrica della classe `Giocatore`, che ges
 Questo dovrebbe essere più preciso e in linea con quello che volevi. Fammi sapere se è tutto ok!
 ## Applicazione degli argomenti del corso
 
-- **File**:
-- **JDBC**:
-- **Lambda Expression**:
-- **
+Questo progetto, integra diversi argomenti trattati durante il corso. Di seguito, viene illustrato come ciascun argomento è stato applicato nel contesto del gioco.
+
+### File
+
+I file sono stati utilizzati per diverse finalità all'interno del progetto:
+
+*   **Caricamento dei dati di gioco:** I dati iniziali relativi a edifici, stanze, oggetti, descrizioni e movimenti sono caricati da file CSV (tramite la classe `CSVLoader`). Questo approccio permette di mantenere i dati di gioco separati dal codice, facilitandone la gestione e la modifica. La classe `DatabaseInitializer` si occupa di leggere i file e popolarli all'interno del database, al fine di velocizzare le query durante l'esecuzione.
+*   **Salvataggio della partita:** Il salvataggio della partita avviene tramite la classe `AzioneGlobale`. L'utilizzo di file permette di salvare lo stato corrente del gioco (posizione del giocatore, inventario e tempo rimanente) in modo persistente, consentendo al giocatore di riprendere la partita in un secondo momento. Il contenuto della `JTextArea` viene codificato tramite Base64 e salvato all'interno del file. Il salvataggio viene effettuato all'interno della cartella `resources/saves/save.txt`.
+
+### JDBC
+
+JDBC (Java Database Connectivity) è stato impiegato per la gestione del database del gioco tramite H2:
+
+*   **Connessione al database:** La classe `DatabaseManager` gestisce la connessione al database H2. Il database è di tipo embedded, garantendo che i dati siano locali al progetto. La classe fornisce la gestione della connesione e la relativa chiusura per evitare sprechi di risorse.
+*   **Creazione e gestione delle tabelle:** La classe `DatabaseInitializer` si occupa della creazione delle tabelle e del popolamento dei dati iniziali da file CSV. Se la variabile `force` è `true`, il database viene reinizializzato, altrimenti viene creato solo se non presente.
+*   **Interazione con il database:** I DAO (Data Access Object) quali `StanzaDAO`, `OggettoDAO`, `EdificioDAO` e `MovimentoDAO` sono utilizzati per effettuare operazioni di lettura, scrittura e aggiornamento delle tabelle del database. Le query al database vengono fatte tramite JDBC attraverso le classi DAO.
+
+### Lambda Expression
+
+Le espressioni lambda sono utilizzate nel progetto per definire azioni da eseguire in modo conciso e flessibile, in particolare:
+
+*   **Listener:** Le lambda expression sono state usate come action listener all'interno della classe GUI per gestire gli eventi, come l'azione del pulsante `sendButton`. Questo semplifica la gestione degli eventi che vengono triggherati dall'utente, rendendo il codice piu ordinato.
+
+### Thread
+
+I thread sono utilizzati per la gestione del timer all'interno del gioco:
+
+*   **Timer:** La classe GUI implementa un timer tramite l'uso della classe `ScheduledExecutorService`. Il timer decrementa periodicamente il tempo rimanente e aggiorna l'etichetta del timer nell'interfaccia utente. Quando il tempo scade, il gioco viene resettato tramite la funzione `resetGame()` e l'executor viene spento.
+
+### Swing
+
+Swing è utilizzato per la creazione dell'interfaccia grafica del gioco:
+
+*   **Finestra principale:** La classe GUI estende `JFrame` per creare la finestra principale del gioco.
+*   **Componenti UI:** L'interfaccia include componenti quali `JTextArea` per il testo principale, `JPanel` per i pannelli laterali, `JTextField` per l'input dell'utente e `JButton` per i pulsanti d'azione. L'interfaccia è stata creata seguendo le convenzioni `swing` ed è stata applicata un impostazione di colore per un aspetto gradevole.
+*   **Gestione degli eventi:** I listener dei pulsanti (menu, aiuto, mappa, inventario) e del campo di input sono gestiti per rispondere alle interazioni dell'utente. Il comportamento dell'interfaccia utente è dinamico e si adatta all'interazione dell'utente.
+*   **Menu bar:** è stato implementato un menu a tendina che permette la gestione della partita.
+
+Questa sezione descrive come ciascun argomento del corso è stato applicato nel progetto, mostrando come le diverse tecnologie siano state integrate per creare un'esperienza di gioco completa.
+
+
 
 ## Struttura del Database
 
