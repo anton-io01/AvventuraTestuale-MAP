@@ -60,9 +60,6 @@ public class AzioneGlobale {
         return "Comandi Disponibili:\n" +
                 "- mappa (per visualizzare la mappa)\n" +
                 "- inventario (per visualizzare l'inventario)\n" +
-                "- salva (per salvare la partita)\n" +
-                "- carica (per caricare la partita)\n" +
-                "- esci (per uscire dal gioco)\n" +
                 "- nord, sud, est, ovest, alto, basso (per muoverti)\n" +
                 "- osserva (per mostrare la descrizione della stanza)\n" +
                 "- esamina [oggetto] (per esaminare un oggetto)\n" +
@@ -72,7 +69,8 @@ public class AzioneGlobale {
                 "- apri [oggetto] (per aprire un armadio o una porta)\n" +
                 "- chiudi [oggetto] (per chiudere un armadio o una porta)\n" +
                 "- parla [oggetto] (per parlare con un personaggio)\n" +
-                "- leggi [oggetto] (per leggere un libro o un appunto)\n\n";
+                "- leggi [oggetto] (per leggere un libro o un appunto)\n\n" +
+                "- Usa il menu in alto a destra per: salvare, iniziare una nuova partita o uscire dal gioco.\n\n";
     }
 
 

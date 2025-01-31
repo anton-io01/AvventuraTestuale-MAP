@@ -276,7 +276,7 @@ La tabella `Movimenti` ha vincoli di chiave esterna su:
    - L'agente si reca in auto presso l'ospedale per raccogliere maggiori informazioni.
    - Alla reception, parla con l'assistente del dottore, che lo indirizza verso la stanza della vittima.
 2. **Indizi nella Stanza della Vittima**:
-   - Trova un biglietto da visita del dott. Tanaka. Questo svela la posizione della clinica privata del dottore.
+   - Trova un biglietto da visita del dott. Tanaka. Esamina il bigliettino da visita per sbloccare la posizione della clinica privata del dottore.
 3. **Analisi del Pacemaker**:
    - L'agente si reca al laboratorio tecnico dell'ospedale.
    - Scopre che il pacemaker contiene un virus che altera il battito cardiaco inviando impulsi letali al cuore.
@@ -284,22 +284,26 @@ La tabella `Movimenti` ha vincoli di chiave esterna su:
 ### **Capitolo 2**: La Clinica del Dott. Tanaka
 1. **Scoperta della Clinica**:
    - L'agente si reca alla clinica del dott. Tanaka, che appare vuota.
+   - Per aprire la porta di sicurezza, usa Flipper Zero.
    - All'interno trova un registro degli appuntamenti con una lista di persone che avevano visitato la clinica. Tra questi c'è il nome di Sato e il suo indirizzo.
 2. **Indizi nella Clinica**:
    - Accede al computer del dottore e scopre un software per controllare da remoto i pacemaker.
-   - Trova il corpo del dott. Tanaka, morto, con un mazzo di chiavi al collo.
+   - Trova il corpo del dott. Tanaka, morto, con un mazzo di chiavi al collo. Prendi le chiavi, saranno utili in seguito.
 
 ### **Capitolo 3**: La Connessione con Sato
 1. **Ricerca su Sato**:
    - L'agente scopre che Sato è un programmatore esperto.
    - Trova un ritaglio di giornale che rivela la storia di Sato: sua sorella era una paziente del dott. Tanaka e morì a causa di esperimenti medici falliti.
 2. **Scoperta del Nascondiglio**:
-   - Analizzando il registro degli appuntamenti della clinica, l'agente nota orari sospetti (ad esempio, mezzanotte).
+   - Analizzando il registro degli appuntamenti della clinica, l'agente nota orari sospetti (ad esempio, mezzanotte). Sblocca l'edificio Magazzino abbandonato.
    - I pazienti a quegli orari usavano nomi falsi, e le prime lettere dei nomi formano l'indirizzo del nascondiglio di Sato.
 
 ### **Capitolo 4**: Il Nascondiglio di Sato
 1. **Il Piano di Sato**:
    - Sato sta pianificando un attacco informatico per uccidere persone con pacemaker, in segno di vendetta contro il dott. Tanaka.
+   - L'agente deve trovare Sato e arrestarlo prima che scada il tempo.
+   - Nella hall prinicpale usa le chiavi trovate nella clinica del dottoe Tanaka per aprire la porta.
+   - Giunto nel magazzino nota uno strano libro. Esaminalo per sbloccare il nascondiglio di Sato e arrestarlo.
 
 
 

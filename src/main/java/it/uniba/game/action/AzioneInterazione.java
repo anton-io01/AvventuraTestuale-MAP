@@ -37,11 +37,14 @@ public class AzioneInterazione {
         switch(azione_id + oggetto_id + stanza_id){
             case "EM0211":
                 edificioDAO.setEdificioAccessibilita("02", true);
+                break;
             case "EM2927":
                 movimentoDAO.updateMovimentiByStanza(stanzaDAO.getEdificioIdByStanza(giocatore.getPosizioneAttualeId()), stanza_id, null,null,null,null,"25","28");
                 stanzaDAO.setStanzaAccessibile(stanza_id, true);
+                break;
             case "EM0518":
                 edificioDAO.setEdificioAccessibilita("03", true);
+                break;
         }
 
         String descrizioneOggetto = oggettoDAO.getDescrizioneDettagliataOggetto(oggetto_id);

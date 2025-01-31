@@ -45,7 +45,7 @@ public class GUI extends JFrame {
 
 
     public GUI() {
-        super("Gioco Avventura Testuale");
+        super("Heartcode: il Virus");
         setupFrame();
         setupComponents();
         initializeGame();
