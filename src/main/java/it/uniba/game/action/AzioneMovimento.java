@@ -45,6 +45,10 @@ public class AzioneMovimento {
             }
             // Aggiorna la posizione del giocatore
             giocatore.setPosizioneAttuale(stanzaDiArrivo);
+            if (stanzaDiArrivo.getStanzaId().equals("28")) {
+                return stanzaDAO.getDescrizioneCompleta(stanzaDiArrivo.getStanzaId()) + "\n\n" + "Hai completato il gioco, hai arrestato Sato e sventato l'attacco! Grazie per aver giocato!" + "\n\n" +
+                        "Se vuoi puoi continuare a cercare dettafli all'interno del gioco. Oppure inizia una nuova partita." + "\n\n";
+            }
             if (stanzaDiArrivo.getStanzaId().equals("01") || stanzaDiArrivo.getStanzaId().equals("15") || stanzaDiArrivo.getStanzaId().equals("22")) {
                 edificio = stanzaDAO.getEdificioByStanza(stanzaDiArrivo.getStanzaId());
                 String descrizione = "Ti sei spostato verso " + direzione + " all'esterno dell'edificio " + edificio.getNome() + ".\n" + movimentoDAO.getMovimentiByStanza(stanzaDiArrivo) + "\n";
