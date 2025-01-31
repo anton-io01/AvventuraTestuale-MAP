@@ -336,6 +336,8 @@ public class GUI extends JFrame {
             if(timeRemaining <=0) {
                 timerLabel.setText("Tempo scaduto. GAME OVER");
                 executor.shutdown();
+                resetGame(); // Chiama resetGame quando il timer scade
+
             }   else {
                 timerLabel.setText("Timer: " + hours + ":" + minutes + ":" + seconds);
             }
@@ -470,6 +472,7 @@ public class GUI extends JFrame {
             if (timeRemaining <= 0) {
                 timerLabel.setText("Tempo scaduto. GAME OVER");
                 executor.shutdown();
+                resetGame(); // Chiama resetGame quando il timer scade
 
             }  else{
                 timerLabel.setText("Timer: " + hours + ":" + minutes + ":" + seconds);
